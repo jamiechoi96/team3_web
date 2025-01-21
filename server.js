@@ -116,11 +116,6 @@ async function startServer() {
         ORDER BY 
           latest_strt_dt DESC
         LIMIT 5;
-        
-        SELECT * FROM lg_hellovisionvod.vod_drama_06;
-   
-
-
 
       `,
         [userHash] // URL에서 받은 userHash 사용
