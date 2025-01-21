@@ -73,7 +73,7 @@ async function startServer() {
             SUM(use_tms) AS total_use_tms,
             SUBSTRING_INDEX(MAX(CONCAT(strt_dt, '_', asset_nm)), '_', -1) AS latest_episode
           FROM 
-            202310_vod
+            vod_drama_06
           WHERE 
             sha2_hash = ?
           GROUP BY 
