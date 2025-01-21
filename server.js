@@ -64,20 +64,46 @@ async function startServer() {
       console.log("데이터베이스 연결됨");
 
       const [rows] = await connection.execute(
+        
+        // 192.168.0.105 DB 일때 
+
+        // WITH RankedContent AS (
+        //   SELECT 
+        //     sha2_hash,
+        //     SUBSTRING_INDEX(category, '/', -1) AS category,
+        //     MAX(strt_dt) AS latest_strt_dt,
+        //     SUM(use_tms) AS total_use_tms,
+        //     SUBSTRING_INDEX(MAX(CONCAT(strt_dt, '_', asset_nm)), '_', -1) AS latest_episode
+        //   FROM 
+        //     vod_drama_06
+        //   WHERE 
+        //     sha2_hash = ?
+        //   GROUP BY 
+        //     sha2_hash, SUBSTRING_INDEX(category, '/', -1)
+        // )
+        // SELECT 
+        //   sha2_hash,
+        //   category,
+        //   latest_strt_dt,
+        //   total_use_tms,
+        //   latest_episode
+        // FROM 
+        //   RankedContent
+        // ORDER BY 
+        //   latest_strt_dt DESC
+        // LIMIT 5;
         `
         WITH RankedContent AS (
           SELECT 
             sha2_hash,
-            SUBSTRING_INDEX(category, '/', -1) AS category,
-            MAX(strt_dt) AS latest_strt_dt,
-            SUM(use_tms) AS total_use_tms,
-            SUBSTRING_INDEX(MAX(CONCAT(strt_dt, '_', asset_nm)), '_', -1) AS latest_episode
+            category,
+            latest_strt_dt,
+            total_use_tms,
+            latest_episode
           FROM 
             vod_drama_06
           WHERE 
             sha2_hash = ?
-          GROUP BY 
-            sha2_hash, SUBSTRING_INDEX(category, '/', -1)
         )
         SELECT 
           sha2_hash,
@@ -90,6 +116,12 @@ async function startServer() {
         ORDER BY 
           latest_strt_dt DESC
         LIMIT 5;
+        
+        SELECT * FROM lg_hellovisionvod.vod_drama_06;
+   
+
+
+
       `,
         [userHash] // URL에서 받은 userHash 사용
       );
