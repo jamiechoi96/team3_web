@@ -3,7 +3,7 @@
   width: 100%;
   height: 80vh;
   background-color: black;
-  overflow: hidden;
+  overflow: hidden;   /* 화면 밖으로 벗어나지 않게 */
 }
 
 .slide {
