@@ -3,18 +3,14 @@
   max-width: none; /* 너비 제한 제거 */
   margin: 0 auto;
   text-align: center;
-  background-color: black;
+  background-color: #111;
 }
 
 .main {
   margin: 0;
   padding: 0;
   width: 100%;
-}
-
-.main.home-page { /* Home 페이지에서만 적용되는 스타일 */
-  margin-top: -80px; /* 헤더와 겹쳐 보이도록 음수 마진 추가 */
-}
+  margin-top: -20px; /* 헤더와 겹쳐 보이도록 음수 마진 추가 */}
 
 .logo {
   height: 6em;

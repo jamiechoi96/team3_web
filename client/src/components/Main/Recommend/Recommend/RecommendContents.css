@@ -103,7 +103,7 @@
   width: 40px;
   height: 100%;
   cursor: pointer;
-  z-index: 1000; /* 우선순위 설정 */
+  z-index: 200; /* 우선순위 설정 */
   display: flex;
   align-items: center;
   justify-content: center;
