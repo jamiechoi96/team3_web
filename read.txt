@@ -1,0 +1,14 @@
+helloTv/
+├── client/                    # 프론트엔드 (React + Vite)
+│   ├── src/
+│   │   ├── components/       # 리액트 컴포넌트
+│   │   │   ├── Mypage/      # 마이페이지 관련 컴포넌트
+│   │   │   │   ├── MyPage.jsx
+│   │   │   │   ├── MyPage.css
+│   │   │   │   └── MyPage2.jsx
+│   │   ├── App.jsx          # 메인 앱 컴포넌트
+│   │   ├── App.css          # 앱 스타일
+│   │   └── main.jsx         # 진입점
+├── server.js                 # 백엔드 서버 (Express)
+├── package.json              # 프로젝트 설정
+└── .env                      # 환경 변수
