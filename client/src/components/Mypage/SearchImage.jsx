@@ -9,14 +9,29 @@ const Image = ({ dbTitle }) => {
 
   // 제목에서 회차 제거하는 함수
   const extractTitle = (title) => {
-    const regex = /^(.*?)(\d+\회)/; // 숫자+회 패턴 매칭
-    const match = title.match(regex);
-    return match ? match[1].trim() : title.split('(')[0].trim(); // 제목만 추출
+    // "숫자+회" 패턴 제거
+    const episodeRegex = /^(.*?)(\d+\회)/;
+    let cleanTitle = title.match(episodeRegex) ? title.match(episodeRegex)[1].trim() : title.split('(')[0].trim();
+
+    // 숫자가 포함된 타이틀 중 특정 패턴의 경우 숫자 제거
+    const numberPatternRegex = /(.+?)\s?\d+$/;  // 공백 후 숫자가 있는 패턴
+
+    if (cleanTitle.match(numberPatternRegex)) {
+      const baseTitle = cleanTitle.match(numberPatternRegex)[1].trim();
+      // 제거해야 할 경우
+      const titlesToRemoveNumbers = ["낭만닥터 김사부", "모범택시"];
+      if (titlesToRemoveNumbers.some(prefix => baseTitle.startsWith(prefix))) {
+        cleanTitle = baseTitle;  // 숫자 제거
+      }
+    }
+  
+    return cleanTitle;
   };
 
   useEffect(() => {
     const fetchMovieImage = async () => {
       const filteredTitle = extractTitle(dbTitle);
+      console.log("Searching for:", filteredTitle);
       try {
         const response = await fetch(
           `https://api.themoviedb.org/3/search/tv?api_key=${API_KEY}&query=${encodeURIComponent(filteredTitle)}&include_adult=false&language=ko-KO&page=1`

@@ -3,8 +3,10 @@
   background-color: #000; /* 배경색 검정 */
   color: #fff; /* 텍스트 흰색 */
   min-height: 100vh; /* 화면 전체 높이 */
-  padding: 60px 20px 20px; /* 상단 패딩을 60px로 증가 */
+  padding: 60px 60px 20px; /* 상단 패딩을 60px로 증가 */
   font-family: Arial, sans-serif;
+  margin: 0 20px; /* 양쪽에 20px 마진 추가 */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* 그림자 추가 */
 }
 
 /* 헤더 */
@@ -102,7 +104,7 @@
 /* 시청 기록 그리드 */
 .watch-history {
   overflow-x: auto;
-  padding-bottom: 20px;
+  padding: 0; /* 필요에 따라 패딩을 0으로 설정 */
   width: 100%;
 }
 
@@ -117,54 +119,30 @@
   flex: 0 0 auto;
   width: 200px;  /* 포스터 너비 */
   height: 300px;
-  background: #1e1e1e;
-  border-radius: 10px;  /* 모든 모서리를 둥글게 설정 */
+  border-radius: 12px 12px 12px 12px;  /* 오른쪽 아래 모서리 곡률 수정 */
   overflow: hidden;
   transition: transform 0.3s ease;
-  margin: 0 10px 0 0;  /* 오른쪽 간격을 조정하고 왼쪽 여백 제거 */
+  margin: 10px;  /* 오른쪽 간격을 조정하고 왼쪽 여백 제거 */
+  /* background-color: Red; */
+  
 }
 
 .slick-list {
   overflow: hidden;
   text-align: left !important;
-  padding-left: 0 !important;  /* 왼쪽 정렬 적용 */
+  padding: 0; /* 왼쪽 패딩을 0으로 설정 */
+ 
 }
 
 .slick-track {
   display: flex !important;
   justify-content: flex-start !important; /* 슬라이드 왼쪽 정렬 */
   align-items: flex-start !important;
+  margin:20px; /* 필요에 따라 마진을 0으로 설정 */
 }
 
 .watch-history-item:hover {
   transform: scale(1.05);
-}
-
-.poster {
-  width: 200px;  /* 포스터 너비 */
-  height: 300px; /* 포스터 높이 */
-  background-color: #333;
-  margin-bottom: 10px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.poster:hover {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
-}
-
-.poster-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #2c2c2c;
-  padding: 1rem;
-  text-align: center;
 }
 
 .watch-history-item .content-info {
@@ -239,4 +217,3 @@
 .status-message.error {
   color: #ff6b6b;
 }
-
