@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import Slider from 'react-slick';
+import SearchImage from "./SearchImage.jsx";
 import "./MyPage.css";
 
 const formatDateTime = (dateTimeStr) => {
@@ -50,6 +52,19 @@ function MyPage() {
     fetchWatchHistory();
   }, [hash]);
 
+  const settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 6,
+    slidesToScroll: 6,
+    autoplay: false,
+    arrows: true,
+    variableWidth: true,  // 슬라이드 크기에 맞게 조정하여 왼쪽 정렬
+    centerMode: false,    // 중앙 정렬 해제
+  };
+  
+
   return (
     <div className="mypage">
       <div className="mypage_header">
@@ -71,26 +86,35 @@ function MyPage() {
           ) : error ? (
             <div className="status-message error">{error}</div>
           ) : watchHistory && watchHistory.length > 0 ? (
-            <table className="watch-history-table">
-              <thead>
-                <tr>
-                  <th>콘텐츠명</th>
-                  <th>카테고리</th>
-                  <th>마지막 시청 날짜</th>
-                  <th>시청 시간</th>
-                </tr>
-              </thead>
-              <tbody>
-                {watchHistory.map((item) => (
-                  <tr key={item.sha2_hash}>
-                    <td>{item.latest_episode}</td>
-                    <td>{item.category}</td>
-                    <td>{formatDateTime(item.latest_strt_dt.toString())}</td>
-                    <td>{Math.floor(item.total_use_tms / 60)}분</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <Slider {...settings} className="slider">
+              {watchHistory.map((item) => (
+                <div key={item.sha2_hash} className="watch-history-item">
+                  <SearchImage dbTitle={item.latest_episode} />
+                </div>
+              ))}
+            </Slider>
+            // <table className="watch-history-table">
+            //   <thead>
+            //     <tr>
+            //       <th>콘텐츠명</th>
+            //       <th>체크용</th>
+            //       <th>카테고리</th>
+            //       <th>마지막 시청 날짜</th>
+            //       <th>시청 시간</th>
+            //     </tr>
+            //   </thead>
+            //   <tbody>
+            //     {watchHistory.map((item) => (
+            //       <tr key={item.sha2_hash}>
+            //         <td>{item.latest_episode}</td>
+            //         <td>{extractTitle(item.latest_episode)}</td>
+            //         <td>{item.category}</td>
+            //         <td>{formatDateTime(item.latest_strt_dt.toString())}</td>
+            //         <td>{Math.floor(item.total_use_tms / 60)}분</td>
+            //       </tr>
+            //     ))}
+            //   </tbody>
+            // </table>
           ) : (
             <div className="status-message">시청 기록이 없습니다.</div>
           )}
