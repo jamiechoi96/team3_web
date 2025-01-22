@@ -5,7 +5,6 @@
   min-height: 100vh; /* 화면 전체 높이 */
   padding: 60px 60px 20px; /* 상단 패딩을 60px로 증가 */
   font-family: Arial, sans-serif;
-  margin: 0 20px; /* 양쪽에 20px 마진 추가 */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* 그림자 추가 */
 }
 
