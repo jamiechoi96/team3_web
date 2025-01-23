@@ -2,7 +2,7 @@
 # Hellotv Web Development
 
 # Project Structure
-
+```plaintext
 webTest/
 ├── client/                        # 프론트엔드 (React + Vite)
 │   ├── src/
