@@ -34,7 +34,7 @@ const Image = ({ dbTitle }) => {
       console.log("Searching for:", filteredTitle);
       try {
         const response = await fetch(
-          `https://api.themoviedb.org/3/search/tv?api_key=${API_KEY}&query=${encodeURIComponent(filteredTitle)}&include_adult=false&language=ko-KO&page=1`
+          `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(filteredTitle)}&include_adult=false&language=ko-KO&page=1`
         );
         const data = await response.json();
         if (data.results && data.results.length > 0) {
