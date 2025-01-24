@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import Popup from "./Popup/Popup";
 import "./ImageCard.css";
 
-function ImageCard({ rank, image, title }) {
+function ImageCard({ rank, image, title, hover, overview }) {
   const [hovered, setHovered] = useState(false);
   const [hoverTimer, setHoverTimer] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleMouseEnter = () => {
     const timer = setTimeout(() => setHovered(true), 2000); // 1.5초 후에 호버 상태로 전환
@@ -15,6 +17,14 @@ function ImageCard({ rank, image, title }) {
     setHovered(false); // 호버 상태 해제
   };
 
+  const handleInfoClick = () => {
+    setShowPopup(true);
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+
   return (
     <div
       className={`movie ${hovered ? "hovered" : ""}`}
@@ -24,11 +34,12 @@ function ImageCard({ rank, image, title }) {
       <div className="rank">{rank}</div>
       <img src={image} alt={title} className="movie-poster" />
       <div className="movie-hover">
-        <img src={image} alt={title} className="hover-poster" />
+        <img src={hover} alt={title} className="hover-poster" />
         <h3>{title}</h3>
         <div className="movie-buttons">
           <button className="play-btn">▶ 재생</button>
-          <button className="info-btn">ℹ️ 정보</button>
+          <button className="info-btn" onClick={handleInfoClick}>ℹ️ 정보</button>
+          {/* {showPopup && <Popup movie={{ title, image, overview }} onClose={closePopup} />} */}
         </div>
       </div>
     </div>

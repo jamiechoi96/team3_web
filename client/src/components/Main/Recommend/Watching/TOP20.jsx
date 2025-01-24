@@ -11,10 +11,6 @@ const imageUrl = "https://image.tmdb.org/t/p/original";
 
 function TOP20() {
   const [movies, setMovies] = useState([]);
-  const sliderRef = useRef(null);
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const scrollLeft = useRef(0);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -36,11 +32,10 @@ function TOP20() {
     dots: false,
     infinite: false,
     speed: 500,
-    slidesToShow: 7,
+    slidesToShow: 6,
     slidesToScroll: 6,
     autoplay: false,
     arrows: true,
-    centerMode: false,  // 중앙 정렬 비활성화
   };
 
   return (
@@ -53,6 +48,8 @@ function TOP20() {
             rank={index + 1}
             image={`${imageUrl}${movie.poster_path}`}
             title={movie.title}
+            hover={`${imageUrl}${movie.backdrop_path}`}
+            overview = {movie.overview}
           />
         ))}
       </Slider>

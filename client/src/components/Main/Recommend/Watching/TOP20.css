@@ -1,6 +1,6 @@
 .watching {
   margin: 0;
-  padding: 20px 0;
+  /* padding: 20px 0; */
   background-color: #111;
   border-radius: 8px;
 }
@@ -16,20 +16,9 @@
 .slider-container {
   position: relative;
   display: flex;
-  overflow-x: auto;
   scroll-behavior: smooth;
-  gap: 20px;
-  padding: 10px;
   cursor: grab; /* 기본 커서 */
-  overflow-y: visible;
-}
-
-.slider-container.dragging {
-  cursor: grabbing; /* 드래그 중 커서 */
-}
-
-.slider-container::-webkit-scrollbar {
-  display: none; /* 스크롤바 숨김 */
+  overflow: hidden;
 }
 
 .movie {
