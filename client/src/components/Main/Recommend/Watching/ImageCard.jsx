@@ -8,7 +8,7 @@ function ImageCard({ rank, image, title, hover, overview }) {
   const [showPopup, setShowPopup] = useState(false);
 
   const handleMouseEnter = () => {
-    const timer = setTimeout(() => setHovered(true), 2000); // 1.5초 후에 호버 상태로 전환
+    const timer = setTimeout(() => setHovered(true), 1000); // 1초 후에 호버 상태로 전환
     setHoverTimer(timer);
   };
 

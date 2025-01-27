@@ -28,7 +28,7 @@ function TOP20() {
     fetchMovies();
   }, []);
 
-  const settings = {
+  const settings_top20 = {
     dots: false,
     infinite: false,
     speed: 500,
@@ -36,12 +36,28 @@ function TOP20() {
     slidesToScroll: 6,
     autoplay: false,
     arrows: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 1,
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        }
+      }
+    ]
   };
 
   return (
     <div className="watching">
       <h2 className="title">금주의 TOP 20</h2>
-      <Slider  {...settings}className="slider-container">
+      <Slider {...settings_top20}>
         {movies.map((movie, index) => (
           <ImageCard
             key={movie.id}
