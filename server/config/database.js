@@ -3,7 +3,9 @@ require('dotenv').config({ path: path.resolve(__dirname, '../../.env') }); // .e
 
 // 환경 변수에서 기본 DB 호스트와 접미사 목록 가져오기
 const dbHostBase = process.env.DB_HOST;
-const dbSuffixes = process.env.DB_SUFFIXES ? process.env.DB_SUFFIXES.split(',') : [];
+const dbSuffixes = process.env.DB_SUFFIXES 
+  ? process.env.DB_SUFFIXES.split(',').map(suffix => suffix.trim())
+  : [];
 
 // 설정 값 출력
 console.log('데이터베이스 설정 로드 중...');
@@ -19,7 +21,7 @@ if (!dbHostBase || dbSuffixes.length === 0) {
 // 접미사별 DB 설정 생성
 const dbConfigs = dbSuffixes.map((suffix) => {
   const config = {
-    host: `${dbHostBase}.${suffix.trim()}`,
+    host: `${dbHostBase}.${suffix}`,
     port: parseInt(process.env.DB_PORT) || 3306,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,

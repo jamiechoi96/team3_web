@@ -20,9 +20,9 @@ function TOP20() {
     const fetchMovies = async () => {
       try {
         const response = await axios.get(
-          `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=ko-KO`
+          `https://your-api-endpoint.com/get-movies` // SQL 쿼리를 실행하는 API 엔드포인트로 변경
         );
-        const validMovies = response.data.results.filter((movie) => movie.poster_path);
+        const validMovies = response.data.filter((movie) => movie.poster_path);
         setMovies(validMovies);
       } catch (error) {
         console.error("Error fetching movies:", error);
