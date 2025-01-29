@@ -31,7 +31,7 @@ class Top20 {
       
       console.log('===== 서버: 조회된 데이터 =====');
       rows.forEach(movie => {
-        console.log(`순위: ${movie.rank}, 제목: ${movie.asset_nm}, 인기도: ${movie.popularity}`);
+        console.log(`순위: ${movie.rank} | 제목: ${movie.asset_nm} | 인기도: ${movie.popularity}`);
       });
       console.log('===========================');
       
