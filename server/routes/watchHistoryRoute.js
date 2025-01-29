@@ -1,3 +1,4 @@
+// This file is renamed to watchHistoryRoute.js
 const express = require('express');
 const router = express.Router();
 const { getWatchHistory } = require('../controllers/watchHistoryController');
