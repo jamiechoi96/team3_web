@@ -7,7 +7,6 @@ import 'slick-carousel/slick/slick-theme.css';
 import "./TOP20.css";
 
 const API_KEY = import.meta.env.VITE_TMDB_API;
-const imageUrl = "https://image.tmdb.org/t/p/original";
 
 function TOP20() {
   const [movies, setMovies] = useState([]);
@@ -76,8 +75,8 @@ function TOP20() {
             rank={movie.rank}
             image={movie.posterUrl}
             title={movie.asset_nm}
-            hover={`${imageUrl}${movie.backdrop_path}`}
-            overview = {movie.overview}
+            hover={movie.backdropUrl}
+            overview={movie.overview}
           />
         ))}
       </Slider>
