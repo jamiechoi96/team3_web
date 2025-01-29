@@ -31,8 +31,10 @@ function ImageCard({ rank, image, title, hover, overview }) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="rank">{rank}</div>
-      <img src={image} alt={title} className="movie-poster" />
+      <div className="movie-content">
+        <div className="rank">{rank}</div>
+        <img src={image} alt={title} className="movie-poster" />
+      </div>
       <div className="movie-hover">
         <img src={hover} alt={title} className="hover-poster" />
         <h3>{title}</h3>
