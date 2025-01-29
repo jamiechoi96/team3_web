@@ -11,7 +11,7 @@ async function getTop20(req, res) {
     
     // TMDB API 키 확인
     if (!TMDB_API_KEY) {
-      throw new Error('TMDB API 키가 설정되지 않았습니다. 서버의 .env 파일을 확인해주세요.');
+      throw new Error('TMDB API 키가 설정되지 않았습니다. 서버의 .env 파일을 확인해주세요!!');
     }
 
     // 각 영화의 포스터 정보 가져오기
