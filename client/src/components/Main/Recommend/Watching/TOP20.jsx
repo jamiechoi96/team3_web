@@ -7,52 +7,76 @@ import 'slick-carousel/slick/slick-theme.css';
 import "./TOP20.css";
 
 const API_KEY = import.meta.env.VITE_TMDB_API;
-const imageUrl = "https://image.tmdb.org/t/p/original";
 
 function TOP20() {
   const [movies, setMovies] = useState([]);
-  const sliderRef = useRef(null);
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const scrollLeft = useRef(0);
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await axios.get(
-          `https://your-api-endpoint.com/get-movies` // SQL 쿼리를 실행하는 API 엔드포인트로 변경
-        );
-        const validMovies = response.data.filter((movie) => movie.poster_path);
-        setMovies(validMovies);
+        console.log('=== TOP 20 데이터 요청 시작 - client ===');
+        const response = await axios.get('/api/top20');
+        if (response.data.success) {
+          console.log('=== TOP 20 영화 순위 ===');
+          response.data.data.forEach(movie => {
+            console.log(`${movie.rank}위: ${movie.asset_nm}`);
+          });
+          console.log('=====================');
+          setMovies(response.data.data);
+        }
       } catch (error) {
-        console.error("Error fetching movies:", error);
+        console.error("영화 데이터 조회 오류:", error);
       }
     };
 
     fetchMovies();
   }, []);
 
-  const settings = {
+  const settings_top20 = {
     dots: false,
     infinite: false,
     speed: 500,
-    slidesToShow: 7,
+    slidesToShow: 6,
     slidesToScroll: 6,
     autoplay: false,
     arrows: true,
-    centerMode: false,  // 중앙 정렬 비활성화
+    responsive: [
+      {
+        breakpoint: 1500,
+        settings: {
+          slidesToShow: 5,
+          slidesToScroll: 5,
+        }
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2
+        }
+      }
+    ]
   };
 
   return (
     <div className="watching">
-      <h2 className="title">금주의 TOP 20</h2>
-      <Slider  {...settings}className="slider-container">
-        {movies.map((movie, index) => (
+      <h2 className="title">금주의 TOP 20 추천🎯</h2>
+      <Slider {...settings_top20}>
+        {movies.map((movie) => (
           <ImageCard
-            key={movie.id}
-            rank={index + 1}
-            image={`${imageUrl}${movie.poster_path}`}
-            title={movie.title}
+            key={movie.rank}
+            rank={movie.rank}
+            image={movie.posterUrl}
+            title={movie.asset_nm}
+            hover={movie.backdropUrl}
+            overview={movie.overview}
           />
         ))}
       </Slider>

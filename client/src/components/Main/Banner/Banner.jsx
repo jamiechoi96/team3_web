@@ -34,7 +34,7 @@ function Banner() {
         autoplay: true,
         autoplaySpeed: 3000,
         arrows: true,
-        centerMode: false,  // 중앙 정렬 비활성화
+        fade: true
     };
 
     return (

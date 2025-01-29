@@ -3,7 +3,15 @@
   width: 260px;
   height: 255px;
   margin: 10px;
-  overflow: visible; /* 범위 밖으로 확대 허용 */
+  overflow: visible;
+}
+
+.movie-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s ease;
+  transform-origin: center right;
 }
 
 .rank {
@@ -23,67 +31,85 @@
   left: 10px;
   margin: 0;
   padding: 0;
+  z-index: 2;
 }
 
 .movie-poster {
   width: 175px;
   height: 255px;
-  border-radius: 10px;
   margin-left: 80px;
-  transition: transform 0.3s ease, z-index 0.3s ease;
-  right: 0;
+  position: relative;
+  z-index: 1;
+  border-radius: 0px;
 }
 
-.movie.hovered .movie-poster {
-  transform: scale(1.2); /* 이미지 확대 */
+.movie.hovered .movie-content {
+  transform: scale(1.2);
 }
 
 .movie-hover {
   position: absolute;
   width: 350px;
-  height: 300px;
-  top: -30px;
+  height: 340px; /* 높이 증가 */
+  top: -60px; /* 위로 더 올림 */
   left: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.9); /* 배경 더 진하게 */
   opacity: 0;
-  border-radius: 10px;
-  transition: opacity 0.3s ease;
-  z-index: 10;
+  border-radius: 20px; /* 곡률 증가 */
+  transition: all 0.3s ease;
+  z-index: 100; /* 더 높은 z-index 값으로 설정 */
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); /* 그림자 효과 */
 }
 
 .movie.hovered .movie-hover {
-  opacity: 1;
+  opacity: 1; /* opacity 값 수정 */
 }
 
 .hover-poster {
   width: 100%;
-  height: 200px;
-  /* border-radius: 10px; */
-  margin-bottom: 3px;
+  height: 200px; /* 이미지 높이 증가 */
+  margin-bottom: 10px;
+  border-top-left-radius: 0px; /* 곡률 제거 */
+  border-top-right-radius: 0px; /* 곡률 제거 */
+  object-fit: cover;
+}
+
+.movie-hover h3 {
+  color: #fff;
+  font-size: 18px;
+  margin: 10px 0;
+  text-align: center;
+  padding: 0 15px;
+  font-weight: bold;
+  line-height: 1.4;
 }
 
 .movie-buttons {
   display: flex;
   gap: 10px;
+  margin-top: 10px;
 }
 
 .play-btn,
 .info-btn {
-  padding: 8px 12px;
+  padding: 8px 15px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px; /* 버튼 곡률 증가 */
   cursor: pointer;
   font-size: 14px;
+  font-weight: bold;
   color: #fff;
   background-color: #d84c5f;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .play-btn:hover,
 .info-btn:hover {
   background-color: #a83847;
+  transform: scale(1.05); /* 버튼 hover 효과 */
 }

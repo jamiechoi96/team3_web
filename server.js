@@ -17,7 +17,7 @@ app.use('/api', apiRoutes);
 
 // 리액트 라우팅
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/dist/index.html'));
+  res.sendFile(path.join(__dirname, 'client/index.html'));
 });
 
 // 서버 시작

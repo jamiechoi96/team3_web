@@ -1,8 +1,10 @@
 .watching {
-  margin: 0;
+  margin: 20px 0;
   padding: 20px 0;
   background-color: #111;
   border-radius: 8px;
+  position: relative;
+  overflow: hidden;
 }
 
 .title {
@@ -10,26 +12,46 @@
   margin-bottom: 20px;
   margin-left: 20px;
   font-size: 1.5rem;
+  z-index: 1;
 }
 
-/* 슬라이더 */
-.slider-container {
-  position: relative;
-  display: flex;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  gap: 20px;
-  padding: 10px;
-  cursor: grab; /* 기본 커서 */
-  overflow-y: visible;
+/* TOP20 전용 슬라이더 스타일 */
+.watching .slick-slider {
+  margin: 0;
 }
 
-.slider-container.dragging {
-  cursor: grabbing; /* 드래그 중 커서 */
+.watching .slick-list {
+  margin: 0 -5px;
 }
 
-.slider-container::-webkit-scrollbar {
-  display: none; /* 스크롤바 숨김 */
+.watching .slick-slide > div {
+  margin: 0 5px;
+}
+
+.watching .slick-track {
+  margin-left: 0;
+}
+
+.watching .slick-prev,
+.watching .slick-next {
+  z-index: 1;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.watching .slick-prev {
+  left: 10px;
+}
+
+.watching .slick-next {
+  right: 10px;
+}
+
+.watching .slick-prev:before,
+.watching .slick-next:before {
+  font-size: 24px;
+  opacity: 1;
 }
 
 .movie {
