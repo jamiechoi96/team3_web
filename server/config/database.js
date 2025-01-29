@@ -53,12 +53,7 @@ const dbConfig = {
   database: 'lg_hellovisionvod', // 데이터베이스 이름
 };
 
-// 설정 값 출력
-console.log('로컬호스트 데이터베이스 설정 로드 중...');
-console.log('DB_HOST:', dbConfig.host);
-console.log('DB_PORT:', dbConfig.port);
-console.log('DB_USER:', dbConfig.user);
-console.log('DB_NAME:', dbConfig.database);
+
 
 module.exports = [dbConfig]; // 설정 내보내기
 
