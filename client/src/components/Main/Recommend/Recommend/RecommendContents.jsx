@@ -16,19 +16,8 @@ function RecommendContents() {
     const fetchMovies = async () => {
       try {
         const response = await axios.get(
-          `https://api.themoviedb.org/3/search/movie?api_key=0058a62923db25cb8d799d267036fb75&query=Inside%20Out&language=ko-KR`
+          `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=Inside%20Out&language=ko-KR`
         );
-
-        // // 첫 번째 결과만 사용 (가장 연관성 높은 결과)
-        // const movie = response.data.results[0];
-        // if (movie?.poster_path && movie?.title) {
-        //   setMovies([
-        //     {
-        //       image: `${imageUrl}${movie.poster_path}`,
-        //       title: movie.title,
-        //     },
-        //   ]);
-        // }
 
         const validMovies = response.data.results
           .filter((movie) => movie.poster_path && movie.title)
@@ -107,7 +96,7 @@ function RecommendContents() {
         ))}
       </Slider>
 
-      <h2 className="section_title">추천 리스트 1</h2>
+      <h2 className="section_title">나와 비슷한 사람들이 많이 본 콘텐츠</h2>
       <Slider {...settings_recommendation} className="slider_wrapper">
         {movies.map((movie, index) => (
           <div key={index} className="movie_card">
@@ -127,47 +116,7 @@ function RecommendContents() {
         ))}
       </Slider>
 
-      <h2 className="section_title">추천 리스트 2</h2>
-      <Slider {...settings_recommendation} className="slider_wrapper">
-        {movies.map((movie, index) => (
-          <div key={index} className="movie_card">
-            <img
-              src={movie.image}
-              alt={movie.title}
-              className="movie_image"
-            />
-            <div className="movie_hover">
-              <div className="movie_title">{movie.title}</div>
-              <div className="movie_buttons">
-                <button className="play_btn">▶ 재생</button>
-                <button className="info_btn">ℹ️ 정보</button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </Slider>
-
-      <h2 className="section_title">추천 리스트 3</h2>
-      <Slider {...settings_recommendation} className="slider_wrapper">
-        {movies.map((movie, index) => (
-          <div key={index} className="movie_card">
-            <img
-              src={movie.image}
-              alt={movie.title}
-              className="movie_image"
-            />
-            <div className="movie_hover">
-              <div className="movie_title">{movie.title}</div>
-              <div className="movie_buttons">
-                <button className="play_btn">▶ 재생</button>
-                <button className="info_btn">ℹ️ 정보</button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </Slider>
-
-      <h2 className="section_title">추천 리스트 4</h2>
+      <h2 className="section_title">내가 많이 본 장르</h2>
       <Slider {...settings_recommendation} className="slider_wrapper">
         {movies.map((movie, index) => (
           <div key={index} className="movie_card">
