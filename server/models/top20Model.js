@@ -26,8 +26,14 @@ async function getTop20() {
   `);
 
   console.log('===== 서버: 조회된 데이터 =====');
+<<<<<<< HEAD
   rows.forEach(row => {
     console.log(row);
+=======
+  rows.forEach(movie => {
+    console.log(movie);
+    // console.log(`${movie.rank}위: ${movie.asset_nm} | 인기도: ${movie.popularity}`);
+>>>>>>> cd5bea2e0c86c256fcf98cb311deb72dca7f862f
   });
   console.log('===========================');
 
