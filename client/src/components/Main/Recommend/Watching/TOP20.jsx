@@ -7,7 +7,6 @@ import 'slick-carousel/slick/slick-theme.css';
 import "./TOP20.css";
 
 const API_KEY = import.meta.env.VITE_TMDB_API;
-const imageUrl = "https://image.tmdb.org/t/p/original";
 
 function TOP20() {
   const [movies, setMovies] = useState([]);
@@ -15,13 +14,18 @@ function TOP20() {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=ko-KO`
-        );
-        const validMovies = response.data.results.filter((movie) => movie.poster_path);
-        setMovies(validMovies);
+        console.log('=== TOP 20 데이터 요청 시작 - client ===');
+        const response = await axios.get('/api/top20');
+        if (response.data.success) {
+          console.log('=== TOP 20 영화 순위 ===');
+          response.data.data.forEach(movie => {
+            console.log(`${movie.rank}위: ${movie.asset_nm}`);
+          });
+          console.log('=====================');
+          setMovies(response.data.data);
+        }
       } catch (error) {
-        console.error("Error fetching movies:", error);
+        console.error("영화 데이터 조회 오류:", error);
       }
     };
 
@@ -38,17 +42,24 @@ function TOP20() {
     arrows: true,
     responsive: [
       {
+        breakpoint: 1500,
+        settings: {
+          slidesToShow: 5,
+          slidesToScroll: 5,
+        }
+      },
+      {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 4,
-          slidesToScroll: 1,
+          slidesToShow: 3,
+          slidesToScroll: 3,
         }
       },
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 1,
+          slidesToScroll: 2
         }
       }
     ]
@@ -56,16 +67,16 @@ function TOP20() {
 
   return (
     <div className="watching">
-      <h2 className="title">금주의 TOP 20</h2>
+      <h2 className="title">금주의 TOP 20 추천🎯</h2>
       <Slider {...settings_top20}>
-        {movies.map((movie, index) => (
+        {movies.map((movie) => (
           <ImageCard
-            key={movie.id}
-            rank={index + 1}
-            image={`${imageUrl}${movie.poster_path}`}
-            title={movie.title}
-            hover={`${imageUrl}${movie.backdrop_path}`}
-            overview = {movie.overview}
+            key={movie.rank}
+            rank={movie.rank}
+            image={movie.posterUrl}
+            title={movie.asset_nm}
+            hover={movie.backdropUrl}
+            overview={movie.overview}
           />
         ))}
       </Slider>

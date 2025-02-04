@@ -17,7 +17,7 @@ class WatchHistory {
             total_use_tms,
             latest_episode
           FROM 
-            vod_drama_06
+            vod_movie_09
           WHERE 
             sha2_hash = ?
         )

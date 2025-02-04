@@ -1,4 +1,4 @@
-const WatchHistory = require('../models/watchHistory');
+const watchHistory = require('../models/watchHistorymodel');
 
 async function getWatchHistory(req, res) {
   try {
@@ -11,7 +11,7 @@ async function getWatchHistory(req, res) {
     }
     
     console.log('시청 기록 조회 시작...');
-    const history = await WatchHistory.getWatchHistory(userHash);
+    const history = await watchHistory.getWatchHistory(userHash);
     console.log('조회된 시청 기록:', JSON.stringify(history, null, 2));
     
     res.json(history);
