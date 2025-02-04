@@ -17,7 +17,7 @@ console.log('DB_HOST:', dbHostBase);
 console.log('DB_SUFFIXES:', dbSuffixes);
 
 // 필수 환경 변수 확인
-if (!dbHostBaseFromEnv || dbSuffixes.length === 0) {
+if (!dbHostBase || dbSuffixes.length === 0) {
   console.error('데이터베이스 설정 오류: DB_HOST 또는 DB_SUFFIXES가 설정되지 않음');
   process.exit(1); // 오류 시 종료
 }
@@ -55,6 +55,6 @@ module.exports = dbConfigs; // 설정 내보내기
 
 
 
-module.exports = [dbConfig]; // 설정 내보내기
+// module.exports = [dbConfig]; // 설정 내보내기
 
 // =================================================================

@@ -10,7 +10,7 @@
 .title {
   color: white;
   margin-bottom: 20px;
-  margin-left: 20px;
+  margin-left: 0;
   font-size: 1.5rem;
   z-index: 1;
 }
@@ -18,18 +18,20 @@
 /* TOP20 전용 슬라이더 스타일 */
 .watching .slick-slider {
   margin: 0;
+  padding: 0;
 }
 
 .watching .slick-list {
-  margin: 0 -5px;
+  margin: 0;
 }
 
 .watching .slick-slide > div {
-  margin: 0 5px;
+  margin: 0;
 }
 
 .watching .slick-track {
-  margin-left: 0;
+  display: flex;
+  gap: 0;
 }
 
 .watching .slick-prev,
@@ -37,6 +39,7 @@
   z-index: 1;
   width: 40px;
   height: 40px;
+  background-color: rgba(0, 0, 0, 0.5);
   border-radius: 50%;
 }
 
@@ -51,6 +54,11 @@
 .watching .slick-prev:before,
 .watching .slick-next:before {
   font-size: 24px;
+  opacity: 0.75;
+}
+
+.watching .slick-prev:hover:before,
+.watching .slick-next:hover:before {
   opacity: 1;
 }
 

@@ -10,8 +10,6 @@
   position: relative;
   width: 100%;
   height: 100%;
-  transition: transform 0.3s ease;
-  transform-origin: center right;
 }
 
 .rank {
@@ -43,73 +41,54 @@
   border-radius: 0px;
 }
 
-.movie.hovered .movie-content {
-  transform: scale(1.2);
-}
-
 .movie-hover {
   position: absolute;
-  width: 350px;
-  height: 340px; /* 높이 증가 */
-  top: -60px; /* 위로 더 올림 */
-  left: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.9); /* 배경 더 진하게 */
-  opacity: 0;
-  border-radius: 20px; /* 곡률 증가 */
-  transition: all 0.3s ease;
-  z-index: 100; /* 더 높은 z-index 값으로 설정 */
-  overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); /* 그림자 효과 */
-}
-
-.movie.hovered .movie-hover {
-  opacity: 1; /* opacity 값 수정 */
-}
-
-.hover-poster {
+  top: 0;
+  left: 80px;
   width: 100%;
-  height: 200px; /* 이미지 높이 증가 */
-  margin-bottom: 10px;
-  border-top-left-radius: 0px; /* 곡률 제거 */
-  border-top-right-radius: 0px; /* 곡률 제거 */
-  object-fit: cover;
+  height: 255px;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
 }
 
-.movie-hover h3 {
-  color: #fff;
-  font-size: 18px;
-  margin: 10px 0;
-  text-align: center;
-  padding: 0 15px;
-  font-weight: bold;
-  line-height: 1.4;
+.movie:hover .movie-hover {
+  opacity: 1;
 }
 
 .movie-buttons {
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
+  gap: 5px;
+  flex-direction: row;
+  margin-left: -50px;
 }
 
 .play-btn,
 .info-btn {
-  padding: 8px 15px;
+  padding: 6px 12px;
   border: none;
-  border-radius: 8px; /* 버튼 곡률 증가 */
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
-  color: #fff;
-  background-color: #d84c5f;
-  transition: all 0.3s ease;
+  font-size: 0.85rem;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+}
+
+.play-btn {
+  background-color: #e50914;
+  color: white;
+}
+
+.info-btn {
+  background-color: rgba(109, 109, 110, 0.7);
+  color: white;
 }
 
 .play-btn:hover,
 .info-btn:hover {
-  background-color: #a83847;
-  transform: scale(1.05); /* 버튼 hover 효과 */
+  background-color: rgba(255, 255, 255, 0.2);
 }

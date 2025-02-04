@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ImageCard from "./ImageCard";
 import Slider from 'react-slick';
@@ -44,22 +44,22 @@ function TOP20() {
       {
         breakpoint: 1500,
         settings: {
+          slidesToShow: 6,
+          slidesToScroll: 6,
+        }
+      },
+      {
+        breakpoint: 1200,
+        settings: {
           slidesToShow: 5,
           slidesToScroll: 5,
         }
       },
       {
-        breakpoint: 1024,
+        breakpoint: 900,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-        }
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2
+          slidesToShow: 4,
+          slidesToScroll: 4,
         }
       }
     ]

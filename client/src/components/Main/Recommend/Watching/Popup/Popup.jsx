@@ -1,27 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { createPortal } from "react-dom";
 import "./Popup.css";
 
 function Popup({ movie, onClose }) {
-  if (!movie) return null;
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
 
-  return (
-    <div className="popup_overlay" onClick={onClose}>
-      <div className="popup_content" onClick={(e) => e.stopPropagation()}>
-        <button className="popup_close" onClick={onClose}>
-          &times;
-        </button>
-        <div
-          className="popup_background"
-          style={{ backgroundImage: `url(${movie.image})` }}
-        ></div>
-        <div className="popup_gradient"></div>
-        <div className="popup_details">
-          <h2>{movie.title}</h2>
-          <p>{movie.overview || "설명이 없습니다."}</p>
+  const popupContent = (
+    <div className="popup_overlay">
+      <div className="popup_content">
+        <button className="popup_close" onClick={onClose}>×</button>
+        <div className="popup_image_container">
+          <div className="popup_image" style={{ backgroundImage: `url(${movie.hover})` }}></div>
+          <div className="popup_controls">
+            <button className="popup_play">▶ 재생</button>
+            <button className="popup_like">👍</button>
+          </div>
+        </div>
+        <div className="popup_info">
+          <h2 className="popup_title">{movie.title}</h2>
+          <p className="popup_overview">{movie.overview || "설명이 없습니다."}</p>
+          {movie.genres && (
+            <div className="popup_cast">
+              <p><strong>장르:</strong> {movie.genres}</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
+
+  return createPortal(popupContent, document.body);
 }
 
 export default Popup;
