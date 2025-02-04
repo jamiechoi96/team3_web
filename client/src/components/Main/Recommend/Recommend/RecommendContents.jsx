@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import "./RecommendContents.css";
 
 const API_KEY = import.meta.env.VITE_TMDB_API;
@@ -56,79 +59,133 @@ function RecommendContents() {
     });
   };
 
+  const settings_recommendation = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 7,
+    slidesToScroll: 7,
+    autoplay: false,
+    arrows: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 4,
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        }
+      }
+    ]
+  };
+
   return (
     <div className="recommend_contents">
       <h2 className="section_title">회원님을 위해 엄선한 콘텐츠</h2>
-      <div className="slider_wrapper">
-        <button className="scroll_button left" onClick={() => scrollLeft(0)}>
-          &lt;
-        </button>
-        <div
-          className="slider_container"
-          ref={(el) => (sectionRefs.current[0] = el)}
-        >
-          {movies.map((movie, index) => (
-            <div key={index} className="movie_card">
-              <img
-                src={movie.image}
-                alt={movie.title}
-                className="movie_image"
-              />
-              <div className="movie_hover">
-                <div className="movie_title">{movie.title}</div>
-                <div className="movie_buttons">
-                  <button className="play_btn">▶ 재생</button>
-                  <button className="info_btn">ℹ️ 정보</button>
-                </div>
+      <Slider {...settings_recommendation} className="slider_wrapper">
+        {movies.map((movie, index) => (
+          <div key={index} className="movie_card">
+            <img
+              src={movie.image}
+              alt={movie.title}
+              className="movie_image"
+            />
+            <div className="movie_hover">
+              <div className="movie_title">{movie.title}</div>
+              <div className="movie_buttons">
+                <button className="play_btn">▶ 재생</button>
+                <button className="info_btn">ℹ️ 정보</button>
               </div>
             </div>
-          ))}
-        </div>
-        <button className="scroll_button right" onClick={() => scrollRight(0)}>
-          &gt;
-        </button>
-      </div>
-
-      {[1, 2, 3, 4].map((sectionIndex) => (
-        <React.Fragment key={sectionIndex}>
-          <h2 className="section_title">추천 리스트 {sectionIndex}</h2>
-          <div className="slider_wrapper">
-            <button
-              className="scroll_button left"
-              onClick={() => scrollLeft(sectionIndex)}
-            >
-              &lt;
-            </button>
-            <div
-              className="slider_container"
-              ref={(el) => (sectionRefs.current[sectionIndex] = el)}
-            >
-              {movies.map((movie, index) => (
-                <div key={index} className="movie_card">
-                  <img
-                    src={movie.image}
-                    alt={movie.title}
-                    className="movie_image"
-                  />
-                  <div className="movie_hover">
-                    <div className="movie_title">{movie.title}</div>
-                    <div className="movie_buttons">
-                      <button className="play_btn">▶ 재생</button>
-                      <button className="info_btn">ℹ️ 정보</button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <button
-              className="scroll_button right"
-              onClick={() => scrollRight(sectionIndex)}
-            >
-              &gt;
-            </button>
           </div>
-        </React.Fragment>
-      ))}
+        ))}
+      </Slider>
+
+      <h2 className="section_title">추천 리스트 1</h2>
+      <Slider {...settings_recommendation} className="slider_wrapper">
+        {movies.map((movie, index) => (
+          <div key={index} className="movie_card">
+            <img
+              src={movie.image}
+              alt={movie.title}
+              className="movie_image"
+            />
+            <div className="movie_hover">
+              <div className="movie_title">{movie.title}</div>
+              <div className="movie_buttons">
+                <button className="play_btn">▶ 재생</button>
+                <button className="info_btn">ℹ️ 정보</button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </Slider>
+
+      <h2 className="section_title">추천 리스트 2</h2>
+      <Slider {...settings_recommendation} className="slider_wrapper">
+        {movies.map((movie, index) => (
+          <div key={index} className="movie_card">
+            <img
+              src={movie.image}
+              alt={movie.title}
+              className="movie_image"
+            />
+            <div className="movie_hover">
+              <div className="movie_title">{movie.title}</div>
+              <div className="movie_buttons">
+                <button className="play_btn">▶ 재생</button>
+                <button className="info_btn">ℹ️ 정보</button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </Slider>
+
+      <h2 className="section_title">추천 리스트 3</h2>
+      <Slider {...settings_recommendation} className="slider_wrapper">
+        {movies.map((movie, index) => (
+          <div key={index} className="movie_card">
+            <img
+              src={movie.image}
+              alt={movie.title}
+              className="movie_image"
+            />
+            <div className="movie_hover">
+              <div className="movie_title">{movie.title}</div>
+              <div className="movie_buttons">
+                <button className="play_btn">▶ 재생</button>
+                <button className="info_btn">ℹ️ 정보</button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </Slider>
+
+      <h2 className="section_title">추천 리스트 4</h2>
+      <Slider {...settings_recommendation} className="slider_wrapper">
+        {movies.map((movie, index) => (
+          <div key={index} className="movie_card">
+            <img
+              src={movie.image}
+              alt={movie.title}
+              className="movie_image"
+            />
+            <div className="movie_hover">
+              <div className="movie_title">{movie.title}</div>
+              <div className="movie_buttons">
+                <button className="play_btn">▶ 재생</button>
+                <button className="info_btn">ℹ️ 정보</button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </Slider>
     </div>
   );
 }
