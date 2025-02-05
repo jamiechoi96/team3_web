@@ -12,20 +12,24 @@
 .mypage_header {
   display: flex;
   align-items: center;
-  margin: 40px 0; /* 상하 마진을 40px로 증가 */
+  justify-content: space-between; /* 양 끝 정렬 */
+  margin: 40px 0;
+  padding: 0 20px; /* 좌우 여백 추가 */
 }
 
+/* 프로필 섹션 */
 .profile_section {
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
+/* 프로필 아이콘 */
 .profile_icon {
   width: 100px;
-  height: 100px;
-  background-color: #333;
-  color: #000; /* 검정색 */
+  height: 70px;
+  background-color: #53565a;
+  color: white; /* 흰색 */
   font-size: 1.2rem;
   font-weight: bold;
   border-radius: 50%;
@@ -33,17 +37,38 @@
   align-items: center;
   justify-content: center;
   margin-right: 10px;
+  border-radius: 12px;
+  border: 2px solid #53565a;
 }
 
-.logo-image {
-  width: 40px;
-  height: 40px;
-}
-
-.profile_name {
-  font-size: 1.2rem;
+/* 셋탑박스 번호 스타일 */
+.set-top-box-number {
+  border: 2px solid #53565a;
+  padding: 20px 20px;
+  border-radius: 12px;
+  font-size: 20px;
   font-weight: bold;
+  background: #53565a;
+  color: rgb(191, 225, 14);
+  display: inline-block;
+  margin-left: auto;
+}
+
+/* 로그아웃 버튼 */
+.logout-button {
   cursor: pointer;
+  color: #c7d1dd;
+  padding: 10px 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  background-color: #222425;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.logout-button:hover {
+  background-color: #ed174d;
 }
 
 .profile-placeholder {

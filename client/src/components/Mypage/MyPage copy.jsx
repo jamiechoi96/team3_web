@@ -1,39 +1,43 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useSearchParams } from "react-router-dom";
 import Slider from 'react-slick';
 import SearchImage from "./SearchImage.jsx";
 import "./MyPage.css";
+
+const formatDateTime = (dateTimeStr) => {
+  // YYYYMMDDHHMMSS 형식의 문자열을 Date 객체로 변환
+  const year = dateTimeStr.substring(0, 4);
+  const month = dateTimeStr.substring(4, 6);
+  const day = dateTimeStr.substring(6, 8);
+  const hour = dateTimeStr.substring(8, 10);
+  const minute = dateTimeStr.substring(10, 12);
+
+  return `${year}. ${month}. ${day}. ${hour}:${minute}`;
+};
 
 function MyPage() {
   const [watchHistory, setWatchHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [userHash, setUserHash] = useState(null); 
-  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const hash = searchParams.get("userHash");
 
   useEffect(() => {
-    const token = localStorage.getItem('token'); 
-    if (!token) {
-      navigate('/login'); 
-      return;
-    }
-
-    const hash = token.split('.')[1]; 
-    const decoded = JSON.parse(atob(hash)); 
-    setUserHash(decoded.sha2_hash); 
-
     const fetchWatchHistory = async () => {
       setLoading(true);
       console.log("데이터 로딩 시작...");
 
       try {
-        const response = await fetch(`http://localhost:5001/api/watch-history`, {
-          headers: {
-            'Authorization': `Bearer ${token}`, 
-          },
-        });
+        if (!hash) {
+          setError("userHash가 필요합니다");
+          return;
+        }
+
+        const response = await fetch(
+          `http://localhost:5001/api/watch-history?userHash=${hash}`
+        );
         const data = await response.json();
-        console.log("서버에서 반환된 데이터:", data);
+        console.log("쿼리 결과:", data);
         setWatchHistory(data);
         setError(null);
       } catch (error) {
@@ -46,12 +50,7 @@ function MyPage() {
     };
 
     fetchWatchHistory();
-  }, [navigate]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
-  };
+  }, [hash]);
 
   const settings = {
     dots: false,
@@ -61,22 +60,22 @@ function MyPage() {
     slidesToScroll: 6,
     autoplay: false,
     arrows: true,
-    variableWidth: true,
-    centerMode: false,
+    variableWidth: true,  // 슬라이드 크기에 맞게 조정하여 왼쪽 정렬
+    centerMode: false,    // 중앙 정렬 해제
   };
+  
 
   return (
     <div className="mypage">
       <div className="mypage_header">
         <div className="profile_section">
           <div className="profile_icon">
-            프로필
+            <span className="profile-placeholder">프로필</span>
           </div>
           <div className="profile_name">
-            <span className="set-top-box-number">{userHash && <span> 셋탑박스 번호: {userHash}</span>}</span>
+            <span>수정 &gt;</span>
           </div>
         </div>
-        <div className="logout-button" onClick={handleLogout}>로그아웃</div>
       </div>
 
       <div className="section">
@@ -94,6 +93,28 @@ function MyPage() {
                 </div>
               ))}
             </Slider>
+            // <table className="watch-history-table">
+            //   <thead>
+            //     <tr>
+            //       <th>콘텐츠명</th>
+            //       <th>체크용</th>
+            //       <th>카테고리</th>
+            //       <th>마지막 시청 날짜</th>
+            //       <th>시청 시간</th>
+            //     </tr>
+            //   </thead>
+            //   <tbody>
+            //     {watchHistory.map((item) => (
+            //       <tr key={item.sha2_hash}>
+            //         <td>{item.latest_episode}</td>
+            //         <td>{extractTitle(item.latest_episode)}</td>
+            //         <td>{item.category}</td>
+            //         <td>{formatDateTime(item.latest_strt_dt.toString())}</td>
+            //         <td>{Math.floor(item.total_use_tms / 60)}분</td>
+            //       </tr>
+            //     ))}
+            //   </tbody>
+            // </table>
           ) : (
             <div className="status-message">시청 기록이 없습니다.</div>
           )}
