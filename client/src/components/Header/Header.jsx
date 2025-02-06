@@ -79,7 +79,6 @@ const Header = () => {
         </Link>
         <WeatherWidget />
       </div>
-      {!isScrolled && <div className="gradient-banner"></div>}
     </header>
   );
 };
