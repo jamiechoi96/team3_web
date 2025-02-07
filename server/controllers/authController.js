@@ -80,7 +80,7 @@ exports.authenticateToken = (req, res, next) => {
             });
         }
 
-        jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key', (err, decoded) => {
+        jwt.verify(token, process.env.JWT_SECRET || 'lghellovisionvodteam3', (err, decoded) => {
             if (err) {
                 console.error('[Auth Controller] 토큰 검증 실패:', {
                     error: err.message,
