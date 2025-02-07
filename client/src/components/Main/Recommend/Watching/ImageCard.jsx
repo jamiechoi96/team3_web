@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Popup from "./Popup/Popup";
+import Popup from "../Popup/Popup";
 import "./ImageCard.css";
 
 function ImageCard({ rank, image, title, hover, overview }) {

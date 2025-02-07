@@ -24,11 +24,6 @@ function Popup({ movie, onClose }) {
         <div className="popup_info">
           <h2 className="popup_title">{movie.title}</h2>
           <p className="popup_overview">{movie.overview || "설명이 없습니다."}</p>
-          {movie.genres && (
-            <div className="popup_cast">
-              <p><strong>장르:</strong> {movie.genres}</p>
-            </div>
-          )}
         </div>
       </div>
     </div>
