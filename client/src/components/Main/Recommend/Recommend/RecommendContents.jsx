@@ -3,6 +3,7 @@ import axios from "axios";
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import Popup from '../Popup/Popup'
 import "./RecommendContents.css";
 
 const API_KEY = import.meta.env.VITE_TMDB_API;
@@ -10,6 +11,8 @@ const imageUrl = "https://image.tmdb.org/t/p/original";
 
 function RecommendContents() {
   const [movies, setMovies] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState(null);
   const sectionRefs = useRef([]);
 
   useEffect(() => {
@@ -23,7 +26,11 @@ function RecommendContents() {
           .filter((movie) => movie.poster_path && movie.title)
           .map((movie) => ({
             image: `${imageUrl}${movie.poster_path}`,
+            hover: `${imageUrl}${movie.backdrop_path || movie.poster_path}`,
             title: movie.title,
+            overview: movie.overview,
+            releaseDate: movie.release_date,
+            rating: movie.vote_average
           }));
         setMovies(validMovies.slice(0, 20));
       } catch (error) {
@@ -34,18 +41,14 @@ function RecommendContents() {
     fetchMovies();
   }, []);
 
-  const scrollLeft = (index) => {
-    sectionRefs.current[index].scrollBy({
-      left: -300,
-      behavior: "smooth",
-    });
+  const handleInfoClick = (movie) => {
+    setSelectedMovie(movie);
+    setShowPopup(true);
   };
 
-  const scrollRight = (index) => {
-    sectionRefs.current[index].scrollBy({
-      left: 300,
-      behavior: "smooth",
-    });
+  const closePopup = () => {
+    setShowPopup(false);
+    setSelectedMovie(null);
   };
 
   const settings_recommendation = {
@@ -76,7 +79,7 @@ function RecommendContents() {
 
   return (
     <div className="recommend_contents">
-      <h2 className="section_title">회원님을 위해 엄선한 콘텐츠</h2>
+      <h2 className="section_title">새로나온 신작</h2>
       <Slider {...settings_recommendation} className="slider_wrapper">
         {movies.map((movie, index) => (
           <div key={index} className="movie_card">
@@ -89,14 +92,39 @@ function RecommendContents() {
               <div className="movie_title">{movie.title}</div>
               <div className="movie_buttons">
                 <button className="play_btn">▶ 재생</button>
-                <button className="info_btn">ℹ️ 정보</button>
+                <button className="info_btn" onClick={() => handleInfoClick(movie)}>ℹ️ 정보</button>
+              </div>
+            </div>
+          </div>
+        ))}
+        
+      </Slider>
+
+      {showPopup && selectedMovie && (
+        <Popup movie={selectedMovie} onClose={closePopup} />
+      )}
+
+      <h2 className="section_title">나와 비슷한 사람들은 무슨 작품을 봤을까요?</h2>
+      <Slider {...settings_recommendation} className="slider_wrapper">
+        {movies.map((movie, index) => (
+          <div key={index} className="movie_card">
+            <img
+              src={movie.image}
+              alt={movie.title}
+              className="movie_image"
+            />
+            <div className="movie_hover">
+              <div className="movie_title">{movie.title}</div>
+              <div className="movie_buttons">
+                <button className="play_btn">▶ 재생</button>
+                <button className="info_btn" onClick={() => handleInfoClick(movie)}>ℹ️ 정보</button>
               </div>
             </div>
           </div>
         ))}
       </Slider>
 
-      <h2 className="section_title">나와 비슷한 사람들이 많이 본 콘텐츠</h2>
+      <h2 className="section_title">이런 장르는 어떠세요?</h2>
       <Slider {...settings_recommendation} className="slider_wrapper">
         {movies.map((movie, index) => (
           <div key={index} className="movie_card">
@@ -109,27 +137,7 @@ function RecommendContents() {
               <div className="movie_title">{movie.title}</div>
               <div className="movie_buttons">
                 <button className="play_btn">▶ 재생</button>
-                <button className="info_btn">ℹ️ 정보</button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </Slider>
-
-      <h2 className="section_title">내가 많이 본 장르</h2>
-      <Slider {...settings_recommendation} className="slider_wrapper">
-        {movies.map((movie, index) => (
-          <div key={index} className="movie_card">
-            <img
-              src={movie.image}
-              alt={movie.title}
-              className="movie_image"
-            />
-            <div className="movie_hover">
-              <div className="movie_title">{movie.title}</div>
-              <div className="movie_buttons">
-                <button className="play_btn">▶ 재생</button>
-                <button className="info_btn">ℹ️ 정보</button>
+                <button className="info_btn" onClick={() => handleInfoClick(movie)}>ℹ️ 정보</button>
               </div>
             </div>
           </div>

@@ -16,16 +16,12 @@ const Login = () => {
     }
 
     try {
-      console.log('로그인 시도:', { sha2_hash: authKey });
-
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          sha2_hash: authKey
-        })
+        body: JSON.stringify({ sha2_hash: authKey }),
       });
 
       const data = await response.json();
@@ -34,11 +30,9 @@ const Login = () => {
       if (response.ok) {
         localStorage.setItem('token', data.token);
         setMessage({ text: '로그인 성공!', type: 'success' });
-        
-            // 메인 페이지로 리다이렉트
-      setTimeout(() => {
-       navigate('/'); // 메인 페이지로 리다이렉트
-         }, 1000);
+        setTimeout(() => {
+          navigate('/');
+        }, 1000);
       } else {
         setMessage({ text: data.message || '로그인 실패', type: 'error' });
       }

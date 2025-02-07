@@ -42,6 +42,7 @@ function Banner() {
             <Slider {...settings}>
                 {movies.map((movie) => (
                     <div key={movie.id} className="slide">
+                        <div className='fade_top' />
                         <img
                             src={`${imageUrl + movie.backdrop_path}`}
                             alt={movie.title || movie.original_name}
