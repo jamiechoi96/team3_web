@@ -42,12 +42,6 @@ function Banner() {
             <Slider {...settings}>
                 {movies.map((movie) => (
                     <div key={movie.id} className="slide">
-                        <div className='fade_top' />
-                        <img
-                            src={`${imageUrl + movie.backdrop_path}`}
-                            alt={movie.title || movie.original_name}
-                            className="slide-image"
-                        />
                         <div className="content">
                             <h1 className="title">{movie.original_name || movie.title}</h1>
                             <div className="banner_buttons">
@@ -56,7 +50,12 @@ function Banner() {
                             </div>
                             <h1 className="description">{movie.overview}</h1>
                         </div>
-                        <div className="fade_bottom"></div>
+                        <div className="image-gradient"></div>
+                        <img
+                            src={`${imageUrl + movie.backdrop_path}`}
+                            alt={movie.title || movie.original_name}
+                            className="slide-image"
+                        />
                     </div>
                 ))}
             </Slider>
