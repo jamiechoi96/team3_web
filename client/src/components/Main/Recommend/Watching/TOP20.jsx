@@ -71,8 +71,8 @@ function TOP20() {
       <Slider {...settings_top20}>
         {movies.map((movie) => (
           <ImageCard
-            key={movie.rank}
-            rank={movie.rank}
+            key={movie.ranking}
+            rank={movie.ranking}
             image={movie.posterUrl}
             title={movie.asset_nm}
             hover={movie.backdropUrl}

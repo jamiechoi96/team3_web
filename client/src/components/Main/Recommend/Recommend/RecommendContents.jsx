@@ -10,35 +10,40 @@ const API_KEY = import.meta.env.VITE_TMDB_API;
 const imageUrl = "https://image.tmdb.org/t/p/original";
 
 function RecommendContents() {
-  const [movies, setMovies] = useState([]);
+  const [newMovies, setNewMovies] = useState([]);
+ const [similarMovies, setSimilarMovies] = useState([]);
+ const [genreMovies, setGenreMovies] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const sectionRefs = useRef([]);
 
   useEffect(() => {
-    const fetchMovies = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=Inside%20Out&language=ko-KR`
-        );
+        // 신작 VOD 가져오기
+        const newVodsResponse = await axios.get('/api/new-vods');
+        if (newVodsResponse.data.success) {
+          setNewMovies(newVodsResponse.data.data);
+        }
 
-        const validMovies = response.data.results
-          .filter((movie) => movie.poster_path && movie.title)
-          .map((movie) => ({
-            image: `${imageUrl}${movie.poster_path}`,
-            hover: `${imageUrl}${movie.backdrop_path || movie.poster_path}`,
-            title: movie.title,
-            overview: movie.overview,
-            releaseDate: movie.release_date,
-            rating: movie.vote_average
-          }));
-        setMovies(validMovies.slice(0, 20));
+        // // 비슷한 시청 기록 가져오기
+        // const similarResponse = await axios.get('/api/similar-vods');
+        // if (similarResponse.data.success) {
+        //   setSimilarMovies(similarResponse.data.data);
+        // }
+
+        // // 장르 기반 추천 가져오기
+        // const genreResponse = await axios.get('/api/genre-vods');
+        // if (genreResponse.data.success) {
+        //   setGenreMovies(genreResponse.data.data);
+        // }
+
       } catch (error) {
-        console.error("영화를 가져오는 중 오류 발생:", error);
+        console.error("데이터를 가져오는 중 오류 발생:", error);
       }
     };
 
-    fetchMovies();
+    fetchData();
   }, []);
 
   const handleInfoClick = (movie) => {
@@ -81,15 +86,15 @@ function RecommendContents() {
     <div className="recommend_contents">
       <h2 className="section_title">새로나온 신작</h2>
       <Slider {...settings_recommendation} className="slider_wrapper">
-        {movies.map((movie, index) => (
+        {newMovies.map((movie, index) => (
           <div key={index} className="movie_card">
             <img
-              src={movie.image}
-              alt={movie.title}
+              src={movie.posterUrl}
+              alt={movie.asset_nm}
               className="movie_image"
             />
             <div className="movie_hover">
-              <div className="movie_title">{movie.title}</div>
+              <div className="movie_title">{movie.asset_nm}</div>
               <div className="movie_buttons">
                 <button className="play_btn">▶ 재생</button>
                 <button className="info_btn" onClick={() => handleInfoClick(movie)}>ℹ️ 정보</button>
@@ -97,24 +102,19 @@ function RecommendContents() {
             </div>
           </div>
         ))}
-        
       </Slider>
-
-      {showPopup && selectedMovie && (
-        <Popup movie={selectedMovie} onClose={closePopup} />
-      )}
 
       <h2 className="section_title">나와 비슷한 사람들은 무슨 작품을 봤을까요?</h2>
       <Slider {...settings_recommendation} className="slider_wrapper">
-        {movies.map((movie, index) => (
+        {similarMovies.map((movie, index) => (
           <div key={index} className="movie_card">
             <img
-              src={movie.image}
-              alt={movie.title}
+              src={movie.posterUrl}
+              alt={movie.asset_nm}
               className="movie_image"
             />
             <div className="movie_hover">
-              <div className="movie_title">{movie.title}</div>
+              <div className="movie_title">{movie.asset_nm}</div>
               <div className="movie_buttons">
                 <button className="play_btn">▶ 재생</button>
                 <button className="info_btn" onClick={() => handleInfoClick(movie)}>ℹ️ 정보</button>
@@ -126,15 +126,15 @@ function RecommendContents() {
 
       <h2 className="section_title">이런 장르는 어떠세요?</h2>
       <Slider {...settings_recommendation} className="slider_wrapper">
-        {movies.map((movie, index) => (
+        {genreMovies.map((movie, index) => (
           <div key={index} className="movie_card">
             <img
-              src={movie.image}
-              alt={movie.title}
+              src={movie.posterUrl}
+              alt={movie.asset_nm}
               className="movie_image"
             />
             <div className="movie_hover">
-              <div className="movie_title">{movie.title}</div>
+              <div className="movie_title">{movie.asset_nm}</div>
               <div className="movie_buttons">
                 <button className="play_btn">▶ 재생</button>
                 <button className="info_btn" onClick={() => handleInfoClick(movie)}>ℹ️ 정보</button>
@@ -143,6 +143,10 @@ function RecommendContents() {
           </div>
         ))}
       </Slider>
+
+      {showPopup && selectedMovie && (
+        <Popup movie={selectedMovie} onClose={closePopup} />
+      )}
     </div>
   );
 }

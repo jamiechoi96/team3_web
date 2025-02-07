@@ -10,7 +10,7 @@
 .title {
   color: white;
   margin-bottom: 20px;
-  margin-left: 0;
+  margin-left: 30px;
   font-size: 1.5rem;
   z-index: 1;
 }
@@ -73,5 +73,5 @@
 .movie-poster {
   width: 80%;
   height: auto;
-  border-radius: 10px;
+  border-radius: 12px;
 }

@@ -3,14 +3,21 @@ const express = require('express');
 const router = express.Router();
 const { getWatchHistory } = require('../controllers/watchHistoryController');
 const { getTop20 } = require('../controllers/top20Controller');
+const newVodController = require('../controllers/newVodController');
 const authController = require('../controllers/authController');
 
 // 테스트
 router.get('/test', (req, res) => {
   res.json({ message: "백엔드 서버가 실행 중입니다!" });
 });
+
 // TOP 20 영화 순위 조회
 router.get('/top20', getTop20);
+
+// VOD 추천 조회
+router.get('/new-vods', newVodController.getNewVods);
+router.get('/similar-vods', newVodController.getSimilarVods);
+router.get('/genre-vods', newVodController.getGenreVods);
 
 // 로그인 라우트
 router.post('/auth/login', authController.login);
