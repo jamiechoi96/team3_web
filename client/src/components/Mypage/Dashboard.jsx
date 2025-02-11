@@ -5,6 +5,7 @@ import {
   LineChart, Line, CartesianGrid
 } from 'recharts';
 import axios from 'axios';
+import { BiPieChartAlt2, BiBarChartAlt2, BiLineChart } from 'react-icons/bi';
 import './Dashboard.css';
 
 const COLORS = ['#ed174d', '#4a90e2', '#50e3c2', '#f5a623', '#7ed321', '#9013fe'];
@@ -107,6 +108,15 @@ const Dashboard = () => {
     return `${hour}시`;
   };
 
+  const scrollToChart = (index) => {
+    const row = document.querySelector('.dashboard_row');
+    const cardWidth = row.children[0].offsetWidth;
+    row.scrollTo({
+      left: cardWidth * index,
+      behavior: 'smooth'
+    });
+  };
+
   return (
     <div className="dashboard">
       <div className="dashboard_row">
@@ -195,46 +205,68 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="dashboard_row">
-        <div className="dashboard_stats">
-          <div className="stat_card">
-            <h4>가장 선호하는 장르</h4>
-            <p className="stat_value">{processedData[0]?.genre || '-'}</p>
-            <p className="stat_detail">{processedData[0]?.total_percentage}% 시청</p>
-          </div>
-
-          <div className="stat_card">
-            <h4>시청한 콘텐츠 수</h4>
-            <p className="stat_value">{totalWatched}</p>
-            <p className="stat_detail">총 시청 콘텐츠</p>
-          </div>
-
-          <div className="stat_card">
-            <h4>선호 시청 시간대</h4>
-            <p className="stat_value">
-              {viewingPatterns?.preferredTimePeriod?.time_period || '-'}
-            </p>
-            <p className="stat_detail">
-              {viewingPatterns?.preferredTimePeriod?.count 
-                ? `${viewingPatterns.preferredTimePeriod.count}회 시청` 
-                : '데이터 없음'}
-            </p>
-          </div>
-
-          <div className="stat_card">
-            <h4>몰아보기 성향</h4>
-            <p className="stat_value">
-              {viewingPatterns?.bingeWatching?.binge_percentage 
-                ? `${Math.round(viewingPatterns.bingeWatching.binge_percentage)}%`
-                : '-'}
-            </p>
-            <p className="stat_detail">
-              {viewingPatterns?.bingeWatching?.binge_count 
-                ? `30분 이내 재시청 ${viewingPatterns.bingeWatching.binge_count}회`
-                : '데이터 없음'}
-            </p>
-          </div>
+      <div className="dashboard_stats">
+        <div className="stat_card">
+          <h4>가장 선호하는 장르</h4>
+          <p className="stat_value">{processedData[0]?.genre || '-'}</p>
+          <p className="stat_detail">{processedData[0]?.total_percentage}% 시청</p>
         </div>
+
+        <div className="stat_card">
+          <h4>시청한 콘텐츠 수</h4>
+          <p className="stat_value">{totalWatched}</p>
+          <p className="stat_detail">총 시청 콘텐츠</p>
+        </div>
+
+        <div className="stat_card">
+          <h4>선호 시청 시간대</h4>
+          <p className="stat_value">
+            {viewingPatterns?.preferredTimePeriod?.time_period || '-'}
+          </p>
+          <p className="stat_detail">
+            {viewingPatterns?.preferredTimePeriod?.count 
+              ? `${viewingPatterns.preferredTimePeriod.count}회 시청` 
+              : '데이터 없음'}
+          </p>
+        </div>
+
+        <div className="stat_card">
+          <h4>몰아보기 성향</h4>
+          <p className="stat_value">
+            {viewingPatterns?.bingeWatching?.binge_percentage 
+              ? `${Math.round(viewingPatterns.bingeWatching.binge_percentage)}%`
+              : '-'}
+          </p>
+          <p className="stat_detail">
+            {viewingPatterns?.bingeWatching?.binge_count 
+              ? `30분 이내 재시청 ${viewingPatterns.bingeWatching.binge_count}회`
+              : '데이터 없음'}
+          </p>
+        </div>
+      </div>
+
+      <div className="chart_nav">
+        <button 
+          className="chart_button" 
+          onClick={() => scrollToChart(0)}
+          title="장르별 시청 비율"
+        >
+          <BiPieChartAlt2 size={20} />
+        </button>
+        <button 
+          className="chart_button"
+          onClick={() => scrollToChart(1)}
+          title="TOP 5 선호 장르"
+        >
+          <BiBarChartAlt2 size={20} />
+        </button>
+        <button 
+          className="chart_button"
+          onClick={() => scrollToChart(2)}
+          title="시간대별 시청 패턴"
+        >
+          <BiLineChart size={20} />
+        </button>
       </div>
     </div>
   );

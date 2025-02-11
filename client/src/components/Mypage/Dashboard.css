@@ -59,17 +59,17 @@
 
 .stat_card h4 {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1.2rem;
   color: rgba(255, 255, 255, 0.7);
-  font-weight: normal;
-  margin-bottom: 0.8rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
   width: 100%;
   text-align: center;
 }
 
 .stat_value {
   margin: 0.5rem 0;
-  font-size: 1.8rem;
+  font-size: 2.2rem;
   font-weight: bold;
   background: linear-gradient(45deg, #ed174d, #ff2d62);
   -webkit-background-clip: text;
@@ -83,7 +83,7 @@
 
 .stat_detail {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: rgba(255, 255, 255, 0.6);
   margin-top: 0.3rem;
   width: 100%;
@@ -152,6 +152,40 @@
   margin: 0;
   font-size: 0.9em;
   color: #aaa;
+}
+
+.chart_nav {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  padding: 0.5rem;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.chart_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.chart_button:hover {
+  background: #ed174d;
+}
+
+.chart_button:active {
+  background: #d91546;
 }
 
 /* 스크롤바 스타일링 */
