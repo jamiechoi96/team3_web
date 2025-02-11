@@ -1,0 +1,101 @@
+.search-watching {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.search-top20-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 24px;
+  color: #fff;
+  padding-left: 10px;
+}
+
+.search-top20-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 10px;
+  padding: 0;
+}
+
+.movie-card-container {
+  position: relative;
+  width: 100%;
+  max-width: 120px;
+}
+
+.poster-area {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2/3;
+  background: #2a2a2a;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+}
+
+.poster-area:hover {
+  transform: translateY(-5px);
+}
+
+.poster-area img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rank-area {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: 10px;
+}
+
+.rank-number {
+  font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+  opacity: 0.9;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+.hover-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.poster-area:hover .hover-content {
+  opacity: 1;
+}
+
+.movie-title {
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 0;
+  text-align: center;
+  padding: 0 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}

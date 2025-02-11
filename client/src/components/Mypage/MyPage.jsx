@@ -134,7 +134,7 @@ function MyPage() {
           {genreLoading ? (
             <div className="dashboard_loading">
               <div className="loading-spinner" />
-              📊고객님의 시청 패턴을 분석중입니다📊
+              고객님의 시청 패턴을 분석중입니다📊
             </div>
           ) : genreError ? (
             <div className="status-message error">{genreError}</div>

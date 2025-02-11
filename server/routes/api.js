@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { getWatchHistory } = require('../controllers/watchHistoryController');
 const { getTop20 } = require('../controllers/top20Controller');
+const { getSearchTop20 } = require('../controllers/searchTop20Controller');
 const newVodController = require('../controllers/newVodController');
 const authController = require('../controllers/authController');
 const similarVodController = require('../controllers/similarVodController');
@@ -13,8 +14,9 @@ router.get('/test', (req, res) => {
   res.json({ message: "백엔드 서버가 실행 중입니다!" });
 });
 
-// TOP 20 영화 순위 조회
+// TOP 20 관련 라우트
 router.get('/top20', getTop20);
+router.get('/search-top20', getSearchTop20);
 
 // VOD 추천 조회
 router.get('/new-vods', newVodController.getNewVods);
