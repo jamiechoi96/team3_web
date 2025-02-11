@@ -1,21 +1,22 @@
-import React, { useEffect, useState, useRef } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Popup from '../Popup/Popup'
+import Popup from '../Popup/Popup';
 import "./RecommendContents.css";
+import AdvertisementBanner from './AdBanner';
 
 const API_KEY = import.meta.env.VITE_TMDB_API;
 const imageUrl = "https://image.tmdb.org/t/p/original";
 
 function RecommendContents() {
   const [newMovies, setNewMovies] = useState([]);
- const [similarMovies, setSimilarMovies] = useState([]);
- const [genreMovies, setGenreMovies] = useState([]);
+  const [similarMovies, setSimilarMovies] = useState([]);
+  const [genreMovies, setGenreMovies] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
-  const sectionRefs = useRef([]);
+  const sectionRefs = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,11 +27,24 @@ function RecommendContents() {
           setNewMovies(newVodsResponse.data.data);
         }
 
-        // // 비슷한 시청 기록 가져오기
-        // const similarResponse = await axios.get('/api/similar-vods');
-        // if (similarResponse.data.success) {
-        //   setSimilarMovies(similarResponse.data.data);
-        // }
+        // 비슷한 시청 기록 가져오기
+        try {
+          const token = localStorage.getItem('token');
+          const similarResponse = await axios.post('/api/similar-vods', 
+            {}, 
+            { 
+              headers: { 
+                'Authorization': `Bearer ${token}` 
+              }
+            }
+          );
+          console.log('서버 응답:', similarResponse.data);
+          if (similarResponse.data.success) {
+            setSimilarMovies(similarResponse.data.data);
+          }
+        } catch (error) {
+          console.error('similar-vods 요청 오류:', error.response?.data || error.message);
+        }
 
         // // 장르 기반 추천 가져오기
         // const genreResponse = await axios.get('/api/genre-vods');
@@ -84,7 +98,7 @@ function RecommendContents() {
 
   return (
     <div className="recommend_contents">
-      <h2 className="section_title">새로나온 신작</h2>
+      <h2 className="section_title">이번 달 신작이에요🗓️</h2>
       <Slider {...settings_recommendation} className="slider_wrapper">
         {newMovies.map((movie, index) => (
           <div key={index} className="movie_card">
@@ -104,7 +118,7 @@ function RecommendContents() {
         ))}
       </Slider>
 
-      <h2 className="section_title">나와 비슷한 사람들은 무슨 작품을 봤을까요?</h2>
+      <h2 className="section_title">나와 비슷한 사람들은 이런 작품을 봤어요🫱🏻‍🫲🏼</h2>
       <Slider {...settings_recommendation} className="slider_wrapper">
         {similarMovies.map((movie, index) => (
           <div key={index} className="movie_card">
@@ -123,6 +137,8 @@ function RecommendContents() {
           </div>
         ))}
       </Slider>
+
+      <AdvertisementBanner />
 
       <h2 className="section_title">이런 장르는 어떠세요?</h2>
       <Slider {...settings_recommendation} className="slider_wrapper">
