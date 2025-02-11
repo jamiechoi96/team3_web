@@ -57,19 +57,18 @@
 }
 
 .content {
-  position: absolute;
-  
+  position: fixed;
   left: 50px;
   padding: 2rem;
   color: white;
   z-index: 2;
-  width: calc(40% - 70px);
+  width: 600px;
   background-color: transparent;
-  margin-right: 20px;
   transform: none;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  font-family: 'LGEIHeadlineTTF-Bold';
 }
 
 .title {
@@ -85,11 +84,31 @@
   -webkit-text-fill-color: transparent;
   animation: shine 3s linear infinite;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  font-family: 'LGEIHeadlineTTF-Bold';
+}
+
+.description {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-align: left;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  margin-bottom: 1rem;
+  font-family: 'LGEIHeadlineTTF-Bold';
+  
 }
 
 .banner_buttons {
+  position: fixed;
+  bottom: 50px;
+  left: 80px;
   display: flex;
   gap: 8px;
+  z-index: 2;
 }
 
 .button {
@@ -121,12 +140,6 @@
 
 .info-button:hover {
   background-color: rgba(109, 109, 110, 0.4);
-}
-
-.description {
-  font-size: 0.9rem;
-  line-height: 1.6;
-  text-align: left;
 }
 
 .slick-slider {
@@ -222,13 +235,6 @@
   color: transparent !important;
   background: none !important;
   border: none !important;
-}
-
-@keyframes shine {
-  to {
-    background-position: 200% center;
-  }
-}
 }
 
 @keyframes shine {

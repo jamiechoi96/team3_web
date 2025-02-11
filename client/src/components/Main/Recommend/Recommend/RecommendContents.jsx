@@ -98,7 +98,7 @@ function RecommendContents() {
 
   return (
     <div className="recommend_contents">
-      <h2 className="section_title">이번 달 신작이에요🗓️</h2>
+      <h2 className="section_title">🗓️이번 달 신작이에요</h2>
       <Slider {...settings_recommendation} className="slider_wrapper">
         {newMovies.map((movie, index) => (
           <div key={index} className="movie_card">
@@ -118,7 +118,7 @@ function RecommendContents() {
         ))}
       </Slider>
 
-      <h2 className="section_title">나와 비슷한 사람들은 이런 작품을 봤어요🫱🏻‍🫲🏼</h2>
+      <h2 className="section_title">🫱🏻‍🫲🏼나와 비슷한 사람들은 이런 작품을 봤어요</h2>
       <Slider {...settings_recommendation} className="slider_wrapper">
         {similarMovies.map((movie, index) => (
           <div key={index} className="movie_card">

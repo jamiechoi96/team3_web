@@ -6,16 +6,15 @@ import './AdBanner.css';
 
 const AdvertisementBanner = () => {
   const settings = {
-    dots: true,
     infinite: true,
     speed: 800,
-    slidesToShow: 2, // 하나씩 보여주도록 변경
+    slidesToShow: 2, 
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000,
-    arrows: false,
+    autoplaySpeed: 3000, 
     pauseOnHover: true,
-    centerMode: false
+    centerMode: false,
+    arrows: false
   };
 
   const bannerImages = [
