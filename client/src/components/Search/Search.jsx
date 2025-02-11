@@ -23,13 +23,17 @@ const Search = () => {
         <div className="search-bar">
           <input
             type="text"
-            placeholder="보고 싶은 콘텐츠를 검색해보세요"
+            className="search-input"
+            placeholder="검색어를 입력하세요"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
           />
-          <button className="search-button" onClick={handleSearch}>
-            <FiSearch />
+          <button
+            className="search-button"
+            onClick={handleSearch}
+          >
+            <FiSearch size={24} />
           </button>
         </div>
       </div>
