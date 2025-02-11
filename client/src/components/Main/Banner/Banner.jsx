@@ -11,14 +11,33 @@ const imageUrl = 'https://image.tmdb.org/t/p/original';
 function Banner() {
     const [movies, setMovies] = useState([]);
 
+    const fetchMovieDetails = async (movie) => {
+        try {
+            const response = await axios.get(
+                `movie/${movie.id}?api_key=${API_KEY}&language=ko-KR&append_to_response=credits`
+            );
+            return {
+                ...movie,
+                cast: response.data.credits.cast.slice(0, 3),
+                director: response.data.credits.crew.find(person => person.job === "Director")
+            };
+        } catch (error) {
+            console.error('Error fetching movie details:', error);
+            return movie;
+        }
+    };
+
     useEffect(() => {
         axios
             .get(`trending/all/week?api_key=${API_KEY}&language=ko-KO`)
-            .then((response) => {
+            .then(async (response) => {
                 const validMovies = response.data.results.filter(
                     (movie) => movie.backdrop_path
                 );
-                setMovies(validMovies.slice(0, 5));
+                const moviesWithDetails = await Promise.all(
+                    validMovies.slice(0, 5).map(fetchMovieDetails)
+                );
+                setMovies(moviesWithDetails);
             })
             .catch((error) => {
                 console.error('Error fetching movies:', error);
@@ -44,11 +63,20 @@ function Banner() {
                     <div key={movie.id} className="slide">
                         <div className="content">
                             <h1 className="title">{movie.original_name || movie.title}</h1>
-                            <div className="banner_buttons">
-                                <button className="button">Play</button>
-                                <button className="button">My List</button>
+                            <div className="movie-info">
+                                {movie.director && (
+                                    <p className="director">감독: {movie.director.name}</p>
+                                )}
+                                {movie.cast && movie.cast.length > 0 && (
+                                    <p className="cast">출연: {movie.cast.map(actor => actor.name).join(', ')}</p>
+                                )}
                             </div>
-                            <h1 className="description">{movie.overview}</h1>
+                            <p className="description">{movie.overview}</p>
+                            <div className="banner_buttons">
+                                <button className="button play-button">▶ 재생</button>
+                                <button className="button info-button">ℹ️ 상세정보</button>
+                            </div>
+                            
                         </div>
                         <div className="image-gradient"></div>
                         <img
