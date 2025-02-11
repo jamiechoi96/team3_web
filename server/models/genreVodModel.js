@@ -1,4 +1,4 @@
-const { createConnections } = require('../utils/database');
+const { executeQuery } = require('../utils/database');
 const axios = require('axios');
 
 const API_KEY = process.env.TMDB_API_KEY;
@@ -6,13 +6,9 @@ const imageUrl = "https://image.tmdb.org/t/p/original";
 
 class GenreVod {
   static async getGenreVods() {
-    let connections = null;
     try {
-      connections = await createConnections();
-      const connection = connections[0];
-      
       // 인기 있는 장르의 VOD 가져오기
-      const [rows] = await connection.execute(`
+      const query = `
         WITH PopularGenres AS (
           SELECT 
             SUBSTRING_INDEX(SUBSTRING_INDEX(genre, ',', n.n), ',', -1) as single_genre
@@ -48,42 +44,42 @@ class GenreVod {
         ORDER BY 
           RAND()
         LIMIT 20
-      `);
+      `;
 
-      // TMDB API를 사용하여 포스터와 상세 정보 가져오기
-      const moviesWithDetails = await Promise.all(
-        rows.map(async (movie) => {
+      const rows = await executeQuery(query);
+
+      // TMDB에서 포스터 이미지 가져오기
+      const vodsWithPosters = await Promise.all(
+        rows.map(async (vod) => {
           try {
-            const tmdbResponse = await axios.get(
-              `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(movie.asset_nm)}&language=ko-KR`
-            );
+            const response = await axios.get(`https://api.themoviedb.org/3/search/movie`, {
+              params: {
+                api_key: API_KEY,
+                query: vod.asset_nm,
+                language: 'ko-KR'
+              }
+            });
 
-            if (tmdbResponse.data.results && tmdbResponse.data.results.length > 0) {
-              const tmdbMovie = tmdbResponse.data.results[0];
+            if (response.data.results && response.data.results.length > 0) {
+              const movie = response.data.results[0];
               return {
-                ...movie,
-                posterUrl: tmdbMovie.poster_path ? `${imageUrl}${tmdbMovie.poster_path}` : null,
-                backdropUrl: tmdbMovie.backdrop_path ? `${imageUrl}${tmdbMovie.backdrop_path}` : null,
-                overview: tmdbMovie.overview
+                ...vod,
+                poster_path: movie.poster_path ? `${imageUrl}${movie.poster_path}` : null,
+                backdrop_path: movie.backdrop_path ? `${imageUrl}${movie.backdrop_path}` : null,
+                overview: movie.overview
               };
             }
-            return movie;
+            return vod;
           } catch (error) {
-            console.error(`TMDB 검색 오류 (${movie.asset_nm}):`, error);
-            return movie;
+            console.error('TMDB API 오류:', error);
+            return vod;
           }
         })
       );
 
-      return moviesWithDetails;
-
+      return vodsWithPosters;
     } catch (error) {
-      console.error('장르 기반 VOD 조회 오류:', error);
-      throw error;
-    } finally {
-      if (connections) {
-        await Promise.all(connections.map(conn => conn.end()));
-      }
+      throw new Error('장르별 VOD를 가져오는데 실패했습니다: ' + error.message);
     }
   }
 }

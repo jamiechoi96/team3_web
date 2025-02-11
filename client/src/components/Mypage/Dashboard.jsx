@@ -35,33 +35,39 @@ const TimeTooltip = ({ active, payload }) => {
   return null;
 };
 
-const Dashboard = ({ data: genreData, loading }) => {
+const Dashboard = () => {
   const [viewingPatterns, setViewingPatterns] = useState(null);
-  const [patternLoading, setPatternLoading] = useState(true);
+  const [genreStats, setGenreStats] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchViewingPatterns = async () => {
+    const fetchData = async () => {
       try {
-        setPatternLoading(true);
+        setLoading(true);
         const token = localStorage.getItem('token');
-        const response = await axios.get('/api/viewing-patterns', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        console.log('시청 패턴 데이터:', response.data);  // 데이터 확인용 로그
-        setViewingPatterns(response.data);
+        const headers = { Authorization: `Bearer ${token}` };
+
+        const [patternsResponse, genreResponse] = await Promise.all([
+          axios.get('/api/viewing-patterns', { headers }),
+          axios.get('/api/genre-stats', { headers })
+        ]);
+
+        console.log('시청 패턴 데이터:', patternsResponse.data);
+        console.log('장르 통계 데이터:', genreResponse.data);
+
+        setViewingPatterns(patternsResponse.data);
+        setGenreStats(genreResponse.data);
       } catch (error) {
-        console.error('시청 패턴 데이터 가져오기 실패:', error);
+        console.error('데이터 가져오기 실패:', error);
       } finally {
-        setPatternLoading(false);
+        setLoading(false);
       }
     };
 
-    if (!loading) {
-      fetchViewingPatterns();
-    }
-  }, [loading]);
+    fetchData();
+  }, []);
 
-  if (loading || patternLoading) {
+  if (loading) {
     return (
       <div className="dashboard_loading">
         <div className="loading-spinner" />
@@ -70,13 +76,13 @@ const Dashboard = ({ data: genreData, loading }) => {
     );
   }
 
-  if (!genreData || genreData.length === 0) {
+  if (!genreStats || genreStats.length === 0) {
     return <div className="dashboard_empty">시청 기록이 없습니다.</div>;
   }
 
   // 장르 데이터 처리
-  const totalWatched = genreData.reduce((sum, item) => sum + parseInt(item.total_asset_count), 0);
-  const processedData = genreData.map(item => ({
+  const totalWatched = genreStats.reduce((sum, item) => sum + parseInt(item.total_asset_count), 0);
+  const processedData = genreStats.map(item => ({
     ...item,
     genre: item.genre,
     total_percentage: ((parseInt(item.total_asset_count) / totalWatched) * 100).toFixed(1)
@@ -196,11 +202,13 @@ const Dashboard = ({ data: genreData, loading }) => {
             <p className="stat_value">{processedData[0]?.genre || '-'}</p>
             <p className="stat_detail">{processedData[0]?.total_percentage}% 시청</p>
           </div>
+
           <div className="stat_card">
             <h4>시청한 콘텐츠 수</h4>
             <p className="stat_value">{totalWatched}</p>
             <p className="stat_detail">총 시청 콘텐츠</p>
           </div>
+
           <div className="stat_card">
             <h4>선호 시청 시간대</h4>
             <p className="stat_value">
@@ -212,6 +220,7 @@ const Dashboard = ({ data: genreData, loading }) => {
                 : '데이터 없음'}
             </p>
           </div>
+
           <div className="stat_card">
             <h4>몰아보기 성향</h4>
             <p className="stat_value">

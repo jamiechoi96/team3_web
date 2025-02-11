@@ -1,93 +1,45 @@
-const { createConnections } = require('../utils/database');
+const ViewingPatternModel = require('../models/viewingPatternModel');
 
 const getViewingPatterns = async (req, res) => {
-  let connections = null;
   try {
     const userHash = req.user.sha2_hash;
+    const viewingPatterns = await ViewingPatternModel.getViewingPatternsByUser(userHash);
     
-    connections = await createConnections();
-    const connection = connections[0];
-
-    // 선호 시청 시간대 분석
-    const [timePeriodStats] = await connection.execute(`
-      SELECT 
-        CASE 
-          WHEN HOUR(STR_TO_DATE(strt_dt, '%Y%m%d%H%i%s')) BETWEEN 0 AND 5 THEN '새벽'
-          WHEN HOUR(STR_TO_DATE(strt_dt, '%Y%m%d%H%i%s')) BETWEEN 6 AND 11 THEN '오전'
-          WHEN HOUR(STR_TO_DATE(strt_dt, '%Y%m%d%H%i%s')) BETWEEN 12 AND 17 THEN '오후'
-          ELSE '저녁'
-        END as time_period,
-        COUNT(*) as count
-      FROM vod_movie_03
-      WHERE sha2_hash = ?
-      GROUP BY time_period
-      ORDER BY count DESC
-      LIMIT 1
-    `, [userHash]);
-
-    // 시간대별 시청 횟수
-    const [hourlyStats] = await connection.execute(`
-      SELECT 
-        HOUR(STR_TO_DATE(strt_dt, '%Y%m%d%H%i%s')) as hour,
-        COUNT(*) as count
-      FROM vod_movie_03
-      WHERE sha2_hash = ?
-      GROUP BY hour
-      ORDER BY hour
-    `, [userHash]);
-
-    // 연속 시청(몰아보기) 분석
-    const [bingeStats] = await connection.execute(`
-      WITH viewing_sessions AS (
-        SELECT 
-          strt_dt,
-          LAG(strt_dt) OVER (ORDER BY strt_dt) as prev_strt_dt
-        FROM vod_movie_03
-        WHERE sha2_hash = ?
-      )
-      SELECT 
-        COUNT(*) as binge_count,
-        COUNT(*) * 100.0 / (
-          SELECT COUNT(*) 
-          FROM vod_movie_03 
-          WHERE sha2_hash = ?
-        ) as binge_percentage
-      FROM viewing_sessions
-      WHERE 
-        TIMESTAMPDIFF(
-          MINUTE, 
-          STR_TO_DATE(prev_strt_dt, '%Y%m%d%H%i%s'),
-          STR_TO_DATE(strt_dt, '%Y%m%d%H%i%s')
-        ) <= 30
-    `, [userHash, userHash]);
-
-    // 24시간 배열 생성 (데이터가 없는 시간대는 0으로 설정)
-    const hourlyData = Array.from({ length: 24 }, (_, i) => ({
-      hour: i,
-      count: 0
-    }));
-
-    // 실제 데이터로 업데이트
-    hourlyStats.forEach(stat => {
-      hourlyData[stat.hour].count = stat.count;
-    });
+    // 로그 출력
+    console.log('\n============ 사용자 분석 결과 ============');
+    console.log(`▶ 사용자 해시: ${userHash}`);
+    
+    console.log('\n▶ 선호 시청 시간대');
+    console.log(`   - 시간대: ${viewingPatterns.preferredTimePeriod?.time_period || '데이터 없음'}`);
+    console.log(`   - 시청 횟수: ${viewingPatterns.preferredTimePeriod?.count || 0}회`);
+    
+    console.log('\n▶ 몰아보기 성향');
+    console.log(`   - 30분 이내 재시청: ${viewingPatterns.bingeWatching?.binge_count || 0}회`);
+    console.log(`   - 몰아보기 비율: ${Math.round(viewingPatterns.bingeWatching?.binge_percentage || 0)}%`);
+    
+    console.log('\n▶ 시간대별 시청 패턴 (TOP 5)');
+    const hourlyStats = viewingPatterns.hourlyStats
+      .filter(stat => stat.count > 0)
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5);
+    
+    if (hourlyStats.length > 0) {
+      hourlyStats.forEach(stat => {
+        console.log(`   - ${String(stat.hour).padStart(2, '0')}시: ${stat.count}회`);
+      });
+    } else {
+      console.log('   데이터 없음');
+    }
+    console.log('========================================\n');
 
     res.json({
-      preferredTimePeriod: timePeriodStats[0] || { time_period: '데이터 없음', count: 0 },
-      bingeWatching: bingeStats[0] || { binge_count: 0, binge_percentage: 0 },
-      hourlyStats: hourlyData
+      preferredTimePeriod: viewingPatterns.preferredTimePeriod,
+      bingeWatching: viewingPatterns.bingeWatching,
+      hourlyStats: viewingPatterns.hourlyStats
     });
   } catch (error) {
     console.error('시청 패턴 조회 에러:', error);
     res.status(500).json({ message: '시청 패턴을 가져오는 중 오류가 발생했습니다.' });
-  } finally {
-    if (connections) {
-      try {
-        await Promise.all(connections.map(conn => conn.end()));
-      } catch (error) {
-        console.error('데이터베이스 연결 종료 오류:', error);
-      }
-    }
   }
 };
 

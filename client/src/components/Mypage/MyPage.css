@@ -6,6 +6,7 @@
   padding: 60px 60px 20px; /* 상단 패딩을 60px로 증가 */
   font-family: Arial, sans-serif;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* 그림자 추가 */
+  overflow-x: hidden;
 }
 
 /* 헤더 */
@@ -100,6 +101,8 @@
   font-size: 1rem;
   color: #ccc;
   width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .section_content.watch-history {
@@ -115,6 +118,7 @@
   width: 100%;
   height: 100%;
   min-height: 400px;
+  overflow: hidden;
 }
 
 .dashboard_loading {
@@ -122,7 +126,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-width: 300px;
+  width: 100%;
+  max-width: 100%;
   color: #fff;
   font-family: 'LGEIHeadlineTTF-Bold';
   font-size: 1.1rem;
@@ -133,7 +138,6 @@
   background: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   padding: 30px;
-  margin: 0 auto;
 }
 
 /* 버튼 스타일 */
@@ -293,25 +297,6 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
-}
-
-.dashboard_loading {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-width: 300px;
-  color: #fff;
-  font-family: 'LGEIHeadlineTTF-Bold';
-  font-size: 1.1rem;
-  gap: 20px;
-  text-align: center;
-  letter-spacing: 0.5px;
-  line-height: 1.5;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  padding: 30px;
-  margin: 0 auto;
 }
 
 /* 대시보드 섹션 스타일 */

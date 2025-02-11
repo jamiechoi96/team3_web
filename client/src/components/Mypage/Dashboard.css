@@ -1,7 +1,6 @@
 .dashboard {
   padding: 20px;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
+  color: white;
 }
 
 .dashboard_row {
@@ -17,127 +16,113 @@
 
 .dashboard_card {
   flex: 0 0 600px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
   padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .dashboard_card h3 {
-  color: #fff;
-  margin-bottom: 20px;
-  font-family: 'LGEIHeadlineTTF-Bold';
+  margin: 0 0 20px 0;
   font-size: 1.2rem;
+  color: #fff;
 }
 
 .dashboard_stats {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
+  width: 100%;
 }
 
 .stat_card {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
   padding: 20px;
   text-align: center;
 }
 
 .stat_card h4 {
-  color: #fff;
-  margin-bottom: 10px;
-  font-family: 'LGEIHeadlineTTF-Bold';
+  margin: 0;
   font-size: 1rem;
+  color: #aaa;
 }
 
 .stat_value {
-  color: #ed174d;
-  font-size: 2rem;
-  font-family: 'LGEIHeadlineTTF-Bold';
   margin: 10px 0;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ed174d;
 }
 
 .stat_detail {
-  color: #fff;
+  margin: 0;
   font-size: 0.9rem;
-  font-family: 'LGEIHeadlineTTF-Regular';
-  opacity: 0.8;
+  color: #888;
 }
 
-/* 커스텀 툴팁 스타일 */
-.custom-tooltip {
-  background: rgba(0, 0, 0, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  padding: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  min-width: 120px;
-}
-
-.tooltip-genre {
-  color: #fff;
-  font-size: 0.9rem;
-  margin-bottom: 8px;
-  font-family: 'LGEIHeadlineTTF-Regular';
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 4px;
-}
-
-.tooltip-value {
-  color: #ed174d;
-  font-size: 1.1rem;
-  font-family: 'LGEIHeadlineTTF-Bold';
-  margin: 4px 0;
-}
-
-.tooltip-count {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.85rem;
-  font-family: 'LGEIHeadlineTTF-Regular';
-  margin-top: 4px;
-}
-
-/* 로딩 스피너 */
 .dashboard_loading {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   height: 400px;
-  color: #fff;
-  font-family: 'LGEIHeadlineTTF-Bold';
-  font-size: 1.1rem;
-  gap: 20px;
-  text-align: center;
-  letter-spacing: 0.5px;
-  line-height: 1.5;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  padding: 30px;
+  color: white;
+  font-size: 1.2rem;
+  overflow: hidden;
 }
 
 .loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid rgba(255, 255, 255, 0.1);
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   border-top-color: #ed174d;
-  animation: spin 1s linear infinite;
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 20px;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .dashboard_empty {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   height: 400px;
-  color: #fff;
-  font-family: 'LGEIHeadlineTTF-Bold';
+  color: white;
   font-size: 1.2rem;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.custom-tooltip {
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 12px;
+  border-radius: 8px;
+  color: white;
+}
+
+.tooltip-genre {
+  margin: 0;
+  font-weight: bold;
+  color: #ed174d;
+}
+
+.tooltip-value {
+  margin: 5px 0;
+  font-size: 1.1em;
+}
+
+.tooltip-count {
+  margin: 0;
+  font-size: 0.9em;
+  color: #aaa;
 }
 
 /* 스크롤바 스타일링 */
