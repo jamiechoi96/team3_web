@@ -8,31 +8,44 @@ const AdvertisementBanner = () => {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 500,
-    slidesToShow: 1,
+    speed: 800,
+    slidesToShow: 2, // 하나씩 보여주도록 변경
     slidesToScroll: 1,
-    autoplay: false,
+    autoplay: true,
+    autoplaySpeed: 3000,
     arrows: false,
-    pauseOnHover: false
+    pauseOnHover: true,
+    centerMode: false
   };
 
   const bannerImages = [
-    '/banner_img/apple.webp',
-    '/banner_img/garlic.webp',
-    '/banner_img/rice.webp',
-    '/banner_img/seasonmarket_og.jpg'
+    {
+      src: '/banner_img/apple.webp',
+      link: 'https://www.seasonmarket.kr/eventExhibition/1808'
+    },
+    {
+      src: '/banner_img/garlic.webp',
+      link: 'https://www.seasonmarket.kr/eventExhibition/1806'
+    },
+    {
+      src: '/banner_img/rice.webp',
+      link: 'https://www.seasonmarket.kr/eventExhibition/1827'
+    }
+   
   ];
 
   return (
     <div className="advertisement_banner_container">
       <Slider {...settings} className="advertisement_banner_slider">
-        {bannerImages.map((image, index) => (
+        {bannerImages.map((banner, index) => (
           <div key={index} className="advertisement_banner_slide">
-            <img 
-              src={image}
-              alt={`Advertisement ${index + 1}`}
-              className="advertisement_banner_image"
-            />
+            <a href={banner.link} target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '100%', height: '100%' }}>
+              <img 
+                src={banner.src}
+                alt={`Advertisement ${index + 1}`}
+                className="advertisement_banner_image"
+              />
+            </a>
           </div>
         ))}
       </Slider>
