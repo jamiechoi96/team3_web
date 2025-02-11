@@ -7,18 +7,22 @@
   overflow: hidden;
 }
 
-.title {
-  color: white;
+.top20_title {
+  color: #fff;
   margin-bottom: 20px;
   margin-left: 30px;
   font-size: 1.5rem;
   z-index: 1;
+  font-weight: bold;
+  text-align: left;
+  width: 100%;
 }
 
 /* TOP20 전용 슬라이더 스타일 */
 .watching .slick-slider {
   margin: 0;
   padding: 0;
+  padding-bottom: 20px;
 }
 
 .watching .slick-list {

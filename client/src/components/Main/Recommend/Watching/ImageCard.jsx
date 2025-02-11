@@ -16,7 +16,7 @@ function ImageCard({ rank, image, title, hover, overview }) {
   return (
     <div className="movie">
       <div className="movie-content">
-        <div className="rank">{rank}</div>
+        <div className="rank" data-rank={rank}>{rank}</div>
         <img src={image} alt={title} className="movie-poster" />
         <div className="movie-hover">
           <div className="movie-buttons">

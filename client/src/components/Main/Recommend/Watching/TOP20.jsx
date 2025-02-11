@@ -67,7 +67,7 @@ function TOP20() {
 
   return (
     <div className="watching">
-      <h2 className="title">금주의 TOP 20 추천🎯</h2>
+      <h2 className="top20_title">금주의 TOP 20 추천🎯</h2>
       <Slider {...settings_top20}>
         {movies.map((movie) => (
           <ImageCard
