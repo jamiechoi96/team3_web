@@ -92,7 +92,6 @@ const Dashboard = ({ data, loading }) => {
           <h3>TOP 5 선호 장르</h3>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={top5Data}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
               <XAxis
                 dataKey="genre"
                 tick={{ fill: '#fff' }}
@@ -110,25 +109,24 @@ const Dashboard = ({ data, loading }) => {
                   fill: '#fff'
                 }}
               />
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip
+                cursor={false}
+                content={({ active, payload }) => {
+                  if (active && payload && payload.length) {
+                    return (
+                      <div className="custom-tooltip">
+                        <p className="tooltip-genre">{payload[0].payload.genre}</p>
+                        <p className="tooltip-value">{`${payload[0].value}%`}</p>
+                      </div>
+                    );
+                  }
+                  return null;
+                }}
+              />
               <Bar
                 dataKey="total_percentage"
                 fill="#ed174d"
-                radius={[4, 4, 0, 0]}
-                onMouseOver={(data, index) => {
-                  document.querySelectorAll('.recharts-bar-rectangle').forEach((rect, i) => {
-                    if (i === index) {
-                      rect.style.transform = 'scaleY(1.05)';
-                      rect.style.transformOrigin = 'bottom';
-                      rect.style.transition = 'transform 0.2s ease';
-                    }
-                  });
-                }}
-                onMouseOut={() => {
-                  document.querySelectorAll('.recharts-bar-rectangle').forEach(rect => {
-                    rect.style.transform = 'scaleY(1)';
-                  });
-                }}
+                radius={[5, 5, 0, 0]}
               />
             </BarChart>
           </ResponsiveContainer>
