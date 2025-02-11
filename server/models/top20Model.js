@@ -15,7 +15,7 @@ class Top20 {
           asset_nm,
           popularity
         FROM
-          vod_popularity_04
+          vod_movie_rank_04_01
         LIMIT 20
       `);
 
