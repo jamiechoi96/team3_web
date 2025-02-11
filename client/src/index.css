@@ -1,27 +1,44 @@
 /* 스크롤바 전체 스타일 */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 10px;
 }
 
 /* 스크롤바 트랙 */
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0);
-  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  margin: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* 스크롤바 핸들 */
 ::-webkit-scrollbar-thumb {
-  background: rgb(83, 86, 90);
-  border-radius: 2px;
-  border: 3px solid transparent;
+  background: linear-gradient(180deg, 
+    rgba(83, 86, 90, 0.8) 0%,
+    rgba(83, 86, 90, 0.9) 100%
+  );
+  border-radius: 4px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
   background-clip: padding-box;
-  transition: all 0.8s cubic-bezier(0.2, 0, 0.2, 1);
+  transition: all 0.3s ease;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 /* 스크롤바 핸들 호버 */
 ::-webkit-scrollbar-thumb:hover {
-  background: #ed174d;
-  border: 1px solid transparent;
+  background: linear-gradient(180deg, 
+    #ed174d 0%,
+    #ff2d66 100%
+  );
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  box-shadow: 
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+    0 0 10px rgba(237, 23, 77, 0.5);
+}
+
+/* 스크롤바 코너 */
+::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 @font-face{
