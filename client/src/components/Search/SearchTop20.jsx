@@ -29,7 +29,9 @@ function SearchTop20() {
   const MovieCard = ({ movie }) => (
     <div className="movie-card-container">
       <div className="rank-area">
-        <span className="rank-number">{movie.ranking}</span>
+        <span className="rank-number" data-rank={movie.ranking}>
+          {movie.ranking}
+        </span>
       </div>
       <div className="poster-area">
         <img src={movie.posterUrl} alt={movie.asset_nm} />
