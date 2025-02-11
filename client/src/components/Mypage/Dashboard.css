@@ -5,27 +5,46 @@
 
 .dashboard_row {
   display: flex;
-  gap: 30px;
+  gap: 20px;
   overflow-x: auto;
   padding-bottom: 20px;
-  margin: 2rem 0;
-  scroll-behavior: smooth;
+  margin-bottom: 20px;
+  position: relative;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
+  scrollbar-color: #ed174d rgba(255, 255, 255, 0.1);
+  width: 100%;
+  scroll-snap-type: x mandatory;
+}
+
+.dashboard_row::-webkit-scrollbar {
+  height: 8px;
+}
+
+.dashboard_row::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.dashboard_row::-webkit-scrollbar-thumb {
+  background: #ed174d;
+  border-radius: 4px;
 }
 
 .dashboard_card {
-  flex: 0 0 600px;
+  flex: 0 0 calc(100% - 40px);
+  min-width: 600px;
   background: rgba(0, 0, 0, 0.3);
   border-radius: 15px;
-  padding: 20px;
+  padding: 30px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  scroll-snap-align: start;
 }
 
 .dashboard_card h3 {
-  margin: 0 0 20px 0;
-  font-size: 1.2rem;
+  margin-bottom: 20px;
   color: #fff;
+  font-size: 1.4rem;
 }
 
 .dashboard_stats {
@@ -154,15 +173,18 @@
   color: #aaa;
 }
 
-.chart_nav {
+.chart_buttons {
   display: flex;
   justify-content: center;
-  gap: 0.5rem;
-  margin: 1rem 0;
-  padding: 0.5rem;
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
+  gap: 1rem;
+  margin: 0;
+  padding: 1rem;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
 }
 
 .chart_button {
@@ -188,23 +210,11 @@
   background: #d91546;
 }
 
-/* 스크롤바 스타일링 */
-.dashboard_row::-webkit-scrollbar {
-  height: 8px;
-}
-
-.dashboard_row::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-}
-
-.dashboard_row::-webkit-scrollbar-thumb {
-  background: #ed174d;
-  border-radius: 4px;
-}
-
-.dashboard_row::-webkit-scrollbar-thumb:hover {
-  background: #ff2d66;
+@media (min-width: 768px) {
+  .dashboard_card {
+    flex: 0 0 calc(33.333% - 14px);
+    max-width: calc(33.333% - 14px);
+  }
 }
 
 @media (max-width: 1200px) {
@@ -214,6 +224,9 @@
 }
 
 @media (max-width: 768px) {
+  .dashboard_card {
+    flex: 0 0 90vw;
+  }
   .dashboard_stats {
     grid-template-columns: 1fr;
   }

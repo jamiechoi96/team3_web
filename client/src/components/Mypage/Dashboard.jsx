@@ -119,89 +119,115 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <div className="dashboard_row">
-        <div className="dashboard_card">
-          <h3>장르별 시청 비율</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={pieData}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={100}
-                paddingAngle={8}
-                dataKey="value"
-                nameKey="name"
-              >
-                {pieData.map((entry, index) => (
-                  <Cell key={index} fill={COLORS[index % COLORS.length]} stroke="rgba(0,0,0,0.3)" strokeWidth={1} />
-                ))}
-              </Pie>
-              <Tooltip content={<CustomTooltip />} />
-              <Legend
-                verticalAlign="bottom"
-                height={36}
-                formatter={(value) => `${value}`}
-                wrapperStyle={{ color: '#fff' }}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
+      <div style={{ position: 'relative' }}>
+        <div className="dashboard_row">
+          <div className="dashboard_card">
+            <h3>장르별 시청 비율</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={pieData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={100}
+                  paddingAngle={8}
+                  dataKey="value"
+                  nameKey="name"
+                >
+                  {pieData.map((entry, index) => (
+                    <Cell key={index} fill={COLORS[index % COLORS.length]} stroke="rgba(0,0,0,0.3)" strokeWidth={1} />
+                  ))}
+                </Pie>
+                <Tooltip content={<CustomTooltip />} />
+                <Legend
+                  verticalAlign="bottom"
+                  height={36}
+                  formatter={(value) => `${value}`}
+                  wrapperStyle={{ color: '#fff' }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
 
-        <div className="dashboard_card">
-          <h3>TOP 5 선호 장르</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={top5Data}>
-              <XAxis dataKey="genre" tick={{ fill: '#fff' }} />
-              <YAxis 
-                tick={{ fill: '#fff' }}
-                domain={[0, 50]}
-                ticks={[0, 10, 20, 30, 40, 50]}
-              />
-              <Tooltip
-                cursor={{ fill: 'rgba(255, 255, 255, 0.1)' }}
-                content={({ active, payload }) => {
-                  if (active && payload && payload.length) {
-                    return (
-                      <div className="custom-tooltip">
-                        <p className="tooltip-genre">{payload[0].payload.genre}</p>
-                        <p className="tooltip-value">{`${payload[0].value}%`}</p>
-                        <p className="tooltip-count">{`${payload[0].payload.total_asset_count}개 시청`}</p>
-                      </div>
-                    );
-                  }
-                  return null;
-                }}
-              />
-              <Bar dataKey="total_percentage" fill="#ed174d" radius={[5, 5, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+          <div className="dashboard_card">
+            <h3>TOP 5 선호 장르</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={top5Data}>
+                <XAxis dataKey="genre" tick={{ fill: '#fff' }} />
+                <YAxis 
+                  tick={{ fill: '#fff' }}
+                  domain={[0, 50]}
+                  ticks={[0, 10, 20, 30, 40, 50]}
+                />
+                <Tooltip
+                  cursor={{ fill: 'rgba(255, 255, 255, 0.1)' }}
+                  content={({ active, payload }) => {
+                    if (active && payload && payload.length) {
+                      return (
+                        <div className="custom-tooltip">
+                          <p className="tooltip-genre">{payload[0].payload.genre}</p>
+                          <p className="tooltip-value">{`${payload[0].value}%`}</p>
+                          <p className="tooltip-count">{`${payload[0].payload.total_asset_count}개 시청`}</p>
+                        </div>
+                      );
+                    }
+                    return null;
+                  }}
+                />
+                <Bar dataKey="total_percentage" fill="#ed174d" radius={[5, 5, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
 
-        <div className="dashboard_card">
-          <h3>시간대별 시청 패턴</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={viewingPatterns?.hourlyStats || []}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-              <XAxis 
-                dataKey="hour" 
-                tick={{ fill: '#fff' }} 
-                tickFormatter={formatHour}
-                interval={3}
-              />
-              <YAxis tick={{ fill: '#fff' }} />
-              <Tooltip content={<TimeTooltip />} />
-              <Line 
-                type="monotone" 
-                dataKey="count" 
-                stroke="#ed174d" 
-                strokeWidth={2}
-                dot={{ fill: '#ed174d', r: 4 }}
-                activeDot={{ r: 6, fill: '#ff2d66' }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
+          <div className="dashboard_card">
+            <h3>시간대별 시청 패턴</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={viewingPatterns?.hourlyStats || []}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                <XAxis 
+                  dataKey="hour" 
+                  tick={{ fill: '#fff' }} 
+                  tickFormatter={formatHour}
+                  interval={3}
+                />
+                <YAxis tick={{ fill: '#fff' }} />
+                <Tooltip content={<TimeTooltip />} />
+                <Line 
+                  type="monotone" 
+                  dataKey="count" 
+                  stroke="#ed174d" 
+                  strokeWidth={2}
+                  dot={{ fill: '#ed174d', r: 4 }}
+                  activeDot={{ r: 6, fill: '#ff2d66' }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+        
+        <div className="chart_buttons">
+          <button 
+            className="chart_button" 
+            onClick={() => scrollToChart(0)}
+            title="장르별 시청 비율"
+          >
+            <BiPieChartAlt2 size={20} />
+          </button>
+          <button 
+            className="chart_button"
+            onClick={() => scrollToChart(1)}
+            title="TOP 5 선호 장르"
+          >
+            <BiBarChartAlt2 size={20} />
+          </button>
+          <button 
+            className="chart_button"
+            onClick={() => scrollToChart(2)}
+            title="시간대별 시청 패턴"
+          >
+            <BiLineChart size={20} />
+          </button>
         </div>
       </div>
 
@@ -243,30 +269,6 @@ const Dashboard = () => {
               : '데이터 없음'}
           </p>
         </div>
-      </div>
-
-      <div className="chart_nav">
-        <button 
-          className="chart_button" 
-          onClick={() => scrollToChart(0)}
-          title="장르별 시청 비율"
-        >
-          <BiPieChartAlt2 size={20} />
-        </button>
-        <button 
-          className="chart_button"
-          onClick={() => scrollToChart(1)}
-          title="TOP 5 선호 장르"
-        >
-          <BiBarChartAlt2 size={20} />
-        </button>
-        <button 
-          className="chart_button"
-          onClick={() => scrollToChart(2)}
-          title="시간대별 시청 패턴"
-        >
-          <BiLineChart size={20} />
-        </button>
       </div>
     </div>
   );
