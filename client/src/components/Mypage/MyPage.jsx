@@ -105,10 +105,13 @@ function MyPage() {
       </div>
 
       <div className="section">
-        <h2 className="section_title">최근 시청기록</h2>
+        <h2 className="section_title">⌚최근 시청기록</h2>
         <div className="section_content watch-history">
           {loading ? (
-            <div className="status-message">데이터를 불러오는 중...</div>
+            <div className="dashboard_loading">
+              <div className="loading-spinner" />
+              시청 기록을 불러오는 중...
+            </div>
           ) : error ? (
             <div className="status-message error">{error}</div>
           ) : watchHistory && watchHistory.length > 0 ? (
@@ -126,14 +129,17 @@ function MyPage() {
       </div>
 
       <div className="section">
-        <h2 className="section_title">시청 패턴 분석</h2>
+        <h2 className="section_title">📊시청 패턴 분석</h2>
         <div className="section_content">
           {genreLoading ? (
-            <div className="status-message">데이터를 불러오는 중...</div>
+            <div className="dashboard_loading">
+              <div className="loading-spinner" />
+              📊고객님의 시청 패턴을 분석중입니다📊
+            </div>
           ) : genreError ? (
             <div className="status-message error">{genreError}</div>
           ) : (
-            <Dashboard data={genreData} />
+            <Dashboard data={genreData} loading={genreLoading} />
           )}
         </div>
       </div>

@@ -5,13 +5,15 @@
 }
 
 .dashboard_row {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  display: flex;
+  gap: 30px;
+  overflow-x: auto;
+  padding-bottom: 20px;
   margin-bottom: 20px;
 }
 
 .dashboard_card {
+  flex: 0 0 600px;
   background: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   padding: 20px;
@@ -58,7 +60,61 @@
   opacity: 0.8;
 }
 
-.dashboard_loading,
+/* 커스텀 툴팁 스타일 */
+.custom-tooltip {
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tooltip-genre {
+  color: #fff;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+  font-family: 'LGEIHeadlineTTF-Regular';
+}
+
+.tooltip-value {
+  color: #ed174d;
+  font-size: 1.1rem;
+  font-family: 'LGEIHeadlineTTF-Bold';
+}
+
+/* 로딩 스피너 */
+.dashboard_loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  color: #fff;
+  font-family: 'LGEIHeadlineTTF-Bold';
+  font-size: 1.1rem;
+  gap: 20px;
+  text-align: center;
+  letter-spacing: 0.5px;
+  line-height: 1.5;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 30px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border-top-color: #ed174d;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 .dashboard_empty {
   display: flex;
   justify-content: center;
@@ -69,8 +125,22 @@
   font-size: 1.2rem;
 }
 
+/* 스크롤바 스타일링 */
+.dashboard_row::-webkit-scrollbar {
+  height: 8px;
+}
+
+.dashboard_row::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.dashboard_row::-webkit-scrollbar-thumb {
+  background: #ed174d;
+  border-radius: 4px;
+}
+
 @media (max-width: 768px) {
-  .dashboard_row,
   .dashboard_stats {
     grid-template-columns: 1fr;
   }
