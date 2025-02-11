@@ -6,6 +6,7 @@ const newVodController = require('../controllers/newVodController');
 const authController = require('../controllers/authController');
 const similarVodController = require('../controllers/similarVodController');
 const { getGenreStats } = require('../controllers/genreStatsController');
+const { getViewingPatterns } = require('../controllers/viewingPatternController');
 
 // 테스트
 router.get('/test', (req, res) => {
@@ -28,5 +29,8 @@ router.get('/watch-history', authController.authenticateToken, getWatchHistory);
 
 // 장르 통계 조회 (보호된 라우트)
 router.get('/genre-stats', authController.authenticateToken, getGenreStats);
+
+// 시청 패턴 분석 (보호된 라우트)
+router.get('/viewing-patterns', authController.authenticateToken, getViewingPatterns);
 
 module.exports = router;
