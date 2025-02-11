@@ -170,7 +170,7 @@ const Dashboard = () => {
         </div>
 
         <div className="dashboard_card">
-          <h3>월별 시간대별 시청 패턴</h3>
+          <h3>시간대별 시청 패턴</h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={viewingPatterns?.hourlyStats || []}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />

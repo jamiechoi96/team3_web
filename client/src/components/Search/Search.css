@@ -20,13 +20,14 @@
   max-width: 600px;
   margin: 0 auto;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 0;
+  height: 54px;
 }
 
 .search-input {
   width: 100%;
-  padding: 15px 20px;
+  padding: 0 20px;
   font-size: 1rem;
   border: 2px solid transparent;
   border-radius: 8px 0 0 8px;
@@ -47,7 +48,7 @@
 }
 
 .search-button {
-  padding: 0 20px;
+  width: 54px;
   height: 54px;
   border: none;
   background: #ed174d;
