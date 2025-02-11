@@ -241,3 +241,32 @@
 .status-message.error {
   color: #ff6b6b;
 }
+
+/* 대시보드 섹션 스타일 */
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.dashboard-card {
+  background: rgba(40, 40, 40, 0.5);
+  border-radius: 10px;
+  padding: 20px;
+  transition: transform 0.3s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+}
+
+.chart-container {
+  margin-top: 20px;
+  height: 300px;
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+}

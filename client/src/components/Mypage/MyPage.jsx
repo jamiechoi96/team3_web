@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; 
 import Slider from 'react-slick';
 import SearchImage from "./SearchImage.jsx";
+import Dashboard from "./Dashboard";
 import "./MyPage.css";
 
 function MyPage() {
   const [watchHistory, setWatchHistory] = useState([]);
+  const [genreData, setGenreData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [genreLoading, setGenreLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [genreError, setGenreError] = useState(null);
   const [userHash, setUserHash] = useState(null); 
   const navigate = useNavigate();
 
@@ -45,7 +49,28 @@ function MyPage() {
       }
     };
 
+    const fetchGenreStats = async () => {
+      setGenreLoading(true);
+      try {
+        const response = await fetch(`http://localhost:5001/api/genre-stats`, {
+          headers: {
+            'Authorization': `Bearer ${token}`, 
+          },
+        });
+        const data = await response.json();
+        console.log("장르 통계 데이터:", data);
+        setGenreData(data);
+        setGenreError(null);
+      } catch (error) {
+        console.error("장르 통계 가져오기 오류:", error);
+        setGenreError("장르 통계를 가져오는 중 오류가 발생했습니다.");
+      } finally {
+        setGenreLoading(false);
+      }
+    };
+
     fetchWatchHistory();
+    fetchGenreStats();
   }, [navigate]);
 
   const handleLogout = () => {
@@ -101,9 +126,15 @@ function MyPage() {
       </div>
 
       <div className="section">
-        <h2 className="section_title">구매 리스트</h2>
+        <h2 className="section_title">시청 패턴 분석</h2>
         <div className="section_content">
-          새 콘텐츠를 구매하거나 대여할 수 있습니다.
+          {genreLoading ? (
+            <div className="status-message">데이터를 불러오는 중...</div>
+          ) : genreError ? (
+            <div className="status-message error">{genreError}</div>
+          ) : (
+            <Dashboard data={genreData} />
+          )}
         </div>
       </div>
 

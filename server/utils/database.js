@@ -42,6 +42,26 @@ async function createConnections() {
   }
 }
 
+// 쿼리 실행 함수
+async function executeQuery(query, params = []) {
+  let connection;
+  try {
+    const connections = await createConnections();
+    connection = connections[0]; // 첫 번째 연결된 DB 사용
+    
+    const [results] = await connection.execute(query, params);
+    return results;
+  } catch (error) {
+    console.error('쿼리 실행 오류:', error);
+    throw error;
+  } finally {
+    if (connection) {
+      await connection.end();
+    }
+  }
+}
+
 module.exports = {
-  createConnections
+  createConnections,
+  executeQuery
 };
