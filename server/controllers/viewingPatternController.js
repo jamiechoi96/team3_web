@@ -25,6 +25,17 @@ const getViewingPatterns = async (req, res) => {
       LIMIT 1
     `, [userHash]);
 
+    // 시간대별 시청 횟수
+    const [hourlyStats] = await connection.execute(`
+      SELECT 
+        HOUR(STR_TO_DATE(strt_dt, '%Y%m%d%H%i%s')) as hour,
+        COUNT(*) as count
+      FROM vod_movie_03
+      WHERE sha2_hash = ?
+      GROUP BY hour
+      ORDER BY hour
+    `, [userHash]);
+
     // 연속 시청(몰아보기) 분석
     const [bingeStats] = await connection.execute(`
       WITH viewing_sessions AS (
@@ -50,9 +61,21 @@ const getViewingPatterns = async (req, res) => {
         ) <= 30
     `, [userHash, userHash]);
 
+    // 24시간 배열 생성 (데이터가 없는 시간대는 0으로 설정)
+    const hourlyData = Array.from({ length: 24 }, (_, i) => ({
+      hour: i,
+      count: 0
+    }));
+
+    // 실제 데이터로 업데이트
+    hourlyStats.forEach(stat => {
+      hourlyData[stat.hour].count = stat.count;
+    });
+
     res.json({
       preferredTimePeriod: timePeriodStats[0] || { time_period: '데이터 없음', count: 0 },
-      bingeWatching: bingeStats[0] || { binge_count: 0, binge_percentage: 0 }
+      bingeWatching: bingeStats[0] || { binge_count: 0, binge_percentage: 0 },
+      hourlyStats: hourlyData
     });
   } catch (error) {
     console.error('시청 패턴 조회 에러:', error);

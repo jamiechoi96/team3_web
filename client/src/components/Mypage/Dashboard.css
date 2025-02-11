@@ -10,6 +10,9 @@
   overflow-x: auto;
   padding-bottom: 20px;
   margin-bottom: 20px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }
 
 .dashboard_card {
@@ -67,19 +70,31 @@
   border-radius: 4px;
   padding: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  min-width: 120px;
 }
 
 .tooltip-genre {
   color: #fff;
   font-size: 0.9rem;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
   font-family: 'LGEIHeadlineTTF-Regular';
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 4px;
 }
 
 .tooltip-value {
   color: #ed174d;
   font-size: 1.1rem;
   font-family: 'LGEIHeadlineTTF-Bold';
+  margin: 4px 0;
+}
+
+.tooltip-count {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  font-family: 'LGEIHeadlineTTF-Regular';
+  margin-top: 4px;
 }
 
 /* 로딩 스피너 */
@@ -138,6 +153,10 @@
 .dashboard_row::-webkit-scrollbar-thumb {
   background: #ed174d;
   border-radius: 4px;
+}
+
+.dashboard_row::-webkit-scrollbar-thumb:hover {
+  background: #ff2d66;
 }
 
 @media (max-width: 768px) {

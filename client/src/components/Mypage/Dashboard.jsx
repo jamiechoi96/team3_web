@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, Legend,
   PieChart, Pie, Cell, ResponsiveContainer,
-  LineChart, Line
+  LineChart, Line, CartesianGrid
 } from 'recharts';
 import axios from 'axios';
 import './Dashboard.css';
@@ -11,10 +11,24 @@ const COLORS = ['#ed174d', '#4a90e2', '#50e3c2', '#f5a623', '#7ed321', '#9013fe'
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
+    const data = payload[0].payload;
     return (
       <div className="custom-tooltip">
-        <p className="tooltip-genre">{payload[0].payload.genre}</p>
-        <p className="tooltip-value">{`${payload[0].value}%`}</p>
+        <p className="tooltip-genre">{data.name}</p>
+        <p className="tooltip-value">{`${data.value}%`}</p>
+        <p className="tooltip-count">{`${data.count}개 시청`}</p>
+      </div>
+    );
+  }
+  return null;
+};
+
+const TimeTooltip = ({ active, payload }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="custom-tooltip">
+        <p className="tooltip-genre">{`${payload[0].payload.hour}시`}</p>
+        <p className="tooltip-value">{`${payload[0].value}회`}</p>
       </div>
     );
   }
@@ -71,7 +85,8 @@ const Dashboard = ({ data: genreData, loading }) => {
   const top5Data = processedData.slice(0, 5);
   const pieData = top5Data.map(item => ({
     name: item.genre,
-    value: parseFloat(item.total_percentage)
+    value: parseFloat(item.total_percentage),
+    count: item.total_asset_count
   }));
 
   const formatDuration = (minutes) => {
@@ -80,6 +95,10 @@ const Dashboard = ({ data: genreData, loading }) => {
     const mins = minutes % 60;
     if (hours === 0) return `${mins}분`;
     return `${hours}시간 ${mins}분`;
+  };
+
+  const formatHour = (hour) => {
+    return `${hour}시`;
   };
 
   return (
@@ -141,6 +160,31 @@ const Dashboard = ({ data: genreData, loading }) => {
               />
               <Bar dataKey="total_percentage" fill="#ed174d" radius={[5, 5, 0, 0]} />
             </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="dashboard_card">
+          <h3>월별 시간대별 시청 패턴</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={viewingPatterns?.hourlyStats || []}>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+              <XAxis 
+                dataKey="hour" 
+                tick={{ fill: '#fff' }} 
+                tickFormatter={formatHour}
+                interval={3}
+              />
+              <YAxis tick={{ fill: '#fff' }} />
+              <Tooltip content={<TimeTooltip />} />
+              <Line 
+                type="monotone" 
+                dataKey="count" 
+                stroke="#ed174d" 
+                strokeWidth={2}
+                dot={{ fill: '#ed174d', r: 4 }}
+                activeDot={{ r: 6, fill: '#ff2d66' }}
+              />
+            </LineChart>
           </ResponsiveContainer>
         </div>
       </div>
