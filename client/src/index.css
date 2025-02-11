@@ -1,3 +1,29 @@
+/* 스크롤바 전체 스타일 */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* 스크롤바 트랙 */
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0);
+  border-radius: 2px;
+}
+
+/* 스크롤바 핸들 */
+::-webkit-scrollbar-thumb {
+  background: rgb(83, 86, 90);
+  border-radius: 2px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  transition: all 0.8s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+/* 스크롤바 핸들 호버 */
+::-webkit-scrollbar-thumb:hover {
+  background: #ed174d;
+  border: 1px solid transparent;
+}
+
 @font-face{
   font-family: "LGEIHeadlineTTF-Bold";
   src: url("components/fonts/LGEIHeadlineTTF-Bold.ttf") format("truetype");
