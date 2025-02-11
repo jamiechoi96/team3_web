@@ -15,7 +15,7 @@ class NewVod {
       console.log('===== 서버: 신작 VOD 데이터 조회 시작 =====');
       
       const [rows] = await connection.execute(`
-        SELECT * FROM new_vod_0301;
+        SELECT * FROM new_movie_04_01;
 
       `);
 
