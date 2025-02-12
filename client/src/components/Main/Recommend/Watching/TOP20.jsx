@@ -10,6 +10,8 @@ const API_KEY = import.meta.env.VITE_TMDB_API;
 
 function TOP20() {
   const [movies, setMovies] = useState([]);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const totalSlides = Math.ceil(movies.length / 6);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -40,12 +42,17 @@ function TOP20() {
     slidesToScroll: 6,
     autoplay: false,
     arrows: true,
+    variableWidth: true,  // 가변 너비 활성화
+    beforeChange: (current, next) => {
+      setCurrentSlide(next);
+    },
     responsive: [
       {
         breakpoint: 1500,
         settings: {
           slidesToShow: 6,
           slidesToScroll: 6,
+          variableWidth: true
         }
       },
       {
@@ -68,18 +75,20 @@ function TOP20() {
   return (
     <div className="watching">
       <h2 className="top20_title">🎯금주의 TOP 20 추천</h2>
-      <Slider {...settings_top20}>
-        {movies.map((movie) => (
-          <ImageCard
-            key={movie.ranking}
-            rank={movie.ranking}
-            image={movie.posterUrl}
-            title={movie.asset_nm}
-            hover={movie.backdropUrl}
-            overview={movie.overview}
-          />
-        ))}
-      </Slider>
+      <div className={`slider-container ${currentSlide === totalSlides - 1 ? 'last-slide' : ''}`}>
+        <Slider {...settings_top20}>
+          {movies.map((movie) => (
+            <ImageCard
+              key={movie.ranking}
+              rank={movie.ranking}
+              image={movie.posterUrl}
+              title={movie.asset_nm}
+              hover={movie.backdropUrl}
+              overview={movie.overview}
+            />
+          ))}
+        </Slider>
+      </div>
     </div>
   );
 }

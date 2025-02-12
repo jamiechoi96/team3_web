@@ -5,6 +5,7 @@
   border-radius: 8px;
   position: relative;
   overflow: hidden;
+  width: 100%;
 }
 
 .top20_title {
@@ -18,6 +19,11 @@
   width: 100%;
 }
 
+.top20-container {
+  padding: 20px;
+  position: relative;
+}
+
 /* TOP20 전용 슬라이더 스타일 */
 .watching .slick-slider {
   margin: 0;
@@ -26,16 +32,34 @@
 }
 
 .watching .slick-list {
-  margin: 0;
+  margin: 0 -5px;  /* 슬라이드 간격만큼 네거티브 마진 */
+}
+
+.watching .slick-slide {
+  padding: 0 5px;  /* 슬라이드 간 간격 */
 }
 
 .watching .slick-slide > div {
   margin: 0;
+  width: calc((100% - 30px) / 6) !important;  /* 6개 아이템에 맞는 너비 계산 */
+}
+
+.watching .slick-slide:last-child {
+  margin-right: -5px;  /* 마지막 아이템의 오른쪽 여백 조정 */
 }
 
 .watching .slick-track {
   display: flex;
   gap: 0;
+  margin-left: 0;
+}
+
+.last-slide .slick-track {
+  transform: translateX(-20px) !important;  /* 마지막 슬라이드를 왼쪽으로 약간 이동 */
+}
+
+.last-slide .slick-slide {
+  margin-right: -10px;  /* 마지막 슬라이드의 간격 조정 */
 }
 
 .watching .slick-prev,
