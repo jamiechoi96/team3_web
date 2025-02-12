@@ -8,6 +8,7 @@ const authController = require('../controllers/authController');
 const similarVodController = require('../controllers/similarVodController');
 const { getGenreStats } = require('../controllers/genreStatsController');
 const { getViewingPatterns } = require('../controllers/viewingPatternController');
+const summaryRecommendController = require('../controllers/summaryRecommendController');
 
 // 테스트
 router.get('/test', (req, res) => {
@@ -34,5 +35,9 @@ router.get('/genre-stats', authController.authenticateToken, getGenreStats);
 
 // 시청 패턴 분석 (보호된 라우트)
 router.get('/viewing-patterns', authController.authenticateToken, getViewingPatterns);
+
+// 줄거리 기반 추천 관련 라우트
+router.get('/summary-recommend/:sha2Hash', authController.authenticateToken, summaryRecommendController.getSummaryRecommend);
+router.get('/summary-recommend', authController.authenticateToken, summaryRecommendController.getAllSummaryRecommends);
 
 module.exports = router;
