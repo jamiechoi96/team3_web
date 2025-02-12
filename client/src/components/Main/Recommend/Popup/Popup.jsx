@@ -18,7 +18,6 @@ function Popup({ movie, onClose }) {
           <div className="popup_image" style={{ backgroundImage: `url(${movie.hover})` }}></div>
           <div className="popup_controls">
             <button className="popup_play">▶ 재생</button>
-            <button className="popup_like">👍</button>
           </div>
         </div>
         <div className="popup_info">
