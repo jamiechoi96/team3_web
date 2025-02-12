@@ -74,7 +74,6 @@ function Banner() {
                             <p className="description">{movie.overview}</p>
                             <div className="banner_buttons">
                                 <button className="button play-button">▶ 재생</button>
-                                <button className="button info-button">ℹ️ 상세정보</button>
                             </div>
                             
                         </div>

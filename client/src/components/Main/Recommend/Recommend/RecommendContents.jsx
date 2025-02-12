@@ -61,7 +61,10 @@ function RecommendContents() {
   }, []);
 
   const handleInfoClick = (movie) => {
-    setSelectedMovie(movie);
+    setSelectedMovie({
+      ...movie,
+      hover: movie.backdropUrl
+    });
     setShowPopup(true);
   };
 
