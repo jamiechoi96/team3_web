@@ -25,6 +25,10 @@
   padding: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   scroll-snap-align: start;
+  height: 410px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .dashboard_stats {
@@ -33,7 +37,7 @@
   gap: 20px;
   width: calc(100% - 40px);
   margin: 20px;
-  min-height: 300px;
+  height: 400px;
 }
 
 .stat_card {
@@ -49,6 +53,7 @@
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 190px;  
 }
 
 .stat_card h4 {
@@ -172,6 +177,20 @@
 
 .chart_button:active {
   background: #d91546;
+}
+
+.recharts-wrapper {
+  margin: auto !important;
+  display: block !important;
+  width: 90% !important;  
+}
+
+.dashboard_card > div {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 @media (min-width: 768px) {
