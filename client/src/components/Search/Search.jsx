@@ -33,7 +33,7 @@ const Search = () => {
             className="search-button"
             onClick={handleSearch}
           >
-            <FiSearch size={24} />
+            <FiSearch size={28} />
           </button>
         </div>
       </div>

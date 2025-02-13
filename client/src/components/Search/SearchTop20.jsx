@@ -64,10 +64,14 @@ function SearchTop20() {
   };
 
   const handleMovieClick = async (movie) => {
-    setSelectedMovie(movie);
-    setShowBanner(true);
-    const details = await fetchMovieDetails(movie.asset_nm);
-    setMovieDetails(details);
+    try {
+      const details = await fetchMovieDetails(movie.asset_nm);
+      setSelectedMovie(movie);
+      setMovieDetails(details);
+      setShowBanner(true);
+    } catch (error) {
+      console.error("영화 상세 정보 로딩 중 오류:", error);
+    }
   };
 
   const MovieCard = ({ movie }) => (

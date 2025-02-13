@@ -48,28 +48,36 @@
 }
 
 .search-button {
-  width: 54px;
-  height: 54px;
+  width: 70px;
+  background-color: #ed174d;
   border: none;
-  background: #ed174d;
+  border-radius: 0 12px 12px 0;
   color: white;
   cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 0 12px 12px 0;
-  border: 2px solid #ed174d;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.3s ease;
+  padding: 0 15px;
 }
 
 .search-button:hover {
-  background: #ff2d62;
-  transform: translateX(2px);
+  background-color: #ff1f57;
+  transform: scale(1.02);
 }
 
 .search-button:active {
-  transform: translateX(0);
-  background: #d91546;
+  transform: scale(0.98);
+}
+
+.search-button svg {
+  width: 28px;
+  height: 28px;
+  transition: transform 0.2s ease;
+}
+
+.search-button:hover svg {
+  transform: scale(1.1);
 }
 
 .weekly-popular {
