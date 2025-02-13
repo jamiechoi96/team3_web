@@ -10,24 +10,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px; /* 로고와 텍스트 사이 간격 */
   margin-bottom: 25px;
-  font-family: "LGEIHeadlineTTF-Bold";
 }
 
 .logo-image {
-  width: 35px;
   height: 35px;
-}
-
-.footer-logo h1 {
-  font-size: 32px;
-  color: #ED174D;
-  margin: 10px; /* 텍스트의 여백 제거 */
-}
-
-.footer-logo h1 span {
-  color: #fff;
+  width: auto;
 }
 
 .footer-icons {

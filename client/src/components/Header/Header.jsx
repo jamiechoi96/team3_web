@@ -48,10 +48,7 @@ const Header = () => {
       }`}
     >
       <div className="logo" onClick={() => navigate("/")}>
-        <img src="/images/LG_logo.png" alt="LG Logo" className="logo-image" />
-        <span className="logo-text">
-          <span className="Hello">Hello</span>TV
-        </span>
+        <img src="/images/VODiscovery_w.png" alt="VODiscovery Logo" className="logo-image" />
       </div>
       <nav className="Nav">
         <ul>
