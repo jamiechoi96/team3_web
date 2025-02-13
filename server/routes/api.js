@@ -6,6 +6,7 @@ const { getSearchTop20 } = require('../controllers/searchTop20Controller');
 const newVodController = require('../controllers/newVodController');
 const authController = require('../controllers/authController');
 const similarVodController = require('../controllers/similarVodController');
+const genreVodController = require('../controllers/genreVodController');
 const { getGenreStats } = require('../controllers/genreStatsController');
 const { getViewingPatterns } = require('../controllers/viewingPatternController');
 const summaryRecommendController = require('../controllers/summaryRecommendController');
@@ -22,7 +23,7 @@ router.get('/search-top20', getSearchTop20);
 // VOD 추천 조회
 router.get('/new-vods', newVodController.getNewVods);
 router.post('/similar-vods', authController.authenticateToken, similarVodController.getSimilarVods);
-router.get('/genre-vods', newVodController.getGenreVods);
+router.get('/genre-vods', authController.authenticateToken, genreVodController.getGenreVods);
 
 // 로그인 라우트
 router.post('/auth/login', authController.login);
