@@ -9,8 +9,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-logo">
-        <img src="/images/LG_logo.png" alt="LG Logo" className="logo-image" />
-        <h1>Hello <span>tv</span></h1>
+        <img src="/images/VODiscovery_w.png" alt="VODiscovery Logo" className="logo-image" />
       </div>
       <div className="footer-icons">
         <a href="https://github.com/whan1569/Team3" className="icon icon-git"><LuGithub /></a>
