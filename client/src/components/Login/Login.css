@@ -1,64 +1,140 @@
 .login-container {
   height: 100vh;
+  width: 100vw;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background: linear-gradient(105deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.1)), url('/images/HelloTV_main.png');
-  background-size: cover;
-  background-position: center;
-  background-blend-mode: multiply;
+  position: relative;
+  overflow: hidden;
+  background-color: #111;
+}
+
+.login-container::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 100%;
+  height: 100vh;
+  background-image: var(--background-image);
+  background-size: contain;
+  background-position: right center;
+  background-repeat: no-repeat;
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+.login-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 25%,
+    rgba(0, 0, 0, 0.95) 35%,
+    rgba(0, 0, 0, 0.8) 45%,
+    rgba(0, 0, 0, 0.4) 55%,
+    rgba(0, 0, 0, 0.1) 65%,
+    rgba(0, 0, 0, 0) 75%
+  );
+  z-index: 1;
 }
 
 .login-box {
-  background-color: rgba(0, 0, 0, 0.5);
+  width: 400px;
+  background-color: transparent;
   color: white;
-  padding: 20px;
-  border-radius: 5px;
+  padding: 40px;
+  margin-left: 5%;
   position: relative;
-  z-index: 1;
-  margin-left: calc(25% - 200px);
+  z-index: 2;
 }
 
-.login-box h2 {
-  color: #333;
+.login-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo-container {
+  width: 100%;
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.login-logo {
+  width: 280px;
+  height: auto;
+}
+
+.slogan {
+  font-family: "LGEIHeadlineTTF-Bold";
+  font-size: 18px;
+  color: white;
   text-align: center;
-  margin-bottom: 30px;
-  font-size: 28px;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+form {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .input-group {
-  margin-bottom: 20px;
+  width: 100%;
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: center;
 }
 
 .input-group input {
-  width: 90%;
+  width: 100%;
   padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: white;
   font-size: 16px;
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.input-group input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .input-group input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 .login-btn {
   width: 100%;
   padding: 15px;
-  background: linear-gradient(135deg, #1a1a1a 0%, #A00534 100%);
+  background: rgba(160, 5, 52, 0.8);
   border: none;
-  border-radius: 12px;
+  border-radius: 8px;
   color: white;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
 }
 
 .login-btn:hover {
   transform: translateY(-2px);
+  background: rgba(160, 5, 52, 0.9);
+  box-shadow: 0 5px 15px rgba(160, 5, 52, 0.3);
 }
 
 .login-btn:active {
@@ -68,21 +144,32 @@
 .message {
   margin-top: 20px;
   text-align: center;
-  color: #666;
   font-size: 14px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .message.error {
-  color: #e74c3c;
+  color: #ff6b6b;
 }
 
 .message.success {
-  color: #2ecc71;
+  color: #69db7c;
 }
 
-@media (max-width: 480px) {
+.login-box h2 {
+  color: white;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 768px) {
   .login-box {
-    margin: 10px;
-    padding: 20px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: rgba(0, 0, 0, 0.5);
   }
 }
