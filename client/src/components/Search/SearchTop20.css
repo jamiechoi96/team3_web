@@ -6,9 +6,10 @@
 }
 
 .search-top20-title {
-  font-size: 28px;
+  font-size: 40px;
   font-weight: bold;
-  
+  text-align: center;
+  margin-bottom: 30px;
   color: #fff;
 }
 

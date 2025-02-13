@@ -122,7 +122,7 @@ function SearchTop20() {
 
   return (
     <div className="search-watching">
-      <h2 className="search-top20-title">🎯금주의 인기 콘텐츠</h2>
+      <h2 className="search-top20-title">📺인기 콘텐츠를 시청해보세요</h2>
       <div className="search-top20-grid">
         {movies.map((movie) => (
           <MovieCard key={movie.ranking} movie={movie} />

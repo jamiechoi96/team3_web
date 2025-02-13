@@ -9,6 +9,7 @@ const similarVodController = require('../controllers/similarVodController');
 const { getGenreStats } = require('../controllers/genreStatsController');
 const { getViewingPatterns } = require('../controllers/viewingPatternController');
 const summaryRecommendController = require('../controllers/summaryRecommendController');
+const bannerController = require('../controllers/bannerController');
 
 // 테스트
 router.get('/test', (req, res) => {
@@ -38,5 +39,8 @@ router.get('/viewing-patterns', authController.authenticateToken, getViewingPatt
 // 줄거리 기반 추천 관련 라우트
 router.post('/summary-recommend', authController.authenticateToken, summaryRecommendController.getSummaryRecommend);
 router.get('/summary-recommend', authController.authenticateToken, summaryRecommendController.getAllSummaryRecommends);
+
+// 배너 VOD 조회
+router.get('/banner-vods', bannerController.getBannerVods);
 
 module.exports = router;
