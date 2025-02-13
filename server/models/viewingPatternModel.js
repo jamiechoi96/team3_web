@@ -7,16 +7,14 @@ class ViewingPatternModel {
             connections = await createConnections();
             const connection = connections[0];
 
+            // 인위적인 지연 추가 (1000ms)
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
             const [timePeriodStats] = await connection.execute(
                 `SELECT 
-                    CASE 
-                        WHEN HOUR(STR_TO_DATE(strt_dt, '%Y%m%d%H%i%s')) BETWEEN 0 AND 5 THEN '새벽'
-                        WHEN HOUR(STR_TO_DATE(strt_dt, '%Y%m%d%H%i%s')) BETWEEN 6 AND 11 THEN '오전'
-                        WHEN HOUR(STR_TO_DATE(strt_dt, '%Y%m%d%H%i%s')) BETWEEN 12 AND 17 THEN '오후'
-                        ELSE '저녁'
-                    END as time_period,
+                    time_period,
                     COUNT(*) as count
-                FROM vod_movie_03
+                FROM user_viewing_patterns
                 WHERE sha2_hash = ?
                 GROUP BY time_period
                 ORDER BY count DESC
@@ -26,34 +24,26 @@ class ViewingPatternModel {
 
             const [hourlyStats] = await connection.execute(
                 `SELECT 
-                    HOUR(STR_TO_DATE(strt_dt, '%Y%m%d%H%i%s')) as hour,
+                    viewing_hour as hour,
                     COUNT(*) as count
-                FROM vod_movie_03
+                FROM user_viewing_patterns
                 WHERE sha2_hash = ?
-                GROUP BY hour
-                ORDER BY hour`,
+                GROUP BY viewing_hour
+                ORDER BY viewing_hour`,
                 [userHash]
             );
 
             const [bingeStats] = await connection.execute(
-                `WITH viewing_sessions AS (
-                    SELECT 
-                        strt_dt,
-                        LAG(strt_dt) OVER (ORDER BY strt_dt) as prev_strt_dt
-                    FROM vod_movie_03
-                    WHERE sha2_hash = ?
-                )
-                SELECT 
+                `SELECT 
                     COUNT(*) as binge_count,
                     COUNT(*) * 100.0 / (
                         SELECT COUNT(*) 
-                        FROM vod_movie_03 
+                        FROM user_viewing_patterns 
                         WHERE sha2_hash = ?
                     ) as binge_percentage
-                FROM viewing_sessions
-                WHERE TIMESTAMPDIFF(MINUTE, 
-                    STR_TO_DATE(prev_strt_dt, '%Y%m%d%H%i%s'),
-                    STR_TO_DATE(strt_dt, '%Y%m%d%H%i%s')) <= 30`,
+                FROM user_viewing_patterns
+                WHERE sha2_hash = ?
+                AND next_view_interval <= 30`,
                 [userHash, userHash]
             );
 
