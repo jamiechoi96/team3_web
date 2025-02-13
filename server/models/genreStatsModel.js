@@ -3,18 +3,21 @@ const { executeQuery } = require('../utils/database');
 class GenreStatsModel {
     static async getGenreStatsByUser(userHash) {
         try {
+            // 인위적인 지연 추가 (1000ms)
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
             const query = `
                 WITH Total AS (
-                    SELECT COUNT(asset) AS total_assets
-                    FROM vod_movie_03
+                    SELECT COUNT(*) AS total_assets
+                    FROM user_viewing_patterns
                     WHERE sha2_hash = ?
                 ),
                 GenreCounts AS (
                     SELECT 
                         genre_of_ct_cl,                        
-                        COUNT(asset) AS asset_count,               
-                        ROUND((COUNT(asset) * 100.0) / total.total_assets, 1) AS percentage
-                    FROM vod_movie_03, Total
+                        COUNT(*) AS asset_count,               
+                        ROUND((COUNT(*) * 100.0) / total.total_assets, 1) AS percentage
+                    FROM user_viewing_patterns, Total
                     WHERE sha2_hash = ?
                     GROUP BY genre_of_ct_cl, total.total_assets
                 ),

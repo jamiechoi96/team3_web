@@ -14,6 +14,7 @@ function RecommendContents() {
   const [newMovies, setNewMovies] = useState([]);
   const [similarMovies, setSimilarMovies] = useState([]);
   const [genreMovies, setGenreMovies] = useState([]);
+  const [summaryMovies, setSummaryMovies] = useState([]); 
   const [showPopup, setShowPopup] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const sectionRefs = useState([]);
@@ -42,15 +43,42 @@ function RecommendContents() {
           if (similarResponse.data.success) {
             setSimilarMovies(similarResponse.data.data);
           }
-        } catch (error) {
-          console.error('similar-vods 요청 오류:', error.response?.data || error.message);
-        }
 
-        // // 장르 기반 추천 가져오기
-        // const genreResponse = await axios.get('/api/genre-vods');
-        // if (genreResponse.data.success) {
-        //   setGenreMovies(genreResponse.data.data);
-        // }
+          // 줄거리 기반 추천 가져오기
+          const currentContentHash = localStorage.getItem('sha2_Hash');
+          console.log('현재 콘텐츠 해시:', currentContentHash);
+          try {
+            const summaryResponse = await axios.get('/api/summary-recommend', {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            });
+            console.log('줄거리 기반 추천 응답:', summaryResponse.data);
+            if (summaryResponse.data.success && summaryResponse.data.data.length > 0) {
+              setSummaryMovies(summaryResponse.data.data);
+              console.log('줄거리 기반 추천 영화:', summaryResponse.data.data);
+            } else {
+              console.warn('줄거리 기반 추천 데이터 없음');
+              setSummaryMovies([]);
+            }
+          } catch (error) {
+            console.error('줄거리 기반 추천 API 오류:', error.response?.data || error.message);
+            setSummaryMovies([]);
+          }
+
+          // 장르 기반 추천 가져오기
+          const genreResponse = await axios.get('/api/genre-vods', {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          if (genreResponse.data.success) {
+            setGenreMovies(genreResponse.data.data);
+          }
+
+        } catch (error) {
+          console.error('API 요청 오류:', error.response?.data || error.message);
+        }
 
       } catch (error) {
         console.error("데이터를 가져오는 중 오류 발생:", error);
@@ -99,6 +127,35 @@ function RecommendContents() {
     ]
   };
 
+  const renderSummaryRecommendations = () => {
+    console.log('현재 줄거리 기반 추천 영화:', summaryMovies);
+    
+    if (summaryMovies.length === 0) {
+      return <div>추천 영화가 없습니다.</div>;
+    }
+
+    return (
+      <Slider {...settings_recommendation} className="slider_wrapper">
+        {summaryMovies.map((movie, index) => (
+          <div key={index} className="movie_card">
+            <img
+              src={movie.poster_path ? `${imageUrl}${movie.poster_path}` : movie.posterUrl}
+              alt={movie.asset_nm}
+              className="movie_image"
+            />
+            <div className="movie_hover">
+              <div className="movie_title">{movie.asset_nm}</div>
+              <div className="movie_buttons">
+                <button className="play_btn">▶ 재생</button>
+                <button className="info_btn" onClick={() => handleInfoClick(movie)}>ℹ️ 정보</button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </Slider>
+    );
+  };
+
   return (
     <div className="recommend_contents">
       <h2 className="section_title">🗓️이번 달 신작이에요</h2>
@@ -143,7 +200,10 @@ function RecommendContents() {
 
       <AdvertisementBanner />
 
-      <h2 className="section_title">이런 장르는 어떠세요?</h2>
+      <h2 className="section_title">📖 줄거리가 비슷한 작품을 찾아봤어요</h2>
+      {renderSummaryRecommendations()}
+
+      <h2 className="section_title">🎬 이런 장르는 어떠세요?</h2>
       <Slider {...settings_recommendation} className="slider_wrapper">
         {genreMovies.map((movie, index) => (
           <div key={index} className="movie_card">

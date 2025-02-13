@@ -17,7 +17,7 @@ const CustomTooltip = ({ active, payload }) => {
       <div className="custom-tooltip">
         <p className="tooltip-genre">{data.name}</p>
         <p className="tooltip-value">{`${data.value}%`}</p>
-        <p className="tooltip-count">{`${data.count}개 시청`}</p>
+        <p className="tooltip-count">{`${data.count}번 시청`}</p>
       </div>
     );
   }
@@ -122,7 +122,7 @@ const Dashboard = () => {
       <div style={{ position: 'relative' }}>
         <div className="dashboard_row">
           <div className="dashboard_card">
-            <h3>장르별 시청 비율</h3>
+            <h3>TOP 5 장르별 시청 비율</h3>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
@@ -168,7 +168,7 @@ const Dashboard = () => {
                         <div className="custom-tooltip">
                           <p className="tooltip-genre">{payload[0].payload.genre}</p>
                           <p className="tooltip-value">{`${payload[0].value}%`}</p>
-                          <p className="tooltip-count">{`${payload[0].payload.total_asset_count}개 시청`}</p>
+                          <p className="tooltip-count">{`${payload[0].payload.total_asset_count}회 시청`}</p>
                         </div>
                       );
                     }
@@ -239,9 +239,9 @@ const Dashboard = () => {
         </div>
 
         <div className="stat_card">
-          <h4>시청한 콘텐츠 수</h4>
+          <h4>콘텐츠 시청 횟수</h4>
           <p className="stat_value">{totalWatched}</p>
-          <p className="stat_detail">총 시청 콘텐츠</p>
+          <p className="stat_detail">총 콘텐츠 시청횟수</p>
         </div>
 
         <div className="stat_card">
