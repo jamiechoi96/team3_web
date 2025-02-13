@@ -9,41 +9,7 @@ class GenreVod {
     try {
       // 인기 있는 장르의 VOD 가져오기
       const query = `
-        WITH PopularGenres AS (
-          SELECT 
-            SUBSTRING_INDEX(SUBSTRING_INDEX(genre, ',', n.n), ',', -1) as single_genre
-          FROM 
-            vod_0301 v
-            CROSS JOIN (
-              SELECT 1 as n UNION ALL
-              SELECT 2 UNION ALL
-              SELECT 3 UNION ALL
-              SELECT 4
-            ) n
-          WHERE 
-            CHAR_LENGTH(genre) - CHAR_LENGTH(REPLACE(genre, ',', '')) >= n.n - 1
-        ),
-        GenreRanking AS (
-          SELECT 
-            single_genre,
-            COUNT(*) as genre_count,
-            ROW_NUMBER() OVER (ORDER BY COUNT(*) DESC) as rank
-          FROM 
-            PopularGenres
-          GROUP BY 
-            single_genre
-        )
-        SELECT DISTINCT 
-          v.asset_nm,
-          v.genre
-        FROM 
-          vod_0301 v
-          JOIN GenreRanking g ON v.genre LIKE CONCAT('%', g.single_genre, '%')
-        WHERE 
-          g.rank <= 3
-        ORDER BY 
-          RAND()
-        LIMIT 20
+        
       `;
 
       const rows = await executeQuery(query);
