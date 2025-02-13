@@ -12,135 +12,67 @@ class SummaryRecommend {
       const connections = await createConnections();
       connection = connections[0];
 
-      console.log('받은 sha2_hash:', sha2_hash);
+      console.log('===== 줄거리 기반 추천 데이터 조회 시작 =====');
+      console.log('요청된 사용자 해시:', sha2_hash);
 
       // smry_recommend 테이블에서 데이터 조회 (해시 기반)
       const [summaryRows] = await connection.execute(`
         SELECT * FROM smry_recommend
         WHERE sha2_hash = ?
-        LIMIT 20
+        LIMIT 20;
       `, [sha2_hash]);
 
-      console.log('줄거리 기반 추천 데이터 조회 결과:', summaryRows);
+      console.log('===== 줄거리 기반 추천 데이터 조회 결과 =====');
+      console.log('조회된 영화 개수:', summaryRows.length);
+      if (summaryRows.length > 0) {
+        console.log('첫 번째 추천 영화:', summaryRows[0].asset_nm);
+        console.log('데이터 필드:', Object.keys(summaryRows[0]));
+      }
 
       // 추천 데이터 선택 로직
       let recommendRows = summaryRows;
 
-      // smry_recommend에 데이터가 없으면 기본 줄거리 데이터 제공
+      // smry_recommend에 데이터가 없으면 null 반환
       if (summaryRows.length === 0) {
-        const [defaultRows] = await connection.execute(`
-          SELECT * FROM smry_recommend
-          LIMIT 20
-        `);
-        recommendRows = defaultRows;
-        console.log('기본 줄거리 데이터 조회 결과:', recommendRows);
+        console.log('===== 줄거리 기반 추천 데이터 없음 =====');
+        return [];
       }
 
-      // 데이터가 여전히 없으면 사용자의 주요 장르 기반 추천 쿼리
-      if (recommendRows.length === 0) {
-        const [genreRows] = await connection.execute(`
-          WITH UserTopGenre AS (
-            SELECT genre, COUNT(*) as genre_count
-            FROM (
-              SELECT DISTINCT user_id, genre
-              FROM watch_history wh
-              JOIN vod_movie_03 vm ON wh.vod_id = vm.vod_id
-              WHERE user_id = (
-                SELECT user_id 
-                FROM user_info 
-                WHERE sha2_hash = ?
-              )
-            ) AS UserGenres
-            GROUP BY genre
-            ORDER BY genre_count DESC
-            LIMIT 1
-          ),
-          TopGenreVods AS (
-            SELECT 
-              vm.*, 
-              COUNT(wh.watch_id) as popularity_score
-            FROM 
-              vod_movie_03 vm
-            LEFT JOIN 
-              watch_history wh ON vm.vod_id = wh.vod_id
-            JOIN 
-              UserTopGenre utg ON vm.genre = utg.genre
-            GROUP BY 
-              vm.vod_id, vm.asset_nm, vm.genre
-            ORDER BY 
-              popularity_score DESC
-            LIMIT 20
-          )
-          SELECT * FROM TopGenreVods
-        `, [sha2_hash]);
-
-        recommendRows = genreRows;
-        console.log('사용자 주요 장르 기반 추천 데이터 조회 결과:', recommendRows);
-      }
-
-      // 데이터가 여전히 없으면 랜덤으로 20개 뽑아오기
-      if (recommendRows.length === 0) {
-        const [randomRows] = await connection.execute(`
-          SELECT * FROM vod_movie_03
-          ORDER BY RAND()
-          LIMIT 20
-        `);
-        recommendRows = randomRows;
-        console.log('랜덤 추천 데이터 조회 결과:', recommendRows);
-      }
-
-      // 데이터가 여전히 없으면 빈 배열 반환
-      if (recommendRows.length === 0) {
-        return {
-          success: false,
-          message: '추천 데이터가 없습니다.',
-          data: []
-        };
-      }
-
+      console.log('===== TMDB 데이터 조회 시작 =====');
       // TMDB API로 추가 정보 가져오기
       const moviesWithDetails = await Promise.all(
         recommendRows.map(async (movie) => {
           try {
+            console.log('영화 검색:', movie.asset_nm);
             const tmdbResponse = await axios.get(
-              `https://api.themoviedb.org/3/search/movie`, {
-                params: {
-                  api_key: API_KEY,
-                  query: movie.asset_nm,
-                  language: 'ko-KR'
-                }
-              }
+              `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(movie.asset_nm)}&language=ko-KR`
             );
 
-            // TMDB 영화 정보 추출
             if (tmdbResponse.data.results && tmdbResponse.data.results.length > 0) {
               const tmdbMovie = tmdbResponse.data.results[0];
+              console.log('TMDB 검색 성공:', {
+                title: movie.asset_nm,
+                posterPath: tmdbMovie.poster_path ? '있음' : '없음',
+                backdropPath: tmdbMovie.backdrop_path ? '있음' : '없음'
+              });
               return {
                 ...movie,
                 posterUrl: tmdbMovie.poster_path ? `${imageUrl}${tmdbMovie.poster_path}` : null,
                 backdropUrl: tmdbMovie.backdrop_path ? `${imageUrl}${tmdbMovie.backdrop_path}` : null,
-                overview: tmdbMovie.overview || '상세 정보 없음'
+                overview: tmdbMovie.overview
               };
             }
-
-            // TMDB 정보 없을 경우 기본 정보 반환
-            return {
-              ...movie,
-              posterUrl: null,
-              backdropUrl: null,
-              overview: '영화 정보를 찾을 수 없음'
-            };
+            console.log('TMDB 검색 결과 없음:', movie.asset_nm);
+            return movie;
           } catch (error) {
             console.error(`TMDB API 오류 (${movie.asset_nm}):`, error.message);
-            return {
-              ...movie,
-              posterUrl: null,
-              backdropUrl: null,
-              overview: '영화 정보를 가져오는 중 오류 발생'
-            };
+            return movie;
           }
         })
       );
+
+      console.log('===== 줄거리 기반 추천 처리 완료 =====');
+      console.log('최종 추천 영화 수:', moviesWithDetails.length);
 
       return {
         success: true,

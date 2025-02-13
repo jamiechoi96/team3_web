@@ -3,8 +3,17 @@ const SummaryRecommend = require("../models/summaryRecommendModel");
 const summaryRecommendController = {
   getSummaryRecommend: async (req, res) => {
     try {
-      const { sha2Hash } = req.params;
-      const result = await SummaryRecommend.getSummaryRecommend(sha2Hash);
+      // JWT 토큰에서 sha2_hash 가져오기
+      const sha2_hash = req.user.sha2_hash;
+      
+      if (!sha2_hash) {
+        return res.status(400).json({ 
+          success: false, 
+          message: '사용자 해시가 필요합니다.' 
+        });
+      }
+
+      const result = await SummaryRecommend.getSummaryRecommend(sha2_hash);
       res.json(result);
     } catch (error) {
       console.error("Error in getSummaryRecommend:", error);
