@@ -4,85 +4,95 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Popup from '../Popup/Popup';
-import "./RecommendContents.css";
 import AdvertisementBanner from './AdBanner';
+import "./RecommendContents.css";
 
 const API_KEY = import.meta.env.VITE_TMDB_API;
 const imageUrl = "https://image.tmdb.org/t/p/original";
 
 function RecommendContents() {
+  // 상태 변수 선언
   const [newMovies, setNewMovies] = useState([]);
   const [similarMovies, setSimilarMovies] = useState([]);
-  const [summaryMovies, setSummaryMovies] = useState([]); 
+  const [summaryMovies, setSummaryMovies] = useState([]);
+  const [preferredGenreMovies, setPreferredGenreMovies] = useState([]); // 선호 장르 기반 영화
   const [showPopup, setShowPopup] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
-  const sectionRefs = useState([]);
 
+  // 컴포넌트가 마운트될 때 영화 목록을 가져오는 useEffect
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // 신작 VOD 가져오기
-        const newVodsResponse = await axios.get('/api/new-vods');
-        if (newVodsResponse.data.success) {
-          setNewMovies(newVodsResponse.data.data);
-        }
-
-        // 비슷한 시청 기록 가져오기
-        try {
-          const token = localStorage.getItem('token');
-          const similarResponse = await axios.post('/api/similar-vods', 
-            {}, 
-            { 
-              headers: { 
-                'Authorization': `Bearer ${token}` 
-              }
-            }
-          );
-          console.log('서버 응답:', similarResponse.data);
-          if (similarResponse.data.success) {
-            setSimilarMovies(similarResponse.data.data);
-          }
-
-          // 줄거리 기반 추천 가져오기
-          try {
-            const summaryResponse = await axios.post('/api/summary-recommend', 
-              {}, 
-              { 
-                headers: { 
-                  'Authorization': `Bearer ${token}` 
-                }
-              }
-            );
-            console.log('줄거리 기반 추천 응답:', summaryResponse.data);
-            if (summaryResponse.data.success && summaryResponse.data.data.length > 0) {
-              setSummaryMovies(summaryResponse.data.data);
-              console.log('줄거리 기반 추천 영화:', summaryResponse.data.data);
-            } else {
-              console.warn('줄거리 기반 추천 데이터 없음');
-              setSummaryMovies([]);
-            }
-          } catch (error) {
-            console.error('줄거리 기반 추천 API 오류:', error.response?.data || error.message);
-            setSummaryMovies([]);
-          }
-
-        } catch (error) {
-          console.error('API 요청 오류:', error.response?.data || error.message);
-        }
-
-      } catch (error) {
-        console.error("데이터를 가져오는 중 오류 발생:", error);
-      }
-    };
-
-    fetchData();
+    fetchNewVods();
+    fetchSimilarVods();
+    fetchSummaryVods();
+    fetchPreferredGenreVods(); // 선호 장르 기반 영화 가져오기
   }, []);
 
+  /** 신작 VOD 가져오기 */
+  const fetchNewVods = async () => {
+    try {
+      const response = await axios.get('/api/new-vods');
+      if (response.data.success) setNewMovies(response.data.data);
+    } catch (error) {
+      console.error("신작 VOD API 오류:", error.response?.data || error.message);
+    }
+  };
+
+  /** 비슷한 시청 기록 기반 추천 가져오기 */
+  const fetchSimilarVods = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get('/api/similar-vods', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      if (response.data.success) setSimilarMovies(response.data.data);
+    } catch (error) {
+      console.error("비슷한 시청 기록 추천 API 오류:", error.response?.data || error.message);
+    }
+  };
+
+  /** 줄거리 기반 추천 가져오기 */
+  const fetchSummaryVods = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get('/api/summary-recommend', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      if (response.data.success) {
+        setSummaryMovies(response.data.data.length > 0 ? response.data.data : []);
+      }
+    } catch (error) {
+      console.error("줄거리 기반 추천 API 오류:", error.response?.data || error.message);
+      setSummaryMovies([]);
+    }
+  };
+
+  /** 선호 장르 기반 추천 가져오기 */
+  const fetchPreferredGenreVods = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get('/api/preferred-genre', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (response.data && response.data.success) {
+        const movies = response.data.data || [];
+        setPreferredGenreMovies(movies.length > 0 ? movies : []);
+      } else {
+        console.error("선호 장르 기반 추천 응답 형식 오류:", response.data);
+        setPreferredGenreMovies([]);
+      }
+    } catch (error) {
+      console.error("선호 장르 기반 추천 API 오류:", error.response?.data || error.message);
+      setPreferredGenreMovies([]);
+    }
+  };
+
+  /** 영화 정보 팝업 핸들러 */
   const handleInfoClick = (movie) => {
-    setSelectedMovie({
-      ...movie,
-      hover: movie.backdropUrl
-    });
+    setSelectedMovie({ ...movie, hover: movie.backdropUrl });
     setShowPopup(true);
   };
 
@@ -91,7 +101,8 @@ function RecommendContents() {
     setSelectedMovie(null);
   };
 
-  const settings_recommendation = {
+  /** 공통 슬라이더 설정 */
+  const sliderSettings = {
     dots: false,
     infinite: false,
     speed: 500,
@@ -100,102 +111,50 @@ function RecommendContents() {
     autoplay: false,
     arrows: true,
     responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
-        }
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-        }
-      }
+      { breakpoint: 1024, settings: { slidesToShow: 4, slidesToScroll: 4 } },
+      { breakpoint: 600, settings: { slidesToShow: 2, slidesToScroll: 2 } }
     ]
   };
 
-  const renderSummaryRecommendations = () => {
-    console.log('현재 줄거리 기반 추천 영화:', summaryMovies);
-    
-    if (summaryMovies.length === 0) {
-      return <div>추천 영화가 없습니다.</div>;
-    }
-
-    return (
-      <Slider {...settings_recommendation} className="slider_wrapper">
-        {summaryMovies.map((movie, index) => (
-          <div key={index} className="movie_card">
-            <img
-              src={movie.poster_path ? `${imageUrl}${movie.poster_path}` : movie.posterUrl}
-              alt={movie.asset_nm}
-              className="movie_image"
-            />
-            <div className="movie_hover">
-              <div className="movie_title">{movie.asset_nm}</div>
-              <div className="movie_buttons">
-                <button className="play_btn">▶ 재생</button>
-                <button className="info_btn" onClick={() => handleInfoClick(movie)}>ℹ️ 정보</button>
+  /** 슬라이더 렌더링 함수 */
+  const renderMovieSlider = (movies, title) => (
+    <div>
+      <h2 className="section_title">{title}</h2>
+      {movies.length > 0 ? (
+        <Slider {...sliderSettings} className="slider_wrapper">
+          {movies.map((movie, index) => (
+            <div key={index} className="movie_card">
+              <img
+                src={movie.poster_path ? `${imageUrl}${movie.poster_path}` : movie.posterUrl}
+                alt={movie.asset_nm}
+                className="movie_image"
+              />
+              <div className="movie_hover">
+                <div className="movie_title">{movie.asset_nm}</div>
+                <div className="movie_buttons">
+                  <button className="play_btn">▶ 재생</button>
+                  <button className="info_btn" onClick={() => handleInfoClick(movie)}>ℹ️ 정보</button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </Slider>
-    );
-  };
+          ))}
+        </Slider>
+      ) : (
+        <div></div>
+      )}
+    </div>
+  );
 
   return (
     <div className="recommend_contents">
-      <h2 className="section_title">🗓️이번 달 신작이에요</h2>
-      <Slider {...settings_recommendation} className="slider_wrapper">
-        {newMovies.map((movie, index) => (
-          <div key={index} className="movie_card">
-            <img
-              src={movie.posterUrl}
-              alt={movie.asset_nm}
-              className="movie_image"
-            />
-            <div className="movie_hover">
-              <div className="movie_title">{movie.asset_nm}</div>
-              <div className="movie_buttons">
-                <button className="play_btn">▶ 재생</button>
-                <button className="info_btn" onClick={() => handleInfoClick(movie)}>ℹ️ 정보</button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </Slider>
-
-      <h2 className="section_title">🫱🏻‍🫲🏼나와 비슷한 사람들은 이런 작품을 봤어요</h2>
-      <Slider {...settings_recommendation} className="slider_wrapper">
-        {similarMovies.map((movie, index) => (
-          <div key={index} className="movie_card">
-            <img
-              src={movie.posterUrl}
-              alt={movie.asset_nm}
-              className="movie_image"
-            />
-            <div className="movie_hover">
-              <div className="movie_title">{movie.asset_nm}</div>
-              <div className="movie_buttons">
-                <button className="play_btn">▶ 재생</button>
-                <button className="info_btn" onClick={() => handleInfoClick(movie)}>ℹ️ 정보</button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </Slider>
-
+      {renderMovieSlider(newMovies, "이번 달 새롭게 추가된 작품이에요 🗓️")}
+      {renderMovieSlider(similarMovies, "취향이 비슷한 사람들이 많이 본 작품이에요 🎯")}
       <AdvertisementBanner />
+      {renderMovieSlider(summaryMovies, "이 작품과 비슷한 줄거리를 가진 콘텐츠예요 📖")}
+      
+      {renderMovieSlider(preferredGenreMovies, "당신의 선호 장르 기반 추천 VOD 🎬")}
 
-      <h2 className="section_title">📖 줄거리가 비슷한 작품을 찾아봤어요</h2>
-      {renderSummaryRecommendations()}
-
-      {showPopup && selectedMovie && (
-        <Popup movie={selectedMovie} onClose={closePopup} />
-      )}
+      {showPopup && selectedMovie && <Popup movie={selectedMovie} onClose={closePopup} />}
     </div>
   );
 }
