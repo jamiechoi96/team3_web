@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 import "./Popup.css";
+import { AiOutlineClose } from "react-icons/ai";
 
 function Popup({ movie, onClose }) {
   useEffect(() => {
@@ -13,7 +14,7 @@ function Popup({ movie, onClose }) {
   const popupContent = (
     <div className="popup_overlay">
       <div className="popup_content">
-        <button className="popup_close" onClick={onClose}>×</button>
+        <button className="popup_close" onClick={onClose}>✕</button>
         <div className="popup_image_container">
           <div className="popup_image" style={{ backgroundImage: `url(${movie.hover})` }}></div>
           <div className="popup_controls">

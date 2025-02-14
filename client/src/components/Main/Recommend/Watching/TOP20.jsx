@@ -76,7 +76,7 @@ function TOP20() {
     <div className="watching">
       <h2 className="top20_title">🎯금주의 TOP 20 추천</h2>
       <div className={`slider-container ${currentSlide === totalSlides - 1 ? 'last-slide' : ''}`}>
-        <Slider {...settings_top20}>
+        <Slider {...settings_top20} className="top20_slider">
           {movies.map((movie) => (
             <ImageCard
               key={movie.ranking}

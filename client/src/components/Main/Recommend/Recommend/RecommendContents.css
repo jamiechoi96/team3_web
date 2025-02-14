@@ -12,11 +12,11 @@
 /* 슬라이더 컨테이너 */
 .slider_container {
   display: flex;
-  overflow-x: auto; /* 가로 스크롤 가능 */
   gap: 10px;
-  scroll-behavior: smooth;
   padding-bottom: 20px;
   margin-left: 40px;
+  position: relative;
+  overflow: visible;
 }
 
 .slider_container::-webkit-scrollbar {
@@ -103,85 +103,74 @@
   background-color: #d31548;
 }
 
-/* 좌우 스크롤 버튼 */
-.scroll_button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  width: 40px;
-  height: 100%;
-  cursor: pointer;
-  z-index: 200; /* 우선순위 설정 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-/* .scroll_button:hover {
-  background-color: rgba(255, 255, 255, 0.8);
-  color: black;
-}
- */
-.scroll_button.left {
-  left: 1px;
-}
-
-.scroll_button.right {
-  right: 1px;
-}
-
-/* 스크롤 버튼 디스플레이 문제 해결 */
-.slider_wrapper {
-  position: relative;
-}
 
 /* Slick 슬라이더 커스텀 스타일 */
 .slider_wrapper {
   margin: 0 20px;
+  position: relative;
+  overflow: visible;
 }
 
 .slider_wrapper .slick-slide {
   padding: 0 5px;  /* 좌우 5px씩 패딩을 주어 총 10px의 간격 생성 */
 }
 
-/* Slick 화살표 커스텀 스타일 */
-.slider_wrapper .slick-prev,
-.slider_wrapper .slick-next {
-  width: 40px;
-  height: 300px;  /* 영화 카드와 동일한 높이 */
-  background: rgba(0, 0, 0, 0.5);  /* 반투명 검정 배경 */
-  z-index: 1;
+/* 추천 섹션 화살표 버튼 */
+.recommend_slider .slick-prev,
+.recommend_slider .slick-next {
+  z-index: 1000;
+  width: 50px;
+  height: 300px;
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  background: none;
 }
 
-.slider_wrapper .slick-prev {
-  left: 0;
+.recommend_slider .slick-prev {
+  left: -35px;
 }
 
-.slider_wrapper .slick-next {
-  right: 0;
+.recommend_slider .slick-next {
+  right: -35px;
 }
 
-.slider_wrapper .slick-prev:hover,
-.slider_wrapper .slick-next:hover {
-  background: rgba(0, 0, 0, 0.7);  /* 호버 시 좀 더 진한 배경 */
+.recommend_slider .slick-prev:before,
+.recommend_slider .slick-next:before {
+  content: '';
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  opacity: 0.75;
+  position: absolute;
+  top: 50%;
+  transform-origin: center;
 }
 
-.slider_wrapper .slick-prev:before,
-.slider_wrapper .slick-next:before {
-  font-size: 24px;
+.recommend_slider .slick-prev:before {
+  transform: rotate(135deg) translateY(-50%);
+  right: 15px;
+}
+
+.recommend_slider .slick-next:before {
+  transform: rotate(-45deg) translateY(-50%);
+  left: 15px;
+}
+
+.recommend_slider .slick-prev:hover:before,
+.recommend_slider .slick-next:hover:before {
   opacity: 1;
+  border-color: #ed174d;
 }
 
-/* 화살표가 슬라이더 위에 오도록 설정 */
-.slider_wrapper {
-  position: relative !important;
-}
-
-.slider_wrapper .slick-list {
+.recommend_slider {
   position: relative;
-  z-index: 0;
+}
+
+.recommend_slider .slick-list {
+  position: relative;
+  z-index: 1;
 }

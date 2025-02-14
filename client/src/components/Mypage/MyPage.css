@@ -265,7 +265,7 @@
 }
 
 .watch-history-item h3 {
-  font-size: 1rem;
+  font-size: 1.2rem;
   margin-bottom: 5px;
   white-space: nowrap;
   overflow: hidden;
@@ -364,7 +364,7 @@
   font-size: 14px;
   font-weight: bold;
   padding: 8px 12px;
-  border-radius: 6px;
+  border-radius: 12px;
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
   white-space: nowrap;

@@ -121,7 +121,7 @@ function RecommendContents() {
     <div>
       <h2 className="section_title">{title}</h2>
       {movies.length > 0 ? (
-        <Slider {...sliderSettings} className="slider_wrapper">
+        <Slider {...sliderSettings} className="slider_wrapper recommend_slider">
           {movies.map((movie, index) => (
             <div key={index} className="movie_card">
               <img

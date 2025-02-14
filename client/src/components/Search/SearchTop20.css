@@ -249,12 +249,12 @@
 
 .search-banner-info {
   font-size: 0.95rem;
-  line-height: 1.5;
+  line-height: 1.8;
   opacity: 0.9;
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: 2rem;
 }
 
 .search-banner-info p {
@@ -265,23 +265,15 @@
   opacity: 0.8;
 }
 
-.search-banner-info .director::before {
-  content: '🎬';
-  margin-right: 0.3rem;
-}
-
-.search-banner-info .cast::before {
-  content: '🎭';
-  margin-right: 0.3rem;
-}
 
 .search-banner-description {
-  font-size: 0.9rem;
-  line-height: 1.6;
+  font-size: 1rem;
+  line-height: 1.2;
   text-align: left;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: keep-all;
@@ -289,7 +281,8 @@
   opacity: 0.8;
   padding: 1rem 0;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  max-height: 90px;
+  max-height: calc(1.2rem * 4); /* line-height × 줄 수 */
+
 }
 
 .search-banner-buttons {
