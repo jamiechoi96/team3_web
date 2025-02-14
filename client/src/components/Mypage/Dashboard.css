@@ -1,5 +1,5 @@
 .dashboard {
-  padding: 20px;
+  padding: 10px;
   color: white;
 }
 
@@ -15,13 +15,14 @@
   scrollbar-color: #ed174d rgba(255, 255, 255, 0.1);
   width: calc(100% - 40px);
   scroll-snap-type: x mandatory;
+  border-radius: 18px;
 }
 
 .dashboard_card {
   flex: 0 0 calc(100% - 40px);
-  min-width: 620px;
+  min-width: 590px;
   background: rgba(0, 0, 0, 0.3);
-  border-radius: 15px;
+  border-radius: 18px;
   padding: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   scroll-snap-align: start;
@@ -33,19 +34,21 @@
 .slider_title{
   font-size: 1.0rem;
 }
+
 .dashboard_stats {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
-  width: calc(100% - 40px);
+  width: calc(100% - 20px);
   margin: 20px;
-  height: 400px;
+  height: 300px;
+  margin-left: 20px;
 }
 
 .stat_card {
   background: rgba(0, 0, 0, 0.3);
-  border-radius: 15px;
-  padding: 20px;
+  border-radius: 18px;
+  padding: 10px;
   text-align: center;
   display: flex;
   flex-direction: column;

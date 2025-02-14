@@ -147,12 +147,12 @@ function RecommendContents() {
 
   return (
     <div className="recommend_contents">
-      {renderMovieSlider(newMovies, <span className="recommend_title">🗓️이번 달 <span className="title_point">새롭게 추가된</span> 영화에요</span>)}
-      {renderMovieSlider(similarMovies, <span className="recommend_title">🎯<span className="title_point">취향이 비슷한</span> 사람들이 많이 본 영화에요</span>)}
+      {renderMovieSlider(newMovies, <span className="recommend_title">🗓️최근 <span className="title_point">새롭게 추가된</span> 영화</span>)}
+      {renderMovieSlider(similarMovies, <span className="recommend_title">🎯회원님과 <span className="title_point">취향이 비슷한</span> 사람들이 많이 본 영화</span>)}
       <AdvertisementBanner />
-      {renderMovieSlider(summaryMovies, <span className="recommend_title">📖이 작품과 <span className="title_point">비슷한 줄거리</span>를 가진 영화에요</span>)}
+      {renderMovieSlider(summaryMovies, <span className="recommend_title">📖회원님이 많이 본 컨텐츠와 <span className="title_point">비슷한 줄거리</span>를 가진 영화</span>)}
       
-      {renderMovieSlider(preferredGenreMovies, <span className="recommend_title">🎬고객님이 많이 본 <span className="title_point">{preferredGenreMovies[0]?.genre}</span> 장르의 영화에요</span>)}
+      {renderMovieSlider(preferredGenreMovies, <span className="recommend_title">🎬회원님이 많이 본 <span className="title_point">{preferredGenreMovies[0]?.genre}</span> 장르의 영화</span>)}
 
       {showPopup && selectedMovie && <Popup movie={selectedMovie} onClose={closePopup} />}
     </div>

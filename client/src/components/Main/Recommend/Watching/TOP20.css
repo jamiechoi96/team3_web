@@ -10,13 +10,14 @@
 
 .top20_title {
   color: #fff;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   margin-left: 30px;
   font-size: 1.8rem;
   z-index: 1;
   font-weight: bold;
   text-align: left;
   width: 100%;
+  font-family: 'LGEITextTTF-SemiBold', sans-serif;
 }
 
 .top20-container {

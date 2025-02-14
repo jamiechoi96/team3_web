@@ -123,7 +123,7 @@ function SearchTop20() {
   return (
     <div className="search-watching">
       <h1 className="search-top20-title recommend_title">
-        🔍 실시간 검색 순위
+        🔍 실시간 인기순위를 즐겨보세요
       </h1>
       <div className="search-top20-grid">
         {movies.map((movie) => (

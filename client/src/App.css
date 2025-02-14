@@ -3,6 +3,11 @@
     src: url('./Fonts/LGEITextTTF-SemiBold.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'LGEIHeadlineTTF-Semibold';
+    src: url('./Fonts/LGEIHeadlineTTF-Semibold.ttf') format('truetype');
+}
+
 body {
   margin: 0;
   padding: 0;

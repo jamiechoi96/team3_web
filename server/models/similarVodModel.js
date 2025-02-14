@@ -9,7 +9,7 @@ class SimilarVod {
     try {
       // user_based_top20 테이블에서 추천 VOD 가져오기
       const rows = await executeQuery(`
-        SELECT *, crt_yr FROM user_based_top20
+        SELECT * FROM user_based_top20
         where sha2_hash = ?;
       `, [sha2_hash]);
 
@@ -24,21 +24,15 @@ class SimilarVod {
           try {
             console.log('검색할 영화 제목:', movie.asset_nm);
             const tmdbResponse = await axios.get(
-              `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(movie.asset_nm)}&year=${movie.crt_yr}&language=ko-KR`
+              `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(movie.asset_nm)}&language=ko-KR`
             );
 
             if (tmdbResponse.data.results && tmdbResponse.data.results.length > 0) {
-              // 연도가 일치하는 영화 찾기
-              const movieYear = movie.crt_yr;
-              const matchedMovie = tmdbResponse.data.results.find(result => {
-                const releaseYear = result.release_date ? new Date(result.release_date).getFullYear() : null;
-                return releaseYear === parseInt(movieYear);
-              }) || tmdbResponse.data.results[0]; // 연도가 일치하는 영화가 없으면 첫 번째 결과 사용
+              const matchedMovie = tmdbResponse.data.results[0]; // 첫 번째 검색 결과 사용
 
               console.log('TMDB 검색 결과:', {
                 title: movie.asset_nm,
-                year: movie.crt_yr,
-                tmdbYear: matchedMovie.release_date ? new Date(matchedMovie.release_date).getFullYear() : null,
+                matchedTitle: matchedMovie.title,
                 posterPath: matchedMovie.poster_path,
                 backdropPath: matchedMovie.backdrop_path
               });

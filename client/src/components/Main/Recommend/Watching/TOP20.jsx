@@ -74,7 +74,7 @@ function TOP20() {
 
   return (
     <div className="watching">
-      <p className="top20_title">👑금주의 TOP 20 추천</p>
+      <p className="top20_title">👑금주의 TOP 20 영화</p>
       <div className={`slider-container ${currentSlide === totalSlides - 1 ? 'last-slide' : ''}`}>
         <Slider {...settings_top20} className="top20_slider">
           {movies.map((movie) => (

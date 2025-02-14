@@ -47,7 +47,10 @@ const Header = () => {
         isScrolled ? "header-scrolled" : ""
       }`}
     >
-      <div className="logo" onClick={() => navigate("/")}>
+      <div className="logo" onClick={() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        navigate("/");
+      }}>
         <img src="/images/VODiscovery_w.png" alt="VODiscovery Logo" className="logo-image" />
       </div>
       <nav className="Nav">
@@ -65,15 +68,21 @@ const Header = () => {
       </nav>
       <div className="icons">
         {location.pathname !== "/search" && (
-          <FiSearch className="icon" onClick={() => navigate("/search")} />
-        )}
-        <Link to="/mypage">
-          <FiUser
-            className={`icon ${
-              location.pathname === "/mypage" ? "active" : ""
-            }`}
+          <FiSearch 
+            className="icon" 
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              navigate("/search");
+            }} 
           />
-        </Link>
+        )}
+        <FiUser
+          className={`icon ${location.pathname === "/mypage" ? "active" : ""}`}
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            navigate("/mypage");
+          }}
+        />
         <WeatherWidget />
       </div>
     </header>
