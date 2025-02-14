@@ -4,7 +4,7 @@
   color: #fff; /* 텍스트 흰색 */
   min-height: 100vh; /* 화면 전체 높이 */
   padding: 60px 60px 20px; /* 상단 패딩을 60px로 증가 */
-  font-family: Arial, sans-serif;
+  font-family: 'LGEITextTTF-SemiBold', sans-serif;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* 그림자 추가 */
   overflow-x: hidden;
 }
@@ -52,10 +52,10 @@
   border: 2px solid #53565a;
   padding: 7px 15px;
   border-radius: 12px;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   background: #53565a;
-  color: rgb(191, 225, 14);
+  color: #bfe10e;
   display: flex;
   align-items: center;
   gap: 10px;

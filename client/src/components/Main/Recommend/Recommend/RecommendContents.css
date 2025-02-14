@@ -4,7 +4,7 @@
   margin-bottom: 20px;
   margin-left: 20px; /* 왼쪽으로 정렬 */
   text-align: left;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   padding-left: 20px; /* 내용과 제목 간 여백 추가 */
 }
 
@@ -182,8 +182,11 @@
 
 body {
     font-family: 'LGEIHeadlineVF', sans-serif;
+    
 }
-
+span{
+  font-size: 1.8rem;
+}
 .title_point {
   color: #ed174d; 
   font-weight: 'bold';

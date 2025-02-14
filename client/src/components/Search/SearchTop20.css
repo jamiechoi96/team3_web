@@ -1,3 +1,7 @@
+body {
+  font-family: 'LGEITextTTF-SemiBold', sans-serif;
+}
+
 .search-watching {
   width: 90%;
   max-width: 1800px;
@@ -11,6 +15,7 @@
   text-align: center;
   margin-bottom: 30px;
   color: #fff;
+  font-family: 'LGEITextTTF-SemiBold', sans-serif;
 }
 
 .search-top20-grid {

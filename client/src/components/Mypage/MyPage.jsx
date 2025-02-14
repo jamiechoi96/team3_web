@@ -111,7 +111,7 @@ function MyPage() {
             <div className="set-top-box-number">
               {userHash && (
                 <>
-                  <span>셋탑박스 번호: {userHash}</span>
+                  <span className="set-top-box-number">셋탑박스 번호: {userHash}</span>
                   <button className="copy-button" onClick={handleCopyHash}>
                     {copySuccess ? <IoCheckmarkDone size={20} /> : <IoCopyOutline size={20} />}
                   </button>
