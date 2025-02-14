@@ -80,40 +80,44 @@ function Banner() {
         fade: true
     };
 
+    const BannerSlide = ({ movie }) => (
+        <div key={movie.vod_id} className="slide">
+                        <div className="mainBanner_content">
+                <h1 className="mainBanner_title">{movie.title}</h1>
+                <div className="movie-info">
+                    {movie.director && (
+                        <p className="main_director">
+                            <span>감독:</span> {movie.director.name}
+                        </p>
+                    )}
+                    {movie.cast && movie.cast.length > 0 && (
+                        <p className="main_cast">
+                            <span>출연:</span> {movie.cast.map(actor => actor.name).join(', ')}
+                        </p>
+                    )}
+                </div>
+                <p className="description">{movie.overview}</p>
+                <div className="banner_buttons">
+                    <button className="play-button">
+                        <FaPlay />
+                        재생
+                    </button>
+                </div>
+            </div>
+            <div className="image-gradient"></div>
+            <img
+                src={movie.backdrop_path ? `${imageUrl}${movie.backdrop_path}` : '/default-backdrop.jpg'}
+                alt={movie.title}
+                className="slide-image"
+            />
+        </div>
+    );
+
     return (
         <div className="banner">
             <Slider {...settings}>
                 {movies.map((movie) => (
-                    <div key={movie.vod_id} className="slide">
-                        <div className="content">
-                            <h1 className="title">{movie.title}</h1>
-                            <div className="movie-info">
-                                {movie.director && (
-                                    <p className="director">
-                                        <span>감독:</span> {movie.director.name}
-                                    </p>
-                                )}
-                                {movie.cast && movie.cast.length > 0 && (
-                                    <p className="cast">
-                                        <span>출연:</span> {movie.cast.map(actor => actor.name).join(', ')}
-                                    </p>
-                                )}
-                            </div>
-                            <p className="description">{movie.overview}</p>
-                            <div className="banner_buttons">
-                                <button className="button play-button">
-                                    <FaPlay size={20} />
-                                    <span>재생</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div className="image-gradient"></div>
-                        <img
-                            src={movie.backdrop_path ? `${imageUrl}${movie.backdrop_path}` : '/default-backdrop.jpg'}
-                            alt={movie.title}
-                            className="slide-image"
-                        />
-                    </div>
+                    <BannerSlide key={movie.vod_id} movie={movie} />
                 ))}
             </Slider>
         </div>
