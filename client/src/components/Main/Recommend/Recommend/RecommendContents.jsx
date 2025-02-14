@@ -147,12 +147,12 @@ function RecommendContents() {
 
   return (
     <div className="recommend_contents">
-      {renderMovieSlider(newMovies, "🗓️이번 달 새롭게 추가된 영화에요")}
-      {renderMovieSlider(similarMovies, "🎯취향이 비슷한 사람들이 많이 본 영화에요")}
+      {renderMovieSlider(newMovies, <span>🗓️이번 달 <span className="title_point">새롭게 추가된</span> 영화에요</span>)}
+      {renderMovieSlider(similarMovies, <span>🎯<span className="title_point">취향이 비슷한</span> 사람들이 많이 본 영화에요</span>)}
       <AdvertisementBanner />
-      {renderMovieSlider(summaryMovies, "📖이 작품과 비슷한 줄거리를 가진 영화에요")}
+      {renderMovieSlider(summaryMovies, <span>📖이 작품과 <span className="title_point">비슷한 줄거리</span>를 가진 영화에요</span>)}
       
-      {renderMovieSlider(preferredGenreMovies, "🎬당신의 선호 장르 기반 추천 VOD ")}
+      {renderMovieSlider(preferredGenreMovies, <span>🎬고객님이 많이 본 <span className="title_point">{preferredGenreMovies[0]?.genre}</span> 장르의 영화에요</span>)}
 
       {showPopup && selectedMovie && <Popup movie={selectedMovie} onClose={closePopup} />}
     </div>

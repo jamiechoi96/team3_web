@@ -174,3 +174,17 @@
   position: relative;
   z-index: 1;
 }
+
+@font-face {
+    font-family: 'LGEIHeadlineVF';
+    src: url('./fonts/LGEIHeadlineVF.ttf') format('truetype');
+}
+
+body {
+    font-family: 'LGEIHeadlineVF', sans-serif;
+}
+
+.title_point {
+  color: #ed174d; 
+  font-weight: 'bold';
+}

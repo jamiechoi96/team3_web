@@ -1,8 +1,14 @@
+@font-face {
+    font-family: 'LGEITextTTF-SemiBold';
+    src: url('./Fonts/LGEITextTTF-SemiBold.ttf') format('truetype');
+}
+
 body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
   background-color: #111;
+  font-family: 'LGEITextTTF-SemiBold', sans-serif;
 }
 
 #root {
