@@ -17,11 +17,11 @@ if (!dbHostBase || dbSuffixes.length === 0) {
   console.error('❌ DB_HOST 또는 DB_SUFFIXES가 설정되지 않음');
   process.exit(1);
 }
+const formattedDbHostBase = dbHostBase.endsWith('.') ? dbHostBase : `${dbHostBase}.`;
 
-// 105, 115 DB 설정 생성
 const dbConfigs = dbSuffixes.map((suffix) => {
   const config = {
-    host: `${dbHostBase}.${suffix}`,
+    host: `${formattedDbHostBase}${suffix}`, // 수정된 호스트 주소
     port: parseInt(process.env.DB_PORT) || 3306,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
