@@ -147,13 +147,15 @@
   position: relative;
   background-color: #1e1e1e;
   border-radius: 10px;
-  padding: 30px;
+  padding: 20px;
   font-size: 1rem;
   color: #ccc;
   width: calc(100% - 40px);  /* 전체 너비에서 양쪽 마진 20px씩 뺌 */
   max-width: 100%;
   overflow-x: hidden;
   margin: 0 20px;  /* 양쪽에 20px 마진 */
+  padding-top: 0px;
+  padding-bottom: 10px;
 }
 
 .section_content.watch-history {
