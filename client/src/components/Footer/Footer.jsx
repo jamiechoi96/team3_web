@@ -46,7 +46,7 @@ const Footer = () => {
         <a href="https://www.lghellovision.net/sitemap.do">사이트맵</a>
       </div>
       <p className="footer-copyright">
-        &copy; 2024 Team3 X LG HelloVision All rights reserved.
+        &copy; 2025 Team3 X LG HelloVision All rights reserved.
       </p>
     </footer>
   );
