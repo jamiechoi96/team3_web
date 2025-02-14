@@ -10,6 +10,7 @@ const { getGenreStats } = require('../controllers/genreStatsController');
 const { getViewingPatterns } = require('../controllers/viewingPatternController');
 const summaryRecommendController = require('../controllers/summaryRecommendController');
 const bannerController = require('../controllers/bannerController');
+const preferredGenreController = require("../controllers/preferredGenreController");
 
 // 테스트
 router.get('/test', (req, res) => {
@@ -20,12 +21,14 @@ router.get('/test', (req, res) => {
 router.get('/top20', getTop20);
 router.get('/search-top20', getSearchTop20);
 
-// VOD 추천 조회
-router.get('/new-vods', newVodController.getNewVods);
-router.post('/similar-vods', authController.authenticateToken, similarVodController.getSimilarVods);
-
 // 로그인 라우트
 router.post('/auth/login', authController.login);
+
+// 신작 추천 조회
+router.get('/new-vods', newVodController.getNewVods);
+
+// 협업필터링
+router.get('/similar-vods', authController.authenticateToken, similarVodController.getSimilarVods);
 
 // 시청기록 조회 (보호된 라우트)
 router.get('/watch-history', authController.authenticateToken, getWatchHistory);
@@ -37,10 +40,15 @@ router.get('/genre-stats', authController.authenticateToken, getGenreStats);
 router.get('/viewing-patterns', authController.authenticateToken, getViewingPatterns);
 
 // 줄거리 기반 추천 관련 라우트
-router.post('/summary-recommend', authController.authenticateToken, summaryRecommendController.getSummaryRecommend);
-router.get('/summary-recommend', authController.authenticateToken, summaryRecommendController.getAllSummaryRecommends);
+router.get('/summary-recommend', authController.authenticateToken, summaryRecommendController.getSummaryRecommend);
+
 
 // 배너 VOD 조회
 router.get('/banner-vods', bannerController.getBannerVods);
+
+// 사용자의 선호 장르 기반 추천 VOD 가져오기
+router.get("/preferred-genre", authController.authenticateToken, preferredGenreController.getPreferredGenreRecommend);
+
+
 
 module.exports = router;
