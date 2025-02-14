@@ -1,4 +1,4 @@
-const { createConnections } = require('../utils/database');
+const { executeQuery } = require('../utils/database');
 const axios = require('axios');
 
 const API_KEY = process.env.TMDB_API_KEY;
@@ -6,14 +6,10 @@ const imageUrl = "https://image.tmdb.org/t/p/original";
 
 class SimilarVod {
   static async getSimilarVods(sha2_hash) {
-    let connections = null;
     try {
-      connections = await createConnections();
-      const connection = connections[0];
-      
       // user_based_top20 테이블에서 추천 VOD 가져오기
-      const [rows] = await connection.execute(`
-        SELECT * FROM user_based_top20
+      const rows = await executeQuery(`
+        SELECT *, crt_yr FROM user_based_top20
         where sha2_hash = ?;
       `, [sha2_hash]);
 
@@ -28,21 +24,30 @@ class SimilarVod {
           try {
             console.log('검색할 영화 제목:', movie.asset_nm);
             const tmdbResponse = await axios.get(
-              `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(movie.asset_nm)}&language=ko-KR`
+              `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(movie.asset_nm)}&year=${movie.crt_yr}&language=ko-KR`
             );
 
             if (tmdbResponse.data.results && tmdbResponse.data.results.length > 0) {
-              const tmdbMovie = tmdbResponse.data.results[0];
+              // 연도가 일치하는 영화 찾기
+              const movieYear = movie.crt_yr;
+              const matchedMovie = tmdbResponse.data.results.find(result => {
+                const releaseYear = result.release_date ? new Date(result.release_date).getFullYear() : null;
+                return releaseYear === parseInt(movieYear);
+              }) || tmdbResponse.data.results[0]; // 연도가 일치하는 영화가 없으면 첫 번째 결과 사용
+
               console.log('TMDB 검색 결과:', {
                 title: movie.asset_nm,
-                posterPath: tmdbMovie.poster_path,
-                backdropPath: tmdbMovie.backdrop_path
+                year: movie.crt_yr,
+                tmdbYear: matchedMovie.release_date ? new Date(matchedMovie.release_date).getFullYear() : null,
+                posterPath: matchedMovie.poster_path,
+                backdropPath: matchedMovie.backdrop_path
               });
+
               return {
                 ...movie,
-                posterUrl: tmdbMovie.poster_path ? `${imageUrl}${tmdbMovie.poster_path}` : null,
-                backdropUrl: tmdbMovie.backdrop_path ? `${imageUrl}${tmdbMovie.backdrop_path}` : null,
-                overview: tmdbMovie.overview
+                posterUrl: matchedMovie.poster_path ? `${imageUrl}${matchedMovie.poster_path}` : null,
+                backdropUrl: matchedMovie.backdrop_path ? `${imageUrl}${matchedMovie.backdrop_path}` : null,
+                overview: matchedMovie.overview
               };
             }
             console.log('TMDB 검색 결과 없음:', movie.asset_nm);
@@ -59,10 +64,6 @@ class SimilarVod {
     } catch (error) {
       console.error('추천 VOD 조회 오류:', error);
       throw error;
-    } finally {
-      if (connections) {
-        await Promise.all(connections.map(conn => conn.end()));
-      }
     }
   }
 }

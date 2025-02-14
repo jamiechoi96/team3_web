@@ -1,15 +1,10 @@
-const { createConnections } = require('../utils/database');
+const { executeQuery } = require('../utils/database');
 const axios = require('axios');
 require('dotenv').config();
 
 class SearchTop20 {
     static async getSearchTop20() {
-        let connections = null;
         try {
-            connections = await createConnections();
-            
-            // 105 DB만 사용 (첫 번째 연결)
-            const connection = connections[0];
             console.log('=== 서치 TOP 20 데이터 조회 시작 - model ===');
 
             const query = `
@@ -22,7 +17,7 @@ class SearchTop20 {
                 LIMIT 20
             `;
 
-            const [results] = await connection.query(query);
+            const results = await executeQuery(query);
 
             // TMDB API를 통해 추가 정보 가져오기
             const tmdbApiKey = process.env.TMDB_API_KEY;
@@ -71,10 +66,6 @@ class SearchTop20 {
                 success: false,
                 error: error.message
             };
-        } finally {
-            if (connections) {
-                connections.forEach(conn => conn.end());
-            }
         }
     }
 }

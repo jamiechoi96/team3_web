@@ -1,5 +1,5 @@
 const mysql = require('mysql2/promise');
-const { dbConfigs, localDbConfig } = require('../config/database');
+const { dbConfig } = require('../config/database');
 
 const MAX_RETRIES = 5;
 const RETRY_DELAY = 2000; // 2초
@@ -20,48 +20,25 @@ async function tryConnect(config, retries = 0) {
   }
 }
 
-// 모든 DB 연결 생성
-async function createConnections() {
-  try {
-    // 먼저 105, 115 DB 연결 시도
-    const connections = await Promise.all(
-      dbConfigs.map(config => tryConnect(config))
-    );
-    
-    // 연결된 DB가 없으면 로컬 DB로 시도
-    if (connections.every(conn => !conn)) {
-      console.log('⚠️ 105, 115 DB 연결 실패, 로컬 DB 시도 중...');
-      const localConnection = await tryConnect(localDbConfig);
-      return [localConnection];
-    }
-    
-    return connections;
-  } catch (error) {
-    console.error('❌ DB 연결 오류:', error.message);
-    throw error;
-  }
+// DB 연결 생성
+async function createConnection() {
+  return await tryConnect(dbConfig);
 }
 
 // 쿼리 실행 함수
 async function executeQuery(query, params = []) {
-  let connection;
+  const connection = await createConnection();
   try {
-    const connections = await createConnections();
-    connection = connections[0]; // 첫 번째 연결된 DB 사용
-    
     const [results] = await connection.execute(query, params);
     return results;
   } catch (error) {
-    console.error('쿼리 실행 오류:', error);
     throw error;
   } finally {
-    if (connection) {
-      await connection.end();
-    }
+    await connection.end();
   }
 }
 
 module.exports = {
-  createConnections,
+  createConnection,
   executeQuery
 };

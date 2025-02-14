@@ -30,7 +30,9 @@
   flex-direction: column;
   align-items: center;
 }
-
+.slider_title{
+  font-size: 1.0rem;
+}
 .dashboard_stats {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

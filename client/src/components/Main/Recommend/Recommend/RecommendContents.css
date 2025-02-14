@@ -184,10 +184,11 @@ body {
     font-family: 'LGEIHeadlineVF', sans-serif;
     
 }
-span{
-  font-size: 1.8rem;
-}
+
 .title_point {
   color: #ed174d; 
   font-weight: 'bold';
+}
+.recommend_title{
+  font-size: 1.8rem;
 }

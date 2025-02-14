@@ -4,7 +4,7 @@ const path = require('path');
 require('dotenv').config();
 
 const apiRoutes = require('./server/routes/api');
-const { createConnections } = require('./server/utils/database');
+const { createConnection } = require('./server/utils/database');
 
 const app = express();
 
@@ -24,8 +24,8 @@ app.get('*', (req, res) => {
 async function startServer() {
   try {
     // DB 연결 테스트
-    const connections = await createConnections();
-    await Promise.all(connections.map(conn => conn.end()));
+    const connection = await createConnection();
+    await connection.end();
     console.log('데이터베이스 연결 성공');
 
     const PORT = process.env.PORT || 5001;
@@ -49,8 +49,7 @@ async function startServer() {
           console.log('=================================');
         });
       } else {
-        console.error('서버 시작 실패:', err);
-        process.exit(1);
+        throw err;
       }
     });
   } catch (error) {

@@ -1,4 +1,4 @@
-const { createConnections } = require('../utils/database');
+const { executeQuery } = require('../utils/database');
 const axios = require('axios');
 
 const API_KEY = process.env.TMDB_API_KEY;
@@ -6,18 +6,9 @@ const imageUrl = "https://image.tmdb.org/t/p/original";
 
 class PreferredGenreVod {
   static async getPreferredGenreRecommend(sha2_hash) {
-    let connections = null;
     try {
-      connections = await createConnections();
-      
-      if (!connections || connections.length === 0) {
-        throw new Error('데이터베이스 연결 실패');
-      }
-
-      const connection = connections[0];
-      
       // user_genre_preference 테이블에서 선호 장르 VOD 가져오기
-      const [rows] = await connection.execute(`
+      const rows = await executeQuery(`
         SELECT * FROM genre_top20
         WHERE sha2_hash = ?;
       `, [sha2_hash]);
@@ -72,10 +63,6 @@ class PreferredGenreVod {
     } catch (error) {
       console.error('선호 장르 VOD 조회 오류:', error);
       throw error;
-    } finally {
-      if (connections) {
-        await Promise.all(connections.map(conn => conn.end()));
-      }
     }
   }
 }

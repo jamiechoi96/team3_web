@@ -1,4 +1,4 @@
-const { createConnections } = require('../utils/database');
+const { executeQuery } = require('../utils/database');
 const axios = require('axios');
 
 const API_KEY = process.env.TMDB_API_KEY;
@@ -6,34 +6,29 @@ const imageUrl = "https://image.tmdb.org/t/p/original";
 
 class SummaryRecommend {
   static async getSummaryRecommend(sha2_hash) {
-    let connection = null;
     try {
-      // 데이터베이스 연결
-      const connections = await createConnections();
-      connection = connections[0];
-
       console.log('===== 줄거리 기반 추천 데이터 조회 시작 =====');
       console.log('요청된 사용자 해시:', sha2_hash);
 
       // smry_recommend 테이블에서 데이터 조회 (해시 기반)
-      const [summaryRows] = await connection.execute(`
+      const rows = await executeQuery(`
         SELECT * FROM smry_recommend
         WHERE sha2_hash = ?
         LIMIT 20;
       `, [sha2_hash]);
 
       console.log('===== 줄거리 기반 추천 데이터 조회 결과 =====');
-      console.log('조회된 영화 개수:', summaryRows.length);
-      if (summaryRows.length > 0) {
-        console.log('첫 번째 추천 영화:', summaryRows[0].asset_nm);
-        console.log('데이터 필드:', Object.keys(summaryRows[0]));
+      console.log('조회된 영화 개수:', rows.length);
+      if (rows.length > 0) {
+        console.log('첫 번째 추천 영화:', rows[0].asset_nm);
+        console.log('데이터 필드:', Object.keys(rows[0]));
       }
 
       // 추천 데이터 선택 로직
-      let recommendRows = summaryRows;
+      let recommendRows = rows;
 
       // smry_recommend에 데이터가 없으면 null 반환
-      if (summaryRows.length === 0) {
+      if (rows.length === 0) {
         console.log('===== 줄거리 기반 추천 데이터 없음 =====');
         return [];
       }
@@ -85,10 +80,6 @@ class SummaryRecommend {
         message: '줄거리 기반 추천 VOD를 가져오는 중 오류가 발생했습니다.',
         data: []
       };
-    } finally {
-      if (connection) {
-        connection.end();
-      }
     }
   }
 

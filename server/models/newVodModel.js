@@ -1,4 +1,4 @@
-const { createConnections } = require('../utils/database');
+const { executeQuery } = require('../utils/database');
 const axios = require('axios');
 
 const API_KEY = process.env.TMDB_API_KEY;
@@ -6,17 +6,11 @@ const imageUrl = "https://image.tmdb.org/t/p/original";
 
 class NewVod {
   static async getNewVods() {
-    let connections = null;
     try {
-      connections = await createConnections();
-      
-      // 105 DB 사용 (첫 번째 연결)
-      const connection = connections[0];
       console.log('===== 서버: 신작 VOD 데이터 조회 시작 =====');
       
-      const [rows] = await connection.execute(`
+      const rows = await executeQuery(`
         SELECT * FROM new_movie_04_01;
-
       `);
 
       console.log('===== 서버: TMDB 데이터 조회 시작 =====');
@@ -57,10 +51,6 @@ class NewVod {
     } catch (error) {
       console.error('신작 VOD 데이터 조회 오류:', error);
       throw error;
-    } finally {
-      if (connections) {
-        await Promise.all(connections.map(conn => conn.end()));
-      }
     }
   }
 }

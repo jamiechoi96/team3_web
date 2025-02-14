@@ -158,7 +158,7 @@ function MyPage() {
       </div>
 
       <div className="section">
-        <h2 className="section_title">📊시청 패턴 분석</h2>
+        <h2 className="section_title">📊저번달 시청 패턴 분석</h2>
         <div className="section_content">
           {genreLoading ? (
             <div className="dashboard_loading">

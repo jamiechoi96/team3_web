@@ -4,7 +4,7 @@ class GenreStatsModel {
     static async getGenreStatsByUser(userHash) {
         try {
             // 인위적인 지연 추가 (1000ms)
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise(resolve => setTimeout(resolve, 500));
 
             const query = `
                 WITH Total AS (
@@ -16,10 +16,10 @@ class GenreStatsModel {
                     SELECT 
                         genre_of_ct_cl,                        
                         COUNT(*) AS asset_count,               
-                        ROUND((COUNT(*) * 100.0) / total.total_assets, 1) AS percentage
-                    FROM user_viewing_patterns, Total
+                        ROUND((COUNT(*) * 100.0) / (SELECT total_assets FROM Total), 1) AS percentage
+                    FROM user_viewing_patterns
                     WHERE sha2_hash = ?
-                    GROUP BY genre_of_ct_cl, total.total_assets
+                    GROUP BY genre_of_ct_cl
                 ),
                 TopGenres AS (
                     SELECT genre_of_ct_cl, asset_count, percentage
@@ -33,7 +33,8 @@ class GenreStatsModel {
                     ROUND(SUM(gc.percentage), 1) AS total_percentage
                 FROM GenreCounts gc
                 LEFT JOIN TopGenres t ON gc.genre_of_ct_cl = t.genre_of_ct_cl
-                GROUP BY genre
+                GROUP BY 
+                    CASE WHEN t.genre_of_ct_cl IS NULL THEN '기타' ELSE t.genre_of_ct_cl END
                 ORDER BY 
                     CASE WHEN genre = '기타' THEN 1 ELSE 0 END, 
                     total_percentage DESC;

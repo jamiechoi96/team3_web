@@ -1,15 +1,11 @@
-const { createConnections } = require('../utils/database');
+const { executeQuery } = require('../utils/database');
 
 class Top20 {
   static async getTop20() {
-    let connections = null;
     try {
-      connections = await createConnections();
-      
-      // 105 DB만 사용 (첫 번째 연결)
-      const connection = connections[0];
       console.log('===== 서버: TOP 20 데이터 조회 시작 =====');
-      const [rows] = await connection.execute(`
+      
+      const rows = await executeQuery(`
         SELECT 
           ranking,
           asset_nm,
@@ -27,13 +23,9 @@ class Top20 {
       
       return rows;
 
-    } catch (error) { 
+    } catch (error) {
       console.error('TOP 20 데이터 조회 오류:', error);
       throw error;
-    } finally { 
-      if (connections) {
-        await Promise.all(connections.map(conn => conn.end()));
-      } 
     }
   }
 }

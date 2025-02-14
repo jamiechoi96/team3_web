@@ -1,4 +1,4 @@
-const { createConnections } = require('../utils/database');
+const { executeQuery } = require('../utils/database');
 
 class WatchHistory {
   static async getWatchHistory(userHash) {
@@ -9,13 +9,8 @@ class WatchHistory {
       throw new Error('userHash가 필요합니다. 사용자 정보를 확인해주세요.');
     }
 
-    let connections = null;
     try {
-      connections = await createConnections();
-      // 115db사용 (최근 시청 기록)
-      const connection = connections[1];
-      
-      const [rows] = await connection.execute(`
+      const rows = await executeQuery(`
         WITH RankedContent AS (
           SELECT 
             sha2_hash,
@@ -37,14 +32,6 @@ class WatchHistory {
     } catch (error) {
       console.error('데이터베이스 쿼리 오류:', error);
       throw error;
-    } finally {
-      if (connections) {
-        try {
-          await Promise.all(connections.map(conn => conn.end()));
-        } catch (error) {
-          console.error('데이터베이스 연결 종료 오류:', error);
-        }
-      }
     }
   }
 }

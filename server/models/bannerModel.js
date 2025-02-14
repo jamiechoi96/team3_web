@@ -1,4 +1,4 @@
-const { createConnections } = require('../utils/database');
+const { executeQuery } = require('../utils/database');
 const axios = require('axios');
 
 const API_KEY = process.env.TMDB_API_KEY;
@@ -6,15 +6,11 @@ const imageUrl = "https://image.tmdb.org/t/p/original";
 
 class Banner {
   static async getBannerVods() {
-    let connections = null;
     try {
-      connections = await createConnections();
-      const connection = connections[0];
-      
       console.log('===== 배너 VOD 데이터 조회 시작 =====');
       
       // top20 테이블에서 랜덤으로 5개 가져오기
-      const [rows] = await connection.execute(`
+      const rows = await executeQuery(`
         SELECT * FROM vod_movie_rank_04_01
         ORDER BY RAND()
         LIMIT 5;
@@ -64,10 +60,6 @@ class Banner {
     } catch (error) {
       console.error('배너 VOD 조회 중 오류:', error);
       throw error;
-    } finally {
-      if (connections) {
-        connections.forEach(conn => conn.end());
-      }
     }
   }
 }

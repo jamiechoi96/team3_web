@@ -1,16 +1,12 @@
-const { executeQuery, createConnections } = require('../utils/database');
+const { executeQuery } = require('../utils/database');
 
 class ViewingPatternModel {
     static async getViewingPatternsByUser(userHash) {
-        let connections = null;
         try {
-            connections = await createConnections();
-            const connection = connections[0];
-
             // 인위적인 지연 추가 (1000ms)
             await new Promise(resolve => setTimeout(resolve, 1000));
 
-            const [timePeriodStats] = await connection.execute(
+            const timePeriodStats = await executeQuery(
                 `SELECT 
                     time_period,
                     COUNT(*) as count
@@ -22,7 +18,7 @@ class ViewingPatternModel {
                 [userHash]
             );
 
-            const [hourlyStats] = await connection.execute(
+            const hourlyStats = await executeQuery(
                 `SELECT 
                     viewing_hour as hour,
                     COUNT(*) as count
@@ -33,7 +29,7 @@ class ViewingPatternModel {
                 [userHash]
             );
 
-            const [bingeStats] = await connection.execute(
+            const bingeStats = await executeQuery(
                 `SELECT 
                     COUNT(*) as binge_count,
                     COUNT(*) * 100.0 / (
@@ -54,9 +50,11 @@ class ViewingPatternModel {
             }));
 
             // 실제 데이터로 업데이트
-            hourlyStats.forEach(stat => {
-                hourlyData[stat.hour].count = stat.count;
-            });
+            if (hourlyStats) {
+                hourlyStats.forEach(stat => {
+                    hourlyData[stat.hour].count = stat.count;
+                });
+            }
 
             return {
                 preferredTimePeriod: timePeriodStats[0] || { time_period: '데이터 없음', count: 0 },
@@ -65,10 +63,6 @@ class ViewingPatternModel {
             };
         } catch (error) {
             throw new Error('시청 패턴을 가져오는데 실패했습니다: ' + error.message);
-        } finally {
-            if (connections) {
-                connections.forEach(conn => conn.end());
-            }
         }
     }
 }
