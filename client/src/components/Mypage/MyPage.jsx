@@ -11,12 +11,14 @@ function MyPage() {
   const [watchHistory, setWatchHistory] = useState([]);
   const [genreData, setGenreData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [genreLoading, setGenreLoading] = useState(true);
+  const [genreLoading, setGenreLoading] = useState(false);
   const [error, setError] = useState(null);
   const [genreError, setGenreError] = useState(null);
   const [userHash, setUserHash] = useState(null);
   const [hoveredItem, setHoveredItem] = useState(null);
   const [copySuccess, setCopySuccess] = useState(false);
+  const [showDashboard, setShowDashboard] = useState(false);
+  const [loadingStep, setLoadingStep] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,25 +48,37 @@ function MyPage() {
       }
     };
 
-    const fetchGenreStats = async () => {
-      setGenreLoading(true);
-      try {
-        const response = await fetch(`/api/genre-stats`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await response.json();
-        setGenreData(data);
-        setGenreError(null);
-      } catch (error) {
-        setGenreError("장르 통계를 가져오는 중 오류가 발생했습니다.");
-      } finally {
-        setGenreLoading(false);
-      }
-    };
-
     fetchWatchHistory();
-    fetchGenreStats();
   }, [navigate]);
+
+  const fetchGenreStats = async () => {
+    setGenreLoading(true);
+    setLoadingStep(1);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`/api/genre-stats`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await response.json();
+      setGenreData(data);
+      setGenreError(null);
+    } catch (error) {
+      setGenreError("장르 통계를 가져오는 중 오류가 발생했습니다.");
+    }
+  };
+
+  useEffect(() => {
+    let timer;
+    if (genreLoading) {
+      timer = setTimeout(() => {
+        setLoadingStep(2);
+        setTimeout(() => {
+          setGenreLoading(false);
+        }, 1500);
+      }, 1500);
+    }
+    return () => clearTimeout(timer);
+  }, [genreLoading]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -88,6 +102,11 @@ function MyPage() {
       
       document.body.removeChild(textArea);
     }
+  };
+
+  const handleAnalyzeClick = () => {
+    setShowDashboard(true);
+    fetchGenreStats();
   };
 
   const settings = {
@@ -158,16 +177,33 @@ function MyPage() {
       </div>
 
       <div className="section">
-        <h2 className="section_title">📊저번 달 회원님의 시청 패턴 분석</h2>
+        <div className="section_header">
+          <h2 className="section_title">📊저번 달 회원님의 시청 패턴 분석</h2>
+        </div>
         <div className="section_content">
-          {genreLoading ? (
-            <div className="dashboard_loading">
-              <div className="loading-spinner" /> 고객님의 시청 패턴을 분석중입니다📊
-            </div>
-          ) : genreError ? (
-            <div className="status-message error">{genreError}</div>
+          {showDashboard ? (
+            genreLoading ? (
+              <div className="dashboard_loading">
+                <div className="loading-spinner" /> 
+                <p>고객님의 시청 패턴을 분석중입니다📊</p>
+                {loadingStep === 2 && <p>잠시만 기다려주세요!</p>}
+              </div>
+            ) : genreError ? (
+              <div className="status-message error">{genreError}</div>
+            ) : (
+              <Dashboard data={genreData} loading={genreLoading} />
+            )
           ) : (
-            <Dashboard data={genreData} loading={genreLoading} />
+            <div className="dashboard-placeholder">
+              <p>회원님의 시청 패턴을 분석해드립니다.</p>
+              <p>시청하신 콘텐츠를 기반으로 맞춤형 분석을 제공해드려요!</p>
+              <button 
+                className="analyze-button" 
+                onClick={handleAnalyzeClick}
+              >
+                분석하기
+              </button>
+            </div>
           )}
         </div>
       </div>
