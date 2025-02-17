@@ -41,13 +41,21 @@ const Header = () => {
     return location.pathname === path;
   };
 
+  const handleLogoClick = () => {
+    if (location.pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      navigate('/');
+    }
+  };
+
   return (
     <header
       className={`header ${isHome ? "header-home" : ""} ${
         isScrolled ? "header-scrolled" : ""
       }`}
     >
-      <div className="logo" onClick={() => navigate("/")}>
+      <div className="logo" onClick={handleLogoClick}>
         <img src="/images/VODiscovery_w.png" alt="VODiscovery Logo" className="logo-image" />
       </div>
       <nav className="Nav">

@@ -11,6 +11,7 @@ import Search from "./components/Search/Search.jsx"; // Search 컴포넌트 임�
 import Footer from "./components/Footer/Footer.jsx";
 import Login from "./components/Login/Login.jsx";
 import MyPage from "./components/MyPage/MyPage.jsx"; // MyPage 컴포넌트 임포트
+import ScrollToTop from "./components/common/ScrollToTop.jsx";
 import "./App.css";
 
 // 동적으로 클래스 추가를 위한 컴포넌트
@@ -37,6 +38,7 @@ function Layout() {
           <Route path="/search" element={<Search />} />
         </Routes>
         <Footer />
+        <ScrollToTop />
       </div>
     </>
   );
