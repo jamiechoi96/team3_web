@@ -12,6 +12,7 @@ import Footer from "./components/Footer/Footer.jsx";
 import Login from "./components/Login/Login.jsx";
 import MyPage from "./components/MyPage/MyPage.jsx"; // MyPage 컴포넌트 임포트
 import ScrollToTop from "./components/common/ScrollToTop.jsx";
+import ScrollToTopOnMount from "./components/common/ScrollToTopOnMount.jsx";
 import "./App.css";
 
 // 동적으로 클래스 추가를 위한 컴포넌트
@@ -29,6 +30,7 @@ function Layout() {
 
   return (
     <>
+      <ScrollToTopOnMount />
       <Header />
       <div className={`main ${isHome ? "home-page" : ""}`}>
         <Routes>
