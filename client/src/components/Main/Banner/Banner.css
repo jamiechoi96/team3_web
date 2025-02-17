@@ -29,7 +29,8 @@
 }
 
 .banner .slick-list {
-  overflow: visible;
+  overflow: hidden;
+  margin-left: -10px;
 }
 
 .banner .slick-slide {
