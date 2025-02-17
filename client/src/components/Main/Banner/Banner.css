@@ -1,20 +1,59 @@
 .banner {
   position: relative;
   width: 100%;
+  height: calc(80vh - 60px);
   background-color: #111;
   padding: 0;
   margin: 0;
 }
 
+.banner .slick-slider {
+  width: 100%;
+  height: calc(80vh - 60px);
+  margin: 0;
+  padding: 0;
+}
+
+.banner .slick-slider,
+.banner .slick-list,
+.banner .slick-track {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.banner .slick-slider {
+  overflow: hidden;
+}
+
+.banner .slick-list {
+  overflow: visible;
+}
+
+.banner .slick-slide {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.banner .slick-slide > div {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 .slide {
   position: relative;
   width: 100%;
-  height: calc(80vh - 60px);
+  height: 100%;
   display: flex;
   justify-content: flex-end;
   background-color: #111;
   overflow: hidden;
   margin: 0;
+  padding: 0;
 }
 
 .slide::before {
@@ -52,6 +91,8 @@
   width: 60%;
   height: 100%;
   object-fit: cover;
+  margin: 0;
+  padding: 0;
 }
 
 .image-gradient {
@@ -66,14 +107,14 @@
 }
 
 .content {
-  position: fixed;
+  position: absolute;
   left: 50px;
-  padding: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 2rem 2rem 2rem 2.5rem;
   color: white;
   z-index: 2;
-  width: 600px;
-  background-color: transparent;
-  transform: none;
+  width: 550px;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -164,12 +205,10 @@
 }
 
 .banner_buttons {
-  position: fixed;
-  bottom: 50px;
-  left: 80px;
   display: flex;
   gap: 8px;
-  z-index: 2;
+  margin-top: 1rem;
+  padding-left: 0;
 }
 
 .button {
@@ -186,15 +225,16 @@
 }
 
 .play-button {
-  background-color: rgb(255, 255, 255,0.2);
+  background-color: rgba(255, 255, 255, 0.2);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.8rem;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
   transform-origin: center;
-  padding: 16px 24px;
+  padding: 12px 24px;
+  margin-top: 0.5rem;
 }
 
 .play-button svg {

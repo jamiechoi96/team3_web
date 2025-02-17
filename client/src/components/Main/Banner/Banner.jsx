@@ -77,7 +77,7 @@ function Banner() {
         autoplay: true,
         autoplaySpeed: 3000,
         arrows: true,
-        fade: true
+        fade: false
     };
 
     return (
