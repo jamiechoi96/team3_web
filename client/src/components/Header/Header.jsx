@@ -47,7 +47,10 @@ const Header = () => {
         isScrolled ? "header-scrolled" : ""
       }`}
     >
-      <div className="logo" onClick={() => navigate("/")}>
+      <div className="logo" onClick={() => {
+        navigate("/");
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }}>
         <img src="/images/VODiscovery_w.png" alt="VODiscovery Logo" className="logo-image" />
       </div>
       <nav className="Nav">
@@ -67,7 +70,11 @@ const Header = () => {
         {location.pathname !== "/search" && (
           <FiSearch className="icon" onClick={() => navigate("/search")} />
         )}
-        <Link to="/mypage">
+        <Link to="/mypage" onClick={() => {
+          if (location.pathname === "/mypage") {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }}>
           <FiUser
             className={`icon ${
               location.pathname === "/mypage" ? "active" : ""
