@@ -93,8 +93,8 @@ function RecommendContents() {
   /** 영화 정보 팝업 핸들러 */
   const handleInfoClick = (movie) => {
     setSelectedMovie({
+      ...movie,
       title: movie.asset_nm,
-      overview: movie.overview || "설명이 없습니다.",
       hover: movie.backdropUrl || movie.posterUrl
     });
     setShowPopup(true);
