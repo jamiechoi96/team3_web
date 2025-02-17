@@ -20,6 +20,8 @@ function MyPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/login");
