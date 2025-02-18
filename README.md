@@ -2,7 +2,7 @@
 
 <div align="center">
 
-  <img src="client/public/images/VODiscovery_w.png" alt="VODiscovery Logo" width="600"/>
+  <img src="client/public/images/VODiscovery_w.png" alt="VODiscovery Logo" width="800"/>
 
  
 
