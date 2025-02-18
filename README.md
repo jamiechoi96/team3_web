@@ -1,7 +1,7 @@
 # VODiscovery: 맞춤형 VOD 추천 플랫폼 🎬
 
 <div align="center">
-  <img src="client/public/vite.svg" alt="VODiscovery Logo" width="200"/>
+  <img src="client/public/images/VODiscovery_w" alt="VODiscovery Logo" width="200"/>
   <p><em>스마트한 VOD 추천으로 당신의 시청 경험을 혁신합니다</em></p>
 </div>
 
