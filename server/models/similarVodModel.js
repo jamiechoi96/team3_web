@@ -22,9 +22,9 @@ class SimilarVod {
       const moviesWithDetails = await Promise.all(
         rows.map(async (movie) => {
           try {
-            console.log('검색할 영화 제목:', movie.asset_nm, '연도:', movie.crt_yr);
+            console.log('검색할 영화 제목:', movie.asset_nm);
             const tmdbResponse = await axios.get(
-              `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(movie.asset_nm)}&primary_release_year=${movie.crt_yr}&language=ko-KR`
+              `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(movie.asset_nm)}&language=ko-KR`
             );
 
             if (tmdbResponse.data.results && tmdbResponse.data.results.length > 0) {
