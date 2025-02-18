@@ -1,11 +1,7 @@
 # VODiscovery: 맞춤형 VOD 추천 플랫폼 🎬
 
 <div align="center">
-<<<<<<< HEAD
   <img src="client/public/images/VODiscovery_w.png" alt="VODiscovery Logo" width="400"/>
-=======
-  <img src="client/public/images/VODiscovery_w" alt="VODiscovery Logo" width="200"/>
->>>>>>> fee268fdb008d8ff1622cbfe1f5197a161ce61cf
   <p><em>스마트한 VOD 추천으로 당신의 시청 경험을 혁신합니다</em></p>
 </div>
 
@@ -18,6 +14,7 @@
 - [상세 기능 명세](#-상세-기능-명세)
 - [API 문서](#-api-문서)
 - [개발 가이드](#-개발-가이드)
+- [AWS EC2 배포 가이드](#-aws-ec2-배포-가이드)
 
 ## 📖 소개
 VODiscovery는 사용자의 시청 패턴을 분석하여 개인화된 VOD 콘텐츠를 추천하는 스마트 플랫폼입니다. TMDB API와 연동하여 풍부한 콘텐츠 정보를 제공하며, 실시간 인기 순위와 맞춤형 추천으로 최적의 시청 경험을 제공합니다.
@@ -186,6 +183,151 @@ team3_web/
 - 컴포넌트: PascalCase
 - 함수/변수: camelCase
 - 상수: UPPER_SNAKE_CASE
+
+## 🚀 AWS EC2 배포 가이드
+
+### 1. EC2 인스턴스 설정
+1. AWS 콘솔에서 EC2 인스턴스 생성
+   ```bash
+   # 인스턴스 타입 추천
+   t2.micro (프리티어) 또는 t2.small
+   
+   # 운영체제
+   Ubuntu Server 22.04 LTS
+   ```
+
+2. 보안 그룹 설정
+   ```bash
+   # 인바운드 규칙
+   - SSH (22): 내 IP
+   - HTTP (80): 모든 곳
+   - HTTPS (443): 모든 곳
+   - Custom TCP (5001): 모든 곳 # 백엔드 서버 포트
+   - Custom TCP (5173): 모든 곳 # Vite 개발 서버 포트
+   ```
+
+### 2. 서버 초기 설정
+```bash
+# 서버 접속
+ssh -i your-key.pem ubuntu@your-ec2-ip
+
+# 시스템 업데이트
+sudo apt update
+sudo apt upgrade -y
+
+# Node.js 설치 (18.x 버전)
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt install -y nodejs
+
+# MySQL 설치
+sudo apt install mysql-server -y
+sudo systemctl start mysql
+sudo systemctl enable mysql
+
+# Git 설치
+sudo apt install git -y
+
+# PM2 설치 (프로세스 관리)
+sudo npm install -g pm2
+```
+
+### 3. 프로젝트 배포
+```bash
+# 프로젝트 클론
+git clone https://github.com/jamiechoi96/team3_web.git
+cd team3_web
+
+# 환경 변수 설정
+cp .env.example .env
+nano .env  # 환경 변수 수정
+
+# 의존성 설치
+npm run install-all
+
+# 프론트엔드 빌드
+cd client
+npm run build
+cd ..
+
+# PM2로 서버 실행
+pm2 start server.js --name "vod-server"
+```
+
+### 4. Nginx 설정
+```bash
+# Nginx 설치
+sudo apt install nginx -y
+
+# Nginx 설정
+sudo nano /etc/nginx/sites-available/vod-discovery
+
+# 아래 내용 추가
+server {
+    listen 80;
+    server_name your-domain.com;  # 도메인이 있는 경우 설정
+
+    # 프론트엔드 (빌드된 파일 제공)
+    location / {
+        root /home/ubuntu/team3_web/client/dist;
+        try_files $uri $uri/ /index.html;
+    }
+
+    # 백엔드 API
+    location /api {
+        proxy_pass http://localhost:5001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+# 설정 활성화
+sudo ln -s /etc/nginx/sites-available/vod-discovery /etc/nginx/sites-enabled/
+sudo nginx -t  # 설정 테스트
+sudo systemctl restart nginx
+```
+
+### 5. SSL 설정 (선택사항)
+```bash
+# Certbot 설치
+sudo snap install --classic certbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+
+# SSL 인증서 발급
+sudo certbot --nginx -d your-domain.com
+```
+
+### 6. 모니터링 및 로그 확인
+```bash
+# PM2 상태 확인
+pm2 status
+pm2 logs vod-server
+
+# Nginx 로그 확인
+sudo tail -f /var/log/nginx/access.log
+sudo tail -f /var/log/nginx/error.log
+```
+
+### 7. 자동 배포 스크립트 (deploy.sh)
+```bash
+#!/bin/bash
+# 프로젝트 루트 디렉토리에 deploy.sh 생성
+
+git pull
+npm run install-all
+cd client
+npm run build
+cd ..
+pm2 restart vod-server
+```
+
+### 8. 문제 해결
+- 포트 충돌: `sudo netstat -tulpn | grep LISTEN`
+- 프로세스 종료: `pm2 delete vod-server`
+- Nginx 재시작: `sudo systemctl restart nginx`
+- 로그 확인: `pm2 logs vod-server --lines 100`
 
 ---
 
