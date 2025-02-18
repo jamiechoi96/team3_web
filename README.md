@@ -1,8 +1,6 @@
 
 
 <div align="center">
-<<<<<<< HEAD
-  <img src="client/public/images/VODiscovery_w.png" alt="VODiscovery Logo" width="400"/>
 
 
   <img src="client/public/images/VODiscovery_w.png" alt="VODiscovery Logo" width="800"/>
