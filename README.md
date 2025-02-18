@@ -1,11 +1,11 @@
 # VODiscovery: 맞춤형 VOD 추천 플랫폼 🎬
 
 <div align="center">
-<<<<<<< HEAD
+
   <img src="client/public/images/VODiscovery_w.png" alt="VODiscovery Logo" width="400"/>
-=======
-  <img src="client/public/images/VODiscovery_w" alt="VODiscovery Logo" width="200"/>
->>>>>>> fee268fdb008d8ff1622cbfe1f5197a161ce61cf
+
+ 
+
   <p><em>스마트한 VOD 추천으로 당신의 시청 경험을 혁신합니다</em></p>
 </div>
 
