@@ -10,7 +10,7 @@ import Home from "./components/Main/Home/Home.jsx";
 import Search from "./components/Search/Search.jsx"; // Search 컴포넌트 임포트
 import Footer from "./components/Footer/Footer.jsx";
 import Login from "./components/Login/Login.jsx";
-import MyPage from "./components/MyPage/MyPage.jsx"; // MyPage 컴포넌트 임포트
+import MyPage from "./components/Mypage/Mypage.jsx"; // Mypage로 수정
 import ScrollToTop from "./components/common/ScrollToTop.jsx";
 import ScrollToTopOnMount from "./components/common/ScrollToTopOnMount.jsx";
 import "./App.css";

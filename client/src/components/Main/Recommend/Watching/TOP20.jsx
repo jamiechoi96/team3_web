@@ -6,7 +6,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import "./TOP20.css";
 
-const API_KEY = import.meta.env.VITE_TMDB_API;
+const API_KEY = '0058a62923db25cb8d799d267036fb75';  // 하드코딩
 
 function TOP20() {
   const [movies, setMovies] = useState([]);
