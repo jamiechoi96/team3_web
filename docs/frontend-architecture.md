@@ -69,10 +69,10 @@ flowchart LR
     end
 
     %% 데이터베이스
-    subgraph DB[MongoDB]
-        Users[(사용자 컬렉션)]
-        WatchHistory[(시청기록 컬렉션)]
-        Top20[(TOP20 컬렉션)]
+    subgraph DB[MySQL]
+        Users[(users 테이블)]
+        WatchHistory[(watch_history 테이블)]
+        Top20[(top_20 테이블)]
     end
 
     %% 토큰 흐름
@@ -119,7 +119,6 @@ flowchart LR
     class Backend backend
     class DB db
     class ExternalAPI api
-```
 
 # 시스템 아키텍처 상세 설명
 
