@@ -70,14 +70,14 @@ cd team3_web
 
 2. 환경 변수 설정
 ```bash
-# .env 파일 생성
+<!-- # .env 파일 생성
 PORT=5001
 TMDB_API_KEY=your_api_key
 DB_HOST=your_db_host
 DB_PORT=3306
 DB_USER=your_db_user
 DB_PASSWORD=your_db_password
-DB_NAME=your_db_name
+DB_NAME=your_db_name -->
 ```
 
 3. 의존성 설치 및 실행
